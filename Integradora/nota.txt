@@ -1,0 +1,31 @@
+///Para poder activar el servidor con node js usar:  ////   
+         node scripts/server.js            
+            
+        (Tiene que usarse dentro de la carpeta raiz del proyecto: (ProyectoIntegradora1-E4\integradora)  )
+
+De momento se ha configurado en un servidor local, para despúes conectarlo a lo que será nuestro servidor Linux
+
+
+
+/// En el archivos de Consultas.js se van a estar agregando las consultas realizadas, de momento solo hay:
+
+*Inicio de sesion [Acabado] 12/10/2024
+
+
+A falta de las consultas de insertar, mostrar, etc...
+
+
+
+/// El archivo server.js contiene la conexion de node.js y a la Base de datos en Xampp (Por lo tanto debe de activarse antes de usar)
+incluye errores al conectar, y alertas similares, por el momento los errores que se han presentado han sido solucionados.
+
+
+
+        ///// FECHAS [Front end] \\\\\
+        *Creacion de maquetacion en html [Semi acabado] fecha-inicio: 05-10-2024   -Axel Javier Sandoval Sanchez & Angel de Jesus Avitia 
+
+        ///// FECHAS [Back end] \\\\\
+        *implementacion de node.js [Acabado] fecha-inicio: 12/10/2024 fecha-finalizado: 12/10/2024  -Jonathan Ricardo Rios Mtz
+        *inicio de sesion [Acabado] echa-inicio: 12/10/2024 fecha-finalizado: 12/10/2024  -Jonathan Ricardo Rios Mtz
+
+        
