@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Citas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<header>
+    <h1>Bienvenido hoy es :</h1>
+    <p id="fecha"></p>
+    <button type="button" id="cerrar">Cerrar Sesion</button>
+</header>
+<!-- Enlace al archivo JavaScript -->
+<script src="scrip.js"></script>
+<css srs="styles.css"></css>
+<br>
+<body>
+    <div id="formulario-cita">
+        <h2>Agregar Servicio</h2>
+        
+        <div class="campo">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" required placeholder="Ingrese su nombre">
+        </div>
+    
+        <div class="campo">
+            <label for="costo">Costo:</label> <!-- Nuevo campo para apellido -->
+            <input type="text" id="costo" required placeholder="Ingrese su apellido"> <!-- Placeholder agregado -->
+        </div>
+
+        <div class="campo">
+            <label for="telefono">Telefono:</label> <!-- Nuevo campo para apellido -->
+            <input type="text" id="telefono" required placeholder="Ingrese el telefono"> <!-- Placeholder agregado -->
+        </div>
+
+    
+        
+        <button type="button" class="guardar-servicio" onclick="guardarServicio()">
+            Guardar Servicio 
+            <img src="imagenes/guardar.png" alt="guardar" width="40" height="40">
+        </button>
+<br>
+        <a href="Servicios_Registrados.html"><button type="button">regresar</button></a>
+    </div>
+    
+</body>
+</html>

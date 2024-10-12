@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Citas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<header>
+    <h1>Bienvenido hoy es :</h1>
+    <p id="fecha"></p>
+    <button type="button" id="cerrar">Cerrar Sesion</button>
+</header>
+<!-- Enlace al archivo JavaScript -->
+<script src="script.js"></script>
+<css srs="styles.css"></css>
+<br>
+<body>
+    <div id="formulario-cita">
+        <h2>Modificar Cita</h2>
+        
+        <center>
+            <table border="1">
+                <tr>
+                    <th>ID_cita</th>
+                    <th>Nombre</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Estado</th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+        </table>
+        </center>
+        <br><br>
+
+        <div class="campo">
+            <label for="nombre">ID de Cita:</label>
+            <input type="text" id="IdCita" required placeholder="Ingrese el ID">
+        </div>
+        <br>
+        <div class="campo">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" required placeholder="Ingrese su nombre">
+        </div>
+    
+        <div class="campo">
+            <label for="apellido">Apellido:</label> <!-- Nuevo campo para apellido -->
+            <input type="text" id="apellido" required placeholder="Ingrese su apellido"> <!-- Placeholder agregado -->
+        </div>
+    
+        <div class="campo">
+            <label for="fechaCita">Fecha de la cita:</label>
+            <input type="date" id="fechaCita" required>
+        </div>
+    
+        <div class="campo">
+            <label for="horaCita">Hora de la cita:</label>
+            <input type="time" id="horaCita" required>
+        </div>
+        
+        <button type="button" class="guardar-cita" onclick="guardarCita()">
+            Guardar Cita 
+            <img src="imagenes/guardar.png" alt="guardar" width="40" height="40">
+        </button>
+<br>
+        <a href="Citas_Registradas.html"><button type="button">regresar</button></a>
+    </div>
+    
+</body>
+</html>

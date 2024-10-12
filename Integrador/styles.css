@@ -1,0 +1,163 @@
+/* Estilo para separar los elementos dentro del header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    margin: 0;
+}
+
+
+
+/* Estilos generales */ 
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+  }
+  
+  /* Encabezado */
+  header {
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    padding: 20px;
+    text-align: left;
+  }
+  
+  /* Contenedor del logo y título */
+  .logo-title {
+    display: flex;
+    align-items: center;
+  }
+  
+  .logo {
+    width: 50px; /* Ajusta el tamaño del logo si es necesario */
+    height: auto;
+    margin-right: 15px; /* Espacio entre el logo y el texto */
+  }
+  
+  header h1 {
+    margin: 0;
+    color: #0567cf;
+  }
+  
+  /* Navegación */
+  nav ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  nav ul li {
+    display: inline;
+    margin-right: 20px;
+  }
+  
+  nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  nav ul li a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Contenedor principal */
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  /* Estilos para cada sección */
+  .container section {
+    width: 300px; /* Fija el ancho de cada sección */
+    padding: 20px;
+    text-align: center;
+    background-color: #f8f8f8;
+    border: 1px solid #040000;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .container section:hover {
+    transform: scale(1.05); /* Efecto de ampliación al pasar el ratón */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Estilo de los títulos de las secciones */
+  .container section h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  /* Estilo del texto de las secciones */
+  .container section p {
+    font-size: 16px;
+    color: #555;
+  }
+  
+  /* Botones con imágenes */
+  .button-image {
+    display: block;
+    text-align: center;
+    background-color: #00f2ff;
+    border-radius: 10px;
+    padding: 10px;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .button-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+  
+  .button-image p {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .button-image:hover {
+    background-color: #00f2ff; /* Cambia el color al pasar el cursor */
+  }
+  
+  /* Pie de página */
+  footer {
+    background-color: #0567cf;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    padding: 10px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  /* Adaptación para pantallas más pequeñas */
+  @media screen and (max-width: 768px) {
+    .container {
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    nav ul li {
+      display: block;
+      margin-bottom: 10px;
+    }
+  }
+  
+  

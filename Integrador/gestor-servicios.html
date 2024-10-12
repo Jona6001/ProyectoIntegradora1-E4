@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header con Fecha</title>
+    <!-- Enlace al archivo CSS-->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Bienvenido</h1>
+        <p id="fecha"></p>
+        <button type="button" id="cerrar">Cerrar Sesion</button>
+                    <!-- Botón para volver a la página anterior -->
+    <button onclick="goBack()">Regresar</button>
+
+    <script>
+        function goBack() {
+            window.history.back(); // Regresa a la página anterior en el historial
+        }
+    </script>
+    </header>
+    <!-- Enlace al archivo JavaScript -->
+    <script src="script.js"></script>
+
+    <div class="logo-title">
+        <img src="logo.jpg" alt="Logo Agenda Dental" class="logo"> <!-- Agregar aquí la ruta correcta del logo -->
+        <h1>Gestor de Servicios</h1> 
+    </div>
+
+    
+    <nav>
+        <ul>
+            <li><a href="agregarservicio.html">Agregar Servicio</a></li>
+            <li><a href="modificarservicio.html">Administrar Servicio</a></li>
+            <li><a href="borrarservicio.html">Borrar Servicio</a></li>
+        </ul>
+    </nav>
+</header>
+<div class="container">
+    <section id="agregar-servicio">
+        <h2>Agregar Servicio</h2>
+        <p>Utiliza el siguiente formulario para agregar un nuevo servicio dental.</p>
+        <a href="agregarservicio.html" class="button-image">
+            <img src="agregarservicios.jpg" alt="Agregar Servicio">
+            <p>Ir a Agregar Servicio</p>
+        </a>
+    </section>
+
+    <section id="modificar-servicio">
+        <h2>Modificar Servicio</h2>
+        <p>Utiliza el siguiente formulario para modificar una servicio dental registrada.</p>
+        <a href="Servicios_Registrados.html" class="button-image">
+            <img src="modificarservicios.jpg" alt="Agregar Servicio">
+            <p>Ir a modificar Servicio</p>
+        </a>
+    </section>
+
+    <section id="borrar-servicio">
+        <h2>Borrar Servicio</h2>
+        <p>Selecciona una servicio para eliminarlo de tu agenda.</p>
+        <a href="borrarservicio.html" class="button-image">
+            <img src="eliminarservicio.jpg" alt="Borrar Servicio">
+            <p>Ir a Borrar Servicio</p>
+        </a>
+    </section>
+</div>
+</body>
+</html>

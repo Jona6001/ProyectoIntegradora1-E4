@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Citas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<header>
+    <h1>Bienvenido hoy es :</h1>
+    <p id="fecha"></p>
+    <button type="button" id="cerrar">Cerrar Sesion</button>
+</header>
+<!-- Enlace al archivo JavaScript -->
+<script src="scrip.js"></script>
+<css srs="styles.css"></css>
+<br>
+<body>
+    <div id="formulario-cita">
+        <h2>Modificar Cliente</h2>
+        
+        <center>
+            <table border="1">
+                <tr>
+                    <th>ID_Cliente</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Telefono</th>
+                    <th>Direccion</th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <th></th>
+                </tr>
+        </table>
+        </center>
+        <br><br>
+
+        <div class="campo">
+            <label for="ID">ID de Cliente:</label>
+            <input type="text" id="IdCliente" required placeholder="Ingrese el ID">
+        </div>
+        <br>
+        <div class="campo">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" required placeholder="Ingrese su nombre">
+        </div>
+    
+        <div class="campo">
+            <label for="apellido">Apellido:</label> <!-- Nuevo campo para apellido -->
+            <input type="text" id="apellido" required placeholder="Ingrese su apellido"> <!-- Placeholder agregado -->
+        </div>
+
+        <div class="campo">
+            <label for="telefono">Telefono:</label> <!-- Nuevo campo para apellido -->
+            <input type="text" id="telefono" required placeholder="Ingrese el telefono"> <!-- Placeholder agregado -->
+        </div>
+
+        <div class="campo">
+            <label for="direccion">Direccion:</label> <!-- Nuevo campo para apellido -->
+            <input type="text" id="direccion" required placeholder="Ingrese la direccion"> <!-- Placeholder agregado -->
+        </div>
+        
+        <button type="button" class="guardarCliete" onclick="guardarCliente()">
+            Guardar Cliente
+            <img src="imagenes/guardar.png" alt="guardar" width="40" height="40">
+        </button>
+<br>
+        <a href="Clientes_Registrados.html"><button type="button">regresar</button></a>
+    </div>
+    
+</body>
+</html>

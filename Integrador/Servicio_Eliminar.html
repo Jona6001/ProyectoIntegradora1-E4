@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Citas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<header>
+    <h1>Bienvenido hoy es :</h1>
+    <p id="fecha"></p>
+    <button type="button" id="cerrar">Cerrar Sesion</button>
+</header>
+<!-- Enlace al archivo JavaScript -->
+<script src="scrip.js"></script>
+<css srs="styles.css"></css>
+<br>
+<body>
+    <div id="formulario-cita">
+        <h2>Eliminar Servicio</h2>
+        
+        <center>
+            <table border="1">
+                <tr>
+                    <th>ID_Servicio</th>
+                    <th>Nombre</th>
+                    <th>Costo</th>
+                    <th>Descripcion</th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+        </table>
+        </center>
+        <br><br>
+
+        <div class="campo">
+            <label for="ID">ID de Servicio:</label>
+            <input type="text" id="ID_Servicio" required placeholder="Ingrese el ID">
+        </div>
+        <br>
+        
+        
+        <button type="button" class="EliminarServicio" onclick="EliminarServicio()">
+            Eliminar Servicio
+            <img src="imagenes/guardar.png" alt="Eliminar" width="40" height="40">
+        </button>
+<br>
+        <a href="Servicios_Registrados.html"><button type="button">regresar</button></a>
+    </div>
+    
+</body>
+</html>

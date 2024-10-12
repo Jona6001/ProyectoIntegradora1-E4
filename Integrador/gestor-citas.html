@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header con Fecha</title>
+    <!-- Enlace al archivo CSS-->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Bienvenido</h1>
+        <p id="fecha"></p>
+        <button type="button" id="cerrar">Cerrar Sesion</button>
+                    <!-- Botón para volver a la página anterior -->
+    <button onclick="goBack()">Regresar</button>
+
+    <script>
+        function goBack() {
+            window.history.back(); // Regresa a la página anterior en el historial
+        }
+    </script>
+    </header>
+    <!-- Enlace al archivo JavaScript -->
+    <script src="script.js"></script>
+
+    <div class="logo-title">
+        <img src="logo.jpg" alt="Logo Agenda Dental" class="logo"> <!-- Agregar aquí la ruta correcta del logo -->
+        <h1>Gestor de Citas</h1> 
+    </div>
+
+    
+    <nav>
+        <ul>
+            <li><a href="agregarcita.html">Agregar Cita</a></li>
+            <li><a href="modificarcita.html">Administrar Citas</a></li>
+            <li><a href="borrarcita.html">Borrar Cita</a></li>
+        </ul>
+    </nav>
+</header>
+<div class="container">
+    <section id="agregar-cita">
+        <h2>Agregar Cita</h2>
+        <p>Utiliza el siguiente formulario para agregar una nueva cita dental.</p>
+        <a href="agregarcita.html" class="button-image">
+            <img src="agregarcita.jpg" alt="Agregar Cita">
+            <p>Ir a Agregar Cita</p>
+        </a>
+    </section>
+
+    <section id="modificar-cita">
+        <h2>Modificar Cita</h2>
+        <p>Utiliza el siguiente formulario para modificar una cita dental registrada.</p>
+        <a href="Citas_Registradas.html" class="button-image">
+            <img src="modificar.jpg" alt="Modificar Cita">
+            <p>Ir a modificar Cita</p>
+        </a>
+    </section>
+
+    <section id="borrar-cita">
+        <h2>Borrar Cita</h2>
+        <p>Selecciona una cita para eliminarla de tu agenda.</p>
+        <a href="borrarcita.html" class="button-image">
+            <img src="eliminarcita.jpg" alt="Borrar Cita">
+            <p>Ir a Borrar Cita</p>
+        </a>
+    </section>
+</div>
+</body>
+</html>
