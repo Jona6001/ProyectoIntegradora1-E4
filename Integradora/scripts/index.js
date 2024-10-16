@@ -20,7 +20,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             // Si el inicio de sesión es exitoso, guardar el nombre de usuario en localStorage
             localStorage.setItem('usuario', username);
             // Redirige al usuario a la página principal
-            window.location.href = 'screens/main.html';
+            window.location.href = '../screens/main.html';
         } else {
             // Si las credenciales son incorrectas
             alert(result.message); // Usa el mensaje que se envía desde el servidor
