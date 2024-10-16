@@ -17,7 +17,9 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         const result = await response.json();
 
         if (response.ok) {
-            // Si el inicio de sesión es exitoso, redirige al usuario
+            // Si el inicio de sesión es exitoso, guardar el nombre de usuario en localStorage
+            localStorage.setItem('usuario', username);
+            // Redirige al usuario a la página principal
             window.location.href = 'screens/main.html';
         } else {
             // Si las credenciales son incorrectas
@@ -28,12 +30,3 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         alert('Ha ocurrido un error en la Base de Datos, estaremos trabajando en eso ;)');
     }
 });
-
-// Función para mostrar la fecha
-function mostrarFecha() {
-    const hoy = new Date();
-    const fechaFormateada = hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear();
-    document.getElementById("fecha").textContent = fechaFormateada;
-}
-
-mostrarFecha();

@@ -1,5 +1,4 @@
 module.exports = (db) => {
-   
     // Función para verificar las credenciales del usuario
     const verificarInicioSesion = (username, password, callback) => {
         const query = 'SELECT * FROM empleados WHERE Username = ? AND Password = ?';
@@ -17,3 +16,4 @@ module.exports = (db) => {
         verificarInicioSesion,
     };
 };
+
