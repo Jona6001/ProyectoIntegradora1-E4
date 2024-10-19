@@ -29,6 +29,3 @@ incluye errores al conectar, y alertas similares, por el momento los errores que
         *inicio de sesion [Acabado] Fecha-inicio: 12/10/2024 fecha-finalizado: 12/10/2024  -Jonathan Ricardo Rios Mtz
         *Agregado de funcion de cerrar sesion [Acabado] Fecha-inicio: 14/10/2024 Fecha-finalizado: 16/10/2024 -Jonathan Ricardo Rios Mtz
         *Agregado de funcion para mostrar el nombre del usuario [Acabado] Fecha-inicio: 16/10/2024 Fecha-finalizado: 16/10/2024 -Jonathan Ricardo Rios Mtz
-
-
-        prueba
