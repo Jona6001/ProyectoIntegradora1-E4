@@ -30,3 +30,15 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         alert('Ha ocurrido un error en la Base de Datos, estaremos trabajando en eso ;)');
     }
 });
+
+// Función para mostrar la fecha actual
+function mostrarFecha() {
+    const hoy = new Date();
+    const fechaFormateada = hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear();
+    document.getElementById("fecha").textContent = fechaFormateada;
+}
+
+// Llamar la función de mostrar fecha al cargar la página
+window.onload = function() {
+    mostrarFecha();
+};
