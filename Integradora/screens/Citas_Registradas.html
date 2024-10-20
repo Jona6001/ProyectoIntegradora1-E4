@@ -1,10 +1,10 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Gestor de citas</title>
     <script src="../scripts/script.js"></script>
-
 </head>
 <body>
 
@@ -12,9 +12,20 @@
 <center><h1>Gestor de citas</h1></center> 
 <button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
 <center><h2>Citas Registradas</h2></center>
+
+<!-- Agregar filtro de citas recientes -->
+<center>
+    <label for="fechaFiltro">Mostrar citas desde:</label>
+    <input type="date" id="fechaFiltro" onchange="filtrarCitasPorFecha()">
+    <button type="button" onclick="mostrarCitasRecientes()">Citas Recientes</button>
+</center>
+
 <br>
-    <center>
-        <table border="1">
+
+<!-- Tabla de citas -->
+<center>
+    <table border="1" id="tablaCitas">
+        <thead>
             <tr>
                 <th>ID_cita</th>
                 <th>Nombre</th>
@@ -22,18 +33,46 @@
                 <th>Hora</th>
                 <th>Estado</th>
             </tr>
+        </thead>
+        <tbody>
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>1</td>
+                <td>Juan Pérez</td>
+                <td>2024-10-15</td>
+                <td>10:00 AM</td>
+                <td>Confirmada</td>
             </tr>
+            <tr>
+                <td>2</td>
+                <td>Ana López</td>
+                <td>2024-10-17</td>
+                <td>11:00 AM</td>
+                <td>Pendiente</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Carlos Ruiz</td>
+                <td>2024-10-20</td>
+                <td>12:00 PM</td>
+                <td>Confirmada</td>
+            </tr>
+        </tbody>
     </table>
-    </center>
+</center>
+
 <br>
-   <center> <a href="Cita_Nueva.html"><button  type="button" id="NuevaCita">Nueva Cita</button></a> <a href="Cita_Modificar.html"><button  type="button" id="ModificarCita">Modificar Cita</button></a> <a href="Cita_Eliminar.html"><button  type="button" id="EliminarCita">Eliminar Cita</button></a> </center> 
-   <center> <a href="main.html"><button  type="button" id="Salir">Salir</button></a></center>
+
+<!-- Botones de acciones -->
+<center> 
+    <a href="Cita_Nueva.html"><button type="button" id="NuevaCita">Nueva Cita</button></a> 
+    <a href="Cita_Modificar.html"><button type="button" id="ModificarCita">Modificar Cita</button></a> 
+    <a href="Cita_Eliminar.html"><button type="button" id="EliminarCita">Eliminar Cita</button></a> 
+</center>
+
+<!-- Botón para salir -->
+<center> 
+    <a href="main.html"><button type="button" id="Salir">Salir</button></a>
+</center>
 
 </body>
 </html>
