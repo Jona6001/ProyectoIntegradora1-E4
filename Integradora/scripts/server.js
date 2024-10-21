@@ -58,21 +58,24 @@ app.post('/login', (req, res) => {
 // Ruta para obtener citas recientes o buscar por fecha
 app.get('/citas_recientes', (req, res) => {
     const fecha = req.query.fecha;
+    console.log("Fecha recibida:", fecha); // Imprime la fecha recibida para verificar el formato
 
     if (fecha) {
         consultas.obtenerCitasPorFecha(fecha, (err, results) => {
             if (err) {
-                return res.status(500).json({ message: 'Error en el servidor' });
+                console.error('Error en la consulta:', err); // Imprime el error en la consola
+                return res.status(500).json({ message: 'Error en el servidor al buscar citas por fecha' });
             }
             if (results.length === 0) {
                 return res.status(404).json({ message: 'No hay citas agregadas para ese día.' });
             }
-            res.status(200).json(results); // Devuelve los resultados correctamente
+            res.status(200).json(results);
         });
     } else {
         consultas.obtenerCitasRecientes((err, results) => {
             if (err) {
-                return res.status(500).json({ message: 'Error en el servidor' });
+                console.error('Error en la consulta:', err); // Imprime el error en la consola
+                return res.status(500).json({ message: 'Error en el servidor al buscar citas recientes' });
             }
             res.status(200).json(results);
         });

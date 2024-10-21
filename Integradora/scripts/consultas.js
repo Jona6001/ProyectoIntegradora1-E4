@@ -13,7 +13,7 @@ module.exports = (db) => {
 
     // Función para obtener citas recientes
     function obtenerCitasRecientes(callback) {
-        const query = "CALL mostrar_citas_dia();";
+        const query = "CALL mostrar_citas_dia();"; // Asegúrate de que este procedimiento existe y retorna lo que necesitas
         db.query(query, (err, results) => {
             if (err) {
                 return callback(err);
@@ -24,7 +24,7 @@ module.exports = (db) => {
 
     // Función para obtener citas próximas
     function obtenerCitasProximas(callback) {
-        const query = "CALL mostrar_citas_proximas();"; // Llama al procedimiento que muestra citas próximas
+        const query = "CALL mostrar_citas_proximas();"; // Asegúrate de que este procedimiento existe
         db.query(query, (err, results) => {
             if (err) {
                 return callback(err);
@@ -33,9 +33,22 @@ module.exports = (db) => {
         });
     }
 
+    // Función para obtener citas por fecha
+   function obtenerCitasPorFecha(fecha, callback) {
+    const query = "CALL obtener_citas_por_fecha(?);"; // Llama al procedimiento
+    db.query(query, [fecha], (err, results) => {
+        if (err) {
+            return callback(err);
+        }
+        callback(null, results[0]); // Los resultados del procedimiento están en results[0]
+    });
+}
+
+
     return {
         verificarInicioSesion,
         obtenerCitasRecientes,
-        obtenerCitasProximas
+        obtenerCitasProximas,
+        obtenerCitasPorFecha // Asegúrate de exportar esta función
     };
 };
