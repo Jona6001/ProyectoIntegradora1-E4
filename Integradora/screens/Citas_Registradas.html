@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestor de citas</title>
+    <script src="../scripts/consultas.js"></script>
     <script src="../scripts/script.js"></script>
 </head>
-<body>
+<body onload="mostrarCitasRecientes()">
 
 <img src="" alt="Diente"> 
 <center><h1>Gestor de citas</h1></center> 
@@ -16,8 +17,10 @@
 <!-- Agregar filtro de citas recientes -->
 <center>
     <label for="fechaFiltro">Mostrar citas desde:</label>
-    <input type="date" id="fechaFiltro" onchange="filtrarCitasPorFecha()">
-    <button type="button" onclick="mostrarCitasRecientes()">Citas Recientes</button>
+    <input type="date" id="fechaFiltro">
+    <button type="button" onclick="buscarCitasPorFecha()">Buscar Citas</button>
+    <button type="button" onclick="mostrarCitasRecientes()">Mostrar Citas para Hoy</button>
+    <button type="button" id="citasProximasBtn">Mostrar Citas Próximas</button> <!-- Botón para citas próximas -->
 </center>
 
 <br>
@@ -27,35 +30,15 @@
     <table border="1" id="tablaCitas">
         <thead>
             <tr>
-                <th>ID_cita</th>
+                <th>ID Cita</th>
                 <th>Nombre</th>
                 <th>Fecha</th>
                 <th>Hora</th>
                 <th>Estado</th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>Juan Pérez</td>
-                <td>2024-10-15</td>
-                <td>10:00 AM</td>
-                <td>Confirmada</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Ana López</td>
-                <td>2024-10-17</td>
-                <td>11:00 AM</td>
-                <td>Pendiente</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td>Carlos Ruiz</td>
-                <td>2024-10-20</td>
-                <td>12:00 PM</td>
-                <td>Confirmada</td>
-            </tr>
+        <tbody id="citasBody">
+            <!-- Aquí se agregarán las filas de citas dinámicamente -->
         </tbody>
     </table>
 </center>
@@ -74,5 +57,11 @@
     <a href="main.html"><button type="button" id="Salir">Salir</button></a>
 </center>
 
+<!-- Añadir el listener para el botón de citas próximas -->
+<script>
+    document.getElementById('citasProximasBtn').addEventListener('click', mostrarCitasProximas);
+</script>
+
 </body>
 </html>
+    

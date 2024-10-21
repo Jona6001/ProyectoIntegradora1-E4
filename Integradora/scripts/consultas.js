@@ -11,9 +11,31 @@ module.exports = (db) => {
         });
     };
 
-    // Exportar la función para usarla en otros archivos
+    // Función para obtener citas recientes
+    function obtenerCitasRecientes(callback) {
+        const query = "CALL mostrar_citas_dia();";
+        db.query(query, (err, results) => {
+            if (err) {
+                return callback(err);
+            }
+            callback(null, results[0]);
+        });
+    }
+
+    // Función para obtener citas próximas
+    function obtenerCitasProximas(callback) {
+        const query = "CALL mostrar_citas_proximas();"; // Llama al procedimiento que muestra citas próximas
+        db.query(query, (err, results) => {
+            if (err) {
+                return callback(err);
+            }
+            callback(null, results[0]);
+        });
+    }
+
     return {
         verificarInicioSesion,
+        obtenerCitasRecientes,
+        obtenerCitasProximas
     };
 };
-

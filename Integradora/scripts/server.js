@@ -9,10 +9,10 @@ const PORT = process.env.PORT || 6001;
 
 // Configuración de la conexión a MySQL
 const db = mysql.createConnection({
-    host: 'localhost', // Dirección del servidor MySQL
-    user: 'root', // Usuario MySQL
-    password: '', // La contraseña del usuario 
-    database: 'clinica_dental' // El nombre de la base de datos a la que se va a conectar
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'sistemacitas'
 });
 
 // Conectar a la base de datos
@@ -35,13 +35,6 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../index.html'));
 });
 
-// Iniciar el servidor
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto ${PORT}`);
-    open(`http://localhost:${PORT}`);
-});
-
-
 // Confirmar inicio de sesión en el archivo de consultas 
 const consultas = require('./consultas')(db); // Pasa la conexión a consultas
 
@@ -62,3 +55,48 @@ app.post('/login', (req, res) => {
     });
 });
 
+// Ruta para obtener citas recientes o buscar por fecha
+app.get('/citas_recientes', (req, res) => {
+    const fecha = req.query.fecha;
+
+    if (fecha) {
+        consultas.obtenerCitasPorFecha(fecha, (err, results) => {
+            if (err) {
+                return res.status(500).json({ message: 'Error en el servidor' });
+            }
+            if (results.length === 0) {
+                return res.status(404).json({ message: 'No hay citas agregadas para ese día.' });
+            }
+            res.status(200).json(results); // Devuelve los resultados correctamente
+        });
+    } else {
+        consultas.obtenerCitasRecientes((err, results) => {
+            if (err) {
+                return res.status(500).json({ message: 'Error en el servidor' });
+            }
+            res.status(200).json(results);
+        });
+    }
+});
+
+// Ruta para obtener las citas próximas
+app.get('/citas_proximas', (req, res) => {
+    consultas.obtenerCitasProximas((err, results) => {
+        if (err) {
+            console.error('Error al obtener citas próximas:', err);
+            return res.status(500).json({ message: 'Error al obtener citas próximas' });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'No hay citas próximas.' });
+        }
+
+        res.status(200).json(results);
+    });
+});
+
+// Iniciar el servidor
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en el puerto ${PORT}`);
+    open(`http://localhost:${PORT}`);
+});
