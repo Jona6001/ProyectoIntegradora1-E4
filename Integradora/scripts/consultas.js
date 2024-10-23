@@ -13,7 +13,7 @@ module.exports = (db) => {
 
     // Función para obtener citas recientes
     function obtenerCitasRecientes(callback) {
-        const query = "CALL mostrar_citas_dia();"; // Asegúrate de que este procedimiento existe y retorna lo que necesitas
+        const query = "CALL mostrar_citas_dia();";
         db.query(query, (err, results) => {
             if (err) {
                 return callback(err);
@@ -24,7 +24,7 @@ module.exports = (db) => {
 
     // Función para obtener citas próximas
     function obtenerCitasProximas(callback) {
-        const query = "CALL mostrar_citas_proximas();"; // Asegúrate de que este procedimiento existe
+        const query = "CALL mostrar_citas_proximas();"; 
         db.query(query, (err, results) => {
             if (err) {
                 return callback(err);
@@ -34,21 +34,33 @@ module.exports = (db) => {
     }
 
     // Función para obtener citas por fecha
-   function obtenerCitasPorFecha(fecha, callback) {
-    const query = "CALL obtener_citas_por_fecha(?);"; // Llama al procedimiento
-    db.query(query, [fecha], (err, results) => {
-        if (err) {
-            return callback(err);
-        }
-        callback(null, results[0]); // Los resultados del procedimiento están en results[0]
-    });
-}
+    function obtenerCitasPorFecha(fecha, callback) {
+        const query = "CALL obtener_citas_por_fecha(?);"; 
+        db.query(query, [fecha], (err, results) => {
+            if (err) {
+                return callback(err);
+            }
+            callback(null, results[0]); 
+        });
+    }
 
+    // Función para eliminar una cita
+    function eliminarCita(citaId, callback) {
+        const query = "DELETE FROM citas WHERE Cita_ID = ?"; // Asegúrate de que este sea el nombre correcto de la tabla y la columna
+        db.query(query, [citaId], (err, results) => {
+            if (err) {
+                return callback(err);
+            }
+            callback(null, results);
+        });
+    }
 
+    //Mandar a llamar las funciones
     return {
         verificarInicioSesion,
         obtenerCitasRecientes,
         obtenerCitasProximas,
-        obtenerCitasPorFecha // Asegúrate de exportar esta función
+        obtenerCitasPorFecha,
+        eliminarCita 
     };
 };

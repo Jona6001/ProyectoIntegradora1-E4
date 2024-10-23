@@ -3,71 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestor de Citas</title>
-    <link rel="stylesheet" href="../css/stylesnueva.css"> <!-- Hoja de estilos -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Enlace a Font Awesome -->
+    <title>Gestor de citas</title>
+    <script src="../scripts/consultas.js"></script>
     <script src="../scripts/script.js"></script>
 </head>
-<body>
-    <header>
-        <h1>Gestor de Citas</h1>
-        <button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
-    </header>
+<body onload="mostrarCitasRecientes()">
 
-    <h2>Citas Registradas</h2>
+<img src="" alt="Diente"> 
+<center><h1>Gestor de citas</h1></center> 
+<button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
+<center><h2>Citas Registradas</h2></center>
 
-    <!-- Barra de búsqueda -->
-    <div class="busqueda-container">
-        <input type="text" id="busqueda" placeholder="Buscar por nombre..." />
-        <button type="button" id="buscar-btn"><i class="fas fa-search"></i> Buscar</button>
-    </div>
-    
-    <br>
+<!-- Agregar filtro de citas recientes -->
+<center>
+    <label for="fechaFiltro">Mostrar citas desde:</label>
+    <input type="date" id="fechaFiltro">
+    <button type="button" onclick="buscarCitasPorFecha()">Buscar Citas</button>
+    <button type="button" onclick="mostrarCitasRecientes()">Mostrar Citas para Hoy</button>
+    <button type="button" id="citasProximasBtn">Mostrar Citas Próximas</button> <!-- Botón para citas próximas -->
+</center>
 
-    <div class="tabla-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>ID Cita</th>
-                    <th>Nombre</th>
-                    <th>Fecha</th>
-                    <th>Hora</th>
-                    <th>Estado</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>Juan Pérez</td>
-                    <td>2024-10-22</td>
-                    <td>10:00 AM</td>
-                    <td>Confirmada</td>
-                    <td>
-                        <a href="Cita_Modificar.html"><button type="button" class="accion-btn"><i class="fas fa-edit"></i> Actualizar</button></a>
-                        <a href="Cita_Eliminar.html"><button type="button" class="accion-btn"><i class="fas fa-trash-alt"></i> Eliminar</button></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Ana García</td>
-                    <td>2024-10-23</td>
-                    <td>11:00 AM</td>
-                    <td>Pendiente</td>
-                    <td>
-                        <a href="Cita_Modificar.html"><button type="button" class="accion-btn"><i class="fas fa-edit"></i> Actualizar</button></a>
-                        <a href="Cita_Eliminar.html"><button type="button" class="accion-btn"><i class="fas fa-trash-alt"></i> Eliminar</button></a>
-                    </td>
-                </tr>
-                <!-- Puedes añadir más filas aquí dinámicamente -->
-            </tbody>
-        </table>
-    </div>
-    
-    <br>
+<br>
 
-   
-        <a href="main.html"><button type="button" id="Salir">Salir</button></a>
-    
+<!-- Tabla de citas -->
+<center>
+    <table border="1" id="tablaCitas">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody id="citasBody">
+            <!-- Aquí se agregarán las filas de citas dinámicamente -->
+        </tbody>
+    </table>
+</center>
+
+<br>
+
+<!-- Botones de acciones -->
+<center> 
+    <a href="Cita_Nueva.html"><button type="button" id="NuevaCita">Nueva Cita</button></a> 
+</center>
+
+<!-- Botón para salir -->
+<center> 
+    <a href="main.html"><button type="button" id="Salir">Salir</button></a>
+</center>
+
+<!-- Añadir el listener para el botón de citas próximas -->
+<script>
+    document.getElementById('citasProximasBtn').addEventListener('click', mostrarCitasProximas);
+</script>
+
 </body>
 </html>
+    

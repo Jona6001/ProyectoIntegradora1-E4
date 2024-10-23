@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const PORT = process.env.PORT || 6001;
 
-// Configuración de la conexión a MySQL
+// Configuración de la conexión a MySQL 
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -15,7 +15,7 @@ const db = mysql.createConnection({
     database: 'sistemacitas'
 });
 
-// Conectar a la base de datos
+// Confirmar conexion a la BD
 db.connect((err) => {
     if (err) {
         console.error('Error al conectar a la base de datos:', err);
@@ -24,13 +24,8 @@ db.connect((err) => {
     console.log('Conectado a la base de datos MySQL');
 });
 
-// Middleware para manejar el cuerpo de las solicitudes
 app.use(bodyParser.json());
-
-// Servir archivos estáticos desde la carpeta principal
 app.use(express.static(path.join(__dirname, '../')));
-
-// Ruta para servir el archivo index.html
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../index.html'));
 });
@@ -46,7 +41,6 @@ app.post('/login', (req, res) => {
         if (err) {
             return res.status(500).json({ message: 'Error en el servidor' });
         }
-
         if (results.length > 0) {
             return res.status(200).json({ message: 'Inicio de sesión exitoso' });
         } else {
@@ -58,12 +52,11 @@ app.post('/login', (req, res) => {
 // Ruta para obtener citas recientes o buscar por fecha
 app.get('/citas_recientes', (req, res) => {
     const fecha = req.query.fecha;
-    console.log("Fecha recibida:", fecha); // Imprime la fecha recibida para verificar el formato
-
+    
     if (fecha) {
         consultas.obtenerCitasPorFecha(fecha, (err, results) => {
             if (err) {
-                console.error('Error en la consulta:', err); // Imprime el error en la consola
+                console.error('Error en la consulta:', err);
                 return res.status(500).json({ message: 'Error en el servidor al buscar citas por fecha' });
             }
             if (results.length === 0) {
@@ -74,7 +67,7 @@ app.get('/citas_recientes', (req, res) => {
     } else {
         consultas.obtenerCitasRecientes((err, results) => {
             if (err) {
-                console.error('Error en la consulta:', err); // Imprime el error en la consola
+                console.error('Error en la consulta:', err);
                 return res.status(500).json({ message: 'Error en el servidor al buscar citas recientes' });
             }
             res.status(200).json(results);
@@ -98,7 +91,20 @@ app.get('/citas_proximas', (req, res) => {
     });
 });
 
-// Iniciar el servidor
+// Ruta para eliminar una cita
+app.delete('/eliminarCita/:id', (req, res) => {
+    const citaId = req.params.id;
+    
+    consultas.eliminarCita(citaId, (err, results) => {
+        if (err) {
+            console.error('Error al eliminar cita:', err);
+            return res.status(500).json({ message: 'Error al eliminar la cita' });
+        }
+        res.status(200).json({ message: 'Cita eliminada con éxito' });
+    });
+});
+
+// Iniciar el servidor cuando se ejecuta desde el CMD
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`);
     open(`http://localhost:${PORT}`);

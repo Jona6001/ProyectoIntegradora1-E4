@@ -1,6 +1,6 @@
-// Manejar el evento de envío del formulario de inicio de sesión
+// Iniciar sesion
 document.getElementById('loginForm').addEventListener('submit', async function(event) {
-    event.preventDefault(); // Evita el comportamiento predeterminado del formulario
+    event.preventDefault(); 
 
     const username = document.getElementById('usu').value;
     const password = document.getElementById('pass').value;
@@ -13,23 +13,20 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             },
             body: JSON.stringify({ username, password }),
         });
-
         const result = await response.json();
-
+  
         if (response.ok) {
-            // Si el inicio de sesión es exitoso, guardar el nombre de usuario en localStorage
             localStorage.setItem('usuario', username);
-            // Redirige al usuario a la página principal
             window.location.href = '../screens/main.html';
         } else {
-            // Si las credenciales son incorrectas
-            alert(result.message); // Usa el mensaje que se envía desde el servidor
+            alert(result.message); 
         }
     } catch (error) {
         console.error('Error en el inicio de sesión:', error);
         alert('Ha ocurrido un error en la Base de Datos, estaremos trabajando en eso ;)');
     }
 });
+
 
 // Función para mostrar la fecha actual
 function mostrarFecha() {
