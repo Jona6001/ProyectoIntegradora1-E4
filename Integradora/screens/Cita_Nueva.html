@@ -1,23 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar Citas</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="../scripts/script.js"></script>
-
+    <link rel="stylesheet" href="../css/stylesnueva.css">
+    <script src="../scripts/script.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMjC91EMu8Pf/4cFzD1e0N64tiDJ9TCv3G2cL6" crossorigin="anonymous" />
 </head>
-<header>
-    <h1>Bienvenido hoy es :</h1>
-    <p id="fecha"></p>
-    <button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
-</header>
-<!-- Enlace al archivo JavaScript -->
-<script src="scrip.js"></script>
-<css srs="styles.css"></css>
-<br>
 <body>
+    <header>
+        <h1>Bienvenido hoy es:</h1>
+        <p id="fecha"></p>
+        <button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
+    </header>
+
     <div id="formulario-cita">
         <h2>Agregar Cita</h2>
         
@@ -27,8 +25,8 @@
         </div>
     
         <div class="campo">
-            <label for="apellido">Apellido:</label> <!-- Nuevo campo para apellido -->
-            <input type="text" id="apellido" required placeholder="Ingrese su apellido"> <!-- Placeholder agregado -->
+            <label for="apellido">Apellido:</label>
+            <input type="text" id="apellido" required placeholder="Ingrese su apellido">
         </div>
     
         <div class="campo">
@@ -41,13 +39,17 @@
             <input type="time" id="horaCita" required>
         </div>
         
-        <button type="button" class="guardar-cita" onclick="guardarCita()">
-            Guardar Cita 
-            <img src="imagenes/guardar.png" alt="guardar" width="40" height="40">
-        </button>
-<br>
-        <a href="Citas_Registradas.html"><button type="button">regresar</button></a>
+        <div class="botones">
+            <button type="button" class="guardar-cita" onclick="guardarCita()">
+                <i class="fas fa-save"></i> Guardar Cita
+            </button>
+            
+            <a href="Citas_Registradas.html">
+                <button type="button" class="regresar">
+                    <i class="fas fa-arrow-left"></i> Regresar
+                </button>
+            </a>
+        </div>
     </div>
-    
 </body>
 </html>
