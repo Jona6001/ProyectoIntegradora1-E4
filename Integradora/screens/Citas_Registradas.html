@@ -1,31 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestor de citas</title>
-    <script src="../scripts/consultas.js"></script>
     <script src="../scripts/script.js"></script>
 </head>
-<body onload="mostrarCitasRecientes()">
+<body>
 
-<img src="" alt="Diente"> 
-<center><h1>Gestor de citas</h1></center> 
+<center><h1>Gestor de citas</h1></center>
 <button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
 <center><h2>Citas Registradas</h2></center>
 
-<!-- Agregar filtro de citas recientes -->
 <center>
     <label for="fechaFiltro">Mostrar citas desde:</label>
     <input type="date" id="fechaFiltro">
     <button type="button" onclick="buscarCitasPorFecha()">Buscar Citas</button>
-    <button type="button" onclick="mostrarCitasRecientes()">Mostrar Citas para Hoy</button>
-    <button type="button" id="citasProximasBtn">Mostrar Citas Próximas</button> <!-- Botón para citas próximas -->
+    <button type="button" onclick="mostrarCitasRecientes('citasBody', true)">Mostrar Citas para Hoy</button>
+    <button type="button" id="citasProximasBtn">Mostrar Citas Próximas</button>
 </center>
 
 <br>
 
-<!-- Tabla de citas -->
 <center>
     <table border="1" id="tablaCitas">
         <thead>
@@ -34,27 +30,26 @@
                 <th>Fecha</th>
                 <th>Hora</th>
                 <th>Estado</th>
+                <th>Acciones</th>
             </tr>
         </thead>
-        <tbody id="citasBody">
-            <!-- Aquí se agregarán las filas de citas dinámicamente -->
-        </tbody>
+        <tbody id="citasBody"></tbody>
     </table>
 </center>
 
+<div id="pagination" style="text-align: center; margin-top: 10px;"></div>
+
+
 <br>
 
-<!-- Botones de acciones -->
-<center> 
-    <a href="Cita_Nueva.html"><button type="button" id="NuevaCita">Nueva Cita</button></a> 
+<center>
+    <a href="Cita_Nueva.html"><button type="button" id="NuevaCita">Nueva Cita</button></a>
 </center>
 
-<!-- Botón para salir -->
-<center> 
+<center>
     <a href="main.html"><button type="button" id="Salir">Salir</button></a>
 </center>
 
-<!-- Añadir el listener para el botón de citas próximas -->
 <script>
     document.getElementById('citasProximasBtn').addEventListener('click', mostrarCitasProximas);
 </script>

@@ -1,29 +1,39 @@
+// Variables para la paginación
+let currentPage = 1;
+const itemsPerPage = 8; // Cambia este valor para mostrar más o menos resultados por página
+let citas = []; // Variable para almacenar las citas recientes
+let citasProximas = []; // Variable para almacenar las citas próximas
+
 // Función para mostrar el nombre del usuario en el encabezado
 function mostrarUsuNomb() {
     const usuario = localStorage.getItem('usuario');
-    
-    // Verificar si el usuario está almacenado en localStorage
-    if (usuario && usuario.trim() !== "") {
-        document.getElementById("bienvenido").textContent = `Bienvenido ${usuario}`;
-    } else {
-        console.error('No se encontró un nombre de usuario en localStorage');
-        document.getElementById("bienvenido").textContent = "Bienvenido, Usuario Desconocido"; // Mensaje por defecto
-    }
+    document.getElementById("bienvenido").textContent = usuario ? `Bienvenido ${usuario}` : "Bienvenido, Usuario Desconocido";
 }
-mostrarUsuNomb()
+mostrarUsuNomb();
 
-// Función para cerrar sesión y regresar al login
+// Función para mostrar la fecha actual
+function mostrarFecha() {
+    const hoy = new Date();
+    const fechaFormateada = hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear();
+    document.getElementById("fecha").textContent = fechaFormateada;
+}
+
+// Llamar la función de mostrar fecha al cargar la página
+window.onload = function() {
+    mostrarFecha();
+    mostrarCitasRecientes('citasBodyMain'); // Cargar citas en la tabla principal
+    mostrarCitasRecientes('citasBody', true); // Cargar citas en la tabla del gestor de citas
+};
+
+// Función para cerrar sesión
 function cerrarSesion() {
-    localStorage.removeItem('usuario'); // Remover el nombre de usuario del localStorage
-    window.location.href = "../index.html"; // Redirigir al login
+    localStorage.removeItem('usuario');
+    window.location.href = "../index.html";
 }
 
-
-// Función para buscar citas hasta la fecha seleccionada
+// Función para buscar citas por fecha
 async function buscarCitasPorFecha() {
     const fechaSeleccionada = document.getElementById('fechaFiltro').value;
-    console.log("Fecha seleccionada:", fechaSeleccionada); 
-
     if (!fechaSeleccionada) {
         alert('Por favor, selecciona una fecha.');
         return;
@@ -31,93 +41,95 @@ async function buscarCitasPorFecha() {
 
     try {
         const response = await fetch(`/citas_recientes?fecha=${encodeURIComponent(fechaSeleccionada)}`);
-
-        if (!response.ok) {
-            throw new Error('Error al buscar citas');
-        }
-
-        const citas = await response.json(); 
-        mostrarResultadosCitas(citas);
+        citas = await response.json(); // Guardar las citas en la variable global
+        currentPage = 1; // Reiniciar la página a 1
+        mostrarResultadosCitas(citas, 'citasBody', true);
     } catch (error) {
         console.error('Error al buscar citas:', error);
         alert('No hay citas para la fecha seleccionada.');
     }
 }
 
-// Función para mostrar citas recientes
-async function mostrarCitasRecientes() {
+// Función para mostrar citas en la tabla
+async function mostrarCitasRecientes(idTablaCitas, conBotones = false) {
     try {
         const response = await fetch('/citas_recientes');
-
-        if (!response.ok) {
-            throw new Error('Error al cargar citas recientes');
-        }
-
-        const citas = await response.json();
-        mostrarResultadosCitas(citas); // Mostramos las citas recientes
+        citas = await response.json(); // Guardar las citas en la variable global
+        mostrarResultadosCitas(citas, idTablaCitas, conBotones);
     } catch (error) {
         console.error('Error al cargar citas recientes:', error);
-    
     }
 }
 
 // Función para mostrar citas próximas
 async function mostrarCitasProximas() {
     try {
-        const response = await fetch('/citas_proximas');
-
-        if (!response.ok) {
-            throw new Error('Error al cargar citas próximas');
-        }
-
-        const citas = await response.json();
-        mostrarResultadosCitas(citas); // Mostramos las citas próximas
+        const response = await fetch('/citas_proximas'); // Cambia la URL según tu endpoint real
+        citasProximas = await response.json(); // Guardar las citas próximas en la variable global
+        currentPage = 1; // Reiniciar la página a 1
+        mostrarResultadosCitas(citasProximas, 'citasBody', true); // Mostrar citas próximas
     } catch (error) {
         console.error('Error al cargar citas próximas:', error);
-        
+        alert('No se pudieron cargar las citas próximas.');
     }
 }
 
-// Función para cambiar el formato de la fecha
-function formatearFecha(fecha) {
-    const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
-    return fecha.toLocaleDateString('es-MX', opciones); 
-}
-
-// Función para mostrar citas en la tabla con botones de editar y eliminar
-function mostrarResultadosCitas(citas) {
-    const citasBody = document.getElementById('citasBody');
+// Función para mostrar citas en la tabla con paginación
+function mostrarResultadosCitas(citasArray, idTablaCitas, conBotones) {
+    const citasBody = document.getElementById(idTablaCitas);
     citasBody.innerHTML = '';
 
-    if (citas.length === 0) {
-        citasBody.innerHTML = '<tr><td colspan="6">No se encontraron citas para la fecha seleccionada.</td></tr>';
+    if (citasArray.length === 0) {
+        citasBody.innerHTML = '<tr><td colspan="5"><center>No hay citas para mostrar.</center></td></tr>';
         return;
     }
 
-    citas.forEach(cita => {
-        const fechaFormateada = formatearFecha(new Date(cita.Fecha)); 
+    // Calcular el índice inicial y final para la paginación
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = Math.min(startIndex + itemsPerPage, citasArray.length);
+
+    // Mostrar solo las citas de la página actual
+    for (let i = startIndex; i < endIndex; i++) {
+        const cita = citasArray[i];
         const row = `
         <tr>
             <td>${cita.Nombre} ${cita.Apellido_Paterno}</td>
-            <td>${fechaFormateada}</td>
+            <td>${new Date(cita.Fecha).toLocaleDateString('es-MX')}</td>
             <td>${cita.Hora}</td>
             <td>${cita.Estado}</td>
-            <td>
-                <button onclick="editarCita(${cita.Cita_ID})">Editar</button> <!-- Botón Editar -->
-                <button onclick="eliminarCita(${cita.Cita_ID})">Eliminar</button> <!-- Botón Eliminar -->
-            </td>
+            ${conBotones ? `<td><button onclick="editarCita(${cita.Cita_ID})">Editar</button>
+            <button onclick="eliminarCita(${cita.Cita_ID})">Eliminar</button></td>` : '' }
         </tr>`;
         citasBody.innerHTML += row;
-    });
+    }
+
+    // Calcular el total de páginas y mostrar la paginación
+    const totalPages = Math.ceil(citasArray.length / itemsPerPage);
+    mostrarPaginacion(totalPages, citasArray); // Pasar las citas a la paginación
 }
 
+// Función para mostrar botones de paginación
+function mostrarPaginacion(totalPages, citasArray) {
+    const paginationContainer = document.getElementById('pagination');
+    paginationContainer.innerHTML = '';
+
+    for (let i = 1; i <= totalPages; i++) {
+        const button = document.createElement('button');
+        button.textContent = i;
+        button.onclick = () => {
+            currentPage = i;
+            mostrarResultadosCitas(citasArray, 'citasBody', true); // Usar la variable correcta
+        };
+        paginationContainer.appendChild(button);
+    }
+}
 
 // Función para editar una cita
 function editarCita(citaID) {
     window.location.href = `Cita_Modificar.html?citaID=${citaID}`;
 }
 
-// Función para eliminar una cita con el boton
+// Función para eliminar una cita con el botón
 function eliminarCita(citaID) {
     if (confirm('¿Estás seguro de que deseas eliminar esta cita?')) {
         fetch(`/eliminarCita/${citaID}`, {
@@ -126,7 +138,7 @@ function eliminarCita(citaID) {
         .then(response => {
             if (response.ok) {
                 alert('Cita eliminada con éxito');
-                mostrarCitasRecientes(); // Recargar la tabla de citas
+                mostrarCitasRecientes('citasBody', true); // Recargar la tabla de citas en el gestor
             } else {
                 alert('Error al eliminar la cita');
             }
@@ -135,5 +147,5 @@ function eliminarCita(citaID) {
     }
 }
 
-// Llama a mostrarCitasRecientes al cargar la página
-document.addEventListener('DOMContentLoaded', mostrarCitasRecientes);
+// Agregar el evento al botón de "Mostrar Citas Próximas"
+document.getElementById('citasProximasBtn').addEventListener('click', mostrarCitasProximas);

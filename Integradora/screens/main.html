@@ -5,22 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menú principal</title>
     <link rel="stylesheet" href="../css/stylesmain.css">
-    <script src="../scripts/script.js"></script>
-
+    <script src="../scripts/script.js" defer></script>
+    <script src="../scripts/index.js"></script>
 </head>
 <body>
     <header>
         <h1 id="bienvenido">Bienvenido</h1>
         <p id="fecha"></p>
-        <!-- Boton Para cerrar sesion -->
+        <!-- Botón para cerrar sesión -->
         <button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
     </header>
 
     <div class="logo-title">
-        <img src="../img/logo.jpg " alt="Logo Agenda Dental" class="logo">
-        <h1>Consultorio Dental</h1> 
+        <img src="../img/logo.jpg" alt="Logo Agenda Dental" class="logo">
+        <h1>Consultorio Dental</h1>
     </div>
 
+   
+        <table border="1" id="tablaCitas"> Citas para el día de hoy
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody id="citasBodyMain"></tbody>
+            
+        </table>
+        <div id="paginationMain"></div>
+        
     <nav>
         <ul>
             <li><a href="agregarcita.html">Agregar Cita</a></li>
@@ -58,8 +73,5 @@
         </section>
     </div>
 
-    <!-- Cargar script al final para asegurar que HTML ya se haya cargado -->
-    <script src="../scripts/script.js"></script>
-    
 </body>
 </html>

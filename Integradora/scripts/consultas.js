@@ -10,6 +10,7 @@ module.exports = (db) => {
             callback(null, results);
         });
     };
+    
 
     // Función para obtener citas recientes
     function obtenerCitasRecientes(callback) {
@@ -46,7 +47,7 @@ module.exports = (db) => {
 
     // Función para eliminar una cita
     function eliminarCita(citaId, callback) {
-        const query = "DELETE FROM citas WHERE Cita_ID = ?"; // Asegúrate de que este sea el nombre correcto de la tabla y la columna
+        const query = "DELETE FROM citas WHERE Cita_ID = ?";
         db.query(query, [citaId], (err, results) => {
             if (err) {
                 return callback(err);
