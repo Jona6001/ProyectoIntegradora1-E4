@@ -26,6 +26,7 @@ db.connect((err) => {
 
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../')));
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../index.html'));
 });
@@ -35,10 +36,12 @@ const consultas = require('./consultas')(db); // Pasa la conexión a consultas
 
 // Ruta para manejar el inicio de sesión
 app.post('/login', (req, res) => {
+    console.log('Iniciando sesión con:', req.body); // Agregar este log
     const { username, password } = req.body;
 
     consultas.verificarInicioSesion(username, password, (err, results) => {
         if (err) {
+            console.error('Error al verificar inicio de sesión:', err);
             return res.status(500).json({ message: 'Error en el servidor' });
         }
         if (results.length > 0) {
@@ -101,6 +104,32 @@ app.delete('/eliminarCita/:id', (req, res) => {
             return res.status(500).json({ message: 'Error al eliminar la cita' });
         }
         res.status(200).json({ message: 'Cita eliminada con éxito' });
+    });
+});
+
+// Ruta para agregar una nueva cita
+app.post('/nueva_cita', (req, res) => {
+    const { clienteId, empleadoId, fecha, hora } = req.body;
+
+    consultas.agregarCita(clienteId, empleadoId, fecha, hora, (err) => {
+        if (err) return res.status(500).json({ message: 'Error al agregar la cita' });
+        res.status(200).json({ message: 'Cita agregada con éxito' });
+    });
+});
+
+// Ruta para obtener clientes
+app.get('/clientes', (req, res) => {
+    consultas.obtenerClientes((err, resultados) => {
+        if (err) return res.status(500).json({ error: 'Error al obtener clientes' });
+        res.json(resultados);
+    });
+});
+
+// Ruta para obtener empleados
+app.get('/empleados', (req, res) => {
+    consultas.obtenerEmpleados((err, resultados) => {
+        if (err) return res.status(500).json({ error: 'Error al obtener empleados' });
+        res.json(resultados);
     });
 });
 

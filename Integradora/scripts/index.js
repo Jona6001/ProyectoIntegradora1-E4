@@ -27,7 +27,6 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     }
 });
 
-
 // Función para mostrar la fecha actual
 function mostrarFecha() {
     const hoy = new Date();

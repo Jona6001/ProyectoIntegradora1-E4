@@ -1,53 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Citas</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="../scripts/script.js"></script>
-
+    <title>Registrar Nueva Cita</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Asegúrate de tener una hoja de estilo -->
 </head>
-<header>
-    <h1>Bienvenido hoy es :</h1>
-    <p id="fecha"></p>
-    <button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
-</header>
-<!-- Enlace al archivo JavaScript -->
-<script src="scrip.js"></script>
-<css srs="styles.css"></css>
-<br>
 <body>
-    <div id="formulario-cita">
-        <h2>Agregar Cita</h2>
-        
-        <div class="campo">
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" required placeholder="Ingrese su nombre">
-        </div>
-    
-        <div class="campo">
-            <label for="apellido">Apellido:</label> <!-- Nuevo campo para apellido -->
-            <input type="text" id="apellido" required placeholder="Ingrese su apellido"> <!-- Placeholder agregado -->
-        </div>
-    
-        <div class="campo">
-            <label for="fechaCita">Fecha de la cita:</label>
-            <input type="date" id="fechaCita" required>
-        </div>
-    
-        <div class="campo">
-            <label for="horaCita">Hora de la cita:</label>
-            <input type="time" id="horaCita" required>
-        </div>
-        
-        <button type="button" class="guardar-cita" onclick="guardarCita()">
-            Guardar Cita 
-            <img src="imagenes/guardar.png" alt="guardar" width="40" height="40">
-        </button>
-<br>
-        <a href="Citas_Registradas.html"><button type="button">regresar</button></a>
-    </div>
-    
+    <header>
+        <h1>Registrar Nueva Cita</h1>
+        <div id="bienvenido"></div>
+        <button onclick="cerrarSesion()">Cerrar Sesión</button>
+    </header>
+    <main>
+        <form id="citaForm">
+            <label for="clienteSelect">Seleccionar Cliente:</label>
+            <select id="clienteSelect" required></select>
+
+            <label for="empleadoSelect">Seleccionar Empleado:</label>
+            <select id="empleadoSelect" required></select>
+
+            <label for="fechaInput">Fecha:</label>
+            <input type="date" id="fechaInput" required />
+
+            <label for="horaInput">Hora:</label>
+            <input type="time" id="horaInput" required />
+
+            <button type="button" onclick="guardarCita()">Guardar Cita</button>
+        </form>
+    </main>
+
+    <script>
+        async function cargarClientes() {
+            const response = await fetch('/clientes');
+            const clientes = await response.json();
+            const clienteSelect = document.getElementById('clienteSelect');
+            clientes.forEach(cliente => {
+                const option = document.createElement('option');
+                option.value = cliente.Cliente_ID;
+                option.textContent = `${cliente.Nombre} ${cliente.Apellido_Paterno}`;
+                clienteSelect.appendChild(option);
+            });
+        }
+
+        async function cargarEmpleados() {
+            const response = await fetch('/empleados');
+            const empleados = await response.json();
+            const empleadoSelect = document.getElementById('empleadoSelect');
+            empleados.forEach(empleado => {
+                const option = document.createElement('option');
+                option.value = empleado.Empleados_ID;
+                option.textContent = empleado.Username;
+                empleadoSelect.appendChild(option);
+            });
+        }
+
+        async function guardarCita() {
+            const clienteId = document.getElementById('clienteSelect').value;
+            const empleadoId = document.getElementById('empleadoSelect').value;
+            const fecha = document.getElementById('fechaInput').value;
+            const hora = document.getElementById('horaInput').value;
+
+            if (!clienteId || !empleadoId || !fecha || !hora) {
+                alert('Por favor, completa todos los campos.');
+                return;
+            }
+
+            const response = await fetch('/nueva_cita', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ clienteId, empleadoId, fecha, hora })
+            });
+
+            if (response.ok) {
+                alert('Cita guardada con éxito');
+                // Aquí puedes redirigir o limpiar el formulario
+                document.getElementById('citaForm').reset();
+            } else {
+                alert('Error al guardar la cita');
+            }
+        }
+
+        function mostrarUsuNomb() {
+            const usuario = localStorage.getItem('usuario');
+            document.getElementById("bienvenido").textContent = usuario ? `Bienvenido ${usuario}` : "Bienvenido, Usuario Desconocido";
+        }
+
+        function cerrarSesion() {
+            localStorage.removeItem('usuario');
+            window.location.href = "../index.html";
+        }
+
+        // Cargar clientes y empleados al cargar la página
+        window.onload = () => {
+            mostrarUsuNomb();
+            cargarClientes();
+            cargarEmpleados();
+        };
+    </script>
 </body>
 </html>
