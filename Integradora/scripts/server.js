@@ -133,6 +133,23 @@ app.get('/empleados', (req, res) => {
     });
 });
 
+
+// Ruta para obtener una cita por ID
+app.get('/cita/:id', (req, res) => {
+    const citaId = req.params.id;
+    consultas.obtenerCitaPorId(citaId, (err, result) => {
+        if (err) {
+            console.error('Error al obtener cita:', err);
+            return res.status(500).json({ message: 'Error al obtener la cita' });
+        }
+        if (!result) {
+            return res.status(404).json({ message: 'Cita no encontrada' });
+        }
+        res.status(200).json(result);
+    });
+});
+
+
 // Iniciar el servidor cuando se ejecuta desde el CMD
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`);

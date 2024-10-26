@@ -81,6 +81,15 @@ module.exports = (db) => {
         });
     }
 
+    // Función para obtener una cita por ID
+function obtenerCitaPorId(citaId, callback) {
+    const query = 'SELECT * FROM citas WHERE Cita_ID = ?';
+    db.query(query, [citaId], (err, results) => {
+        if (err) return callback(err);
+        callback(null, results[0]);
+    });
+}
+
     return {
         verificarInicioSesion,
         obtenerCitasRecientes,
@@ -90,5 +99,6 @@ module.exports = (db) => {
         eliminarCita,
         obtenerClientes,
         obtenerEmpleados,
+        obtenerCitaPorId
     };
 };

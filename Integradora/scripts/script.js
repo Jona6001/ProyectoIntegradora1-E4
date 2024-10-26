@@ -147,5 +147,6 @@ function eliminarCita(citaID) {
     }
 }
 
+
 // Agregar el evento al botón de "Mostrar Citas Próximas"
 document.getElementById('citasProximasBtn').addEventListener('click', mostrarCitasProximas);
