@@ -56,6 +56,9 @@ module.exports = (db) => {
         });
     }
 
+    
+
+
     //Mandar a llamar las funciones
     return {
         verificarInicioSesion,
