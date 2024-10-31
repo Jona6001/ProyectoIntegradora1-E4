@@ -22,7 +22,7 @@ function mostrarFecha() {
 window.onload = function() {
     mostrarFecha();
     mostrarCitasRecientes('citasBodyMain'); // Cargar citas en la tabla principal
-    mostrarCitasRecientes('citasBody', true); // Cargar citas en la tabla del gestor de citas
+    mostrarCitasRecientes('citasBody',true); // Cargar citas en la tabla del gestor de citas
 };
 
 // Función para cerrar sesión
@@ -53,6 +53,7 @@ async function buscarCitasPorFecha() {
 // Función para mostrar citas en la tabla
 async function mostrarCitasRecientes(idTablaCitas, conBotones = false) {
     try {
+        
         const response = await fetch('/citas_recientes');
         citas = await response.json(); // Guardar las citas en la variable global
         mostrarResultadosCitas(citas, idTablaCitas, conBotones);
@@ -148,9 +149,5 @@ function eliminarCita(citaID) {
         .catch(error => console.error('Error al eliminar cita:', error));
     }
 }
-
-
-// Agregar el evento al botón de "Mostrar Citas Próximas"
-document.getElementById('citasProximasBtn').addEventListener('click', mostrarCitasProximas);
 
 

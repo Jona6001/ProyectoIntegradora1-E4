@@ -192,6 +192,11 @@ app.put('/citas/:id', (req, res) => {
 
 
 
+
+
+
+
+
 // Iniciar el servidor cuando se ejecuta desde el CMD
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`);

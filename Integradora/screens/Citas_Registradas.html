@@ -16,8 +16,8 @@
     <label for="fechaFiltro">Mostrar citas desde:</label>
     <input type="date" id="fechaFiltro">
     <button type="button" onclick="buscarCitasPorFecha()">Buscar Citas</button>
-    <button type="button" onclick="mostrarCitasRecientes('citasBody', true)">Mostrar Citas para Hoy</button>
-    <button type="button" id="citasProximasBtn">Mostrar Citas Próximas</button>
+    <button type="button" onclick="mostrarCitasRecientes('citasBody',true)">Mostrar Citas para Hoy</button>
+    <button type="button" onclick="mostrarCitasProximas()" id="citasProximasBtn">Mostrar Citas Próximas</button>
 </center>
 
 <br>
@@ -51,9 +51,6 @@
     <a href="main.html"><button type="button" id="Salir">Salir</button></a>
 </center>
 
-<script>
-    document.getElementById('citasProximasBtn').addEventListener('click', mostrarCitasProximas);
-</script>
 
 </body>
 </html>
