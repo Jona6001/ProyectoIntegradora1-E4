@@ -1,13 +1,12 @@
 module.exports = (db) => {
     // Verificar el inicio de sesión
     function verificarInicioSesion(username, password, callback) {
-        const query = 'SELECT * FROM empleados WHERE username = ? AND password = ?'; // Asegúrate de que el nombre de la tabla y las columnas son correctos
+        const query = 'SELECT * FROM empleados WHERE username = ? AND password = ?';
         db.query(query, [username, password], (err, results) => {
             if (err) return callback(err);
             callback(null, results);
         });
     }
-    
 
     // Obtener citas recientes
     function obtenerCitasRecientes(callback) {
@@ -60,35 +59,70 @@ module.exports = (db) => {
         });
     }
 
-    // Función para agregar una nueva cita
-    function agregarCita(clienteId, empleadoId, fecha, hora, callback) {
-        const query = 'INSERT INTO citas (Cliente_ID, Fecha, Hora) VALUES (?, ?, ?)';
-        db.query(query, [clienteId, fecha, hora], (err, results) => {
+    // Función para obtener la lista de servicios
+    function obtenerServicios(callback) {
+        const query = 'SELECT Servicio_ID, Nombre FROM servicios';
+        db.query(query, (err, results) => {
             if (err) return callback(err);
-            
+            callback(null, results);
+        });
+    }
+
+     // Función para obtener la lista de estados
+     function obtenerEstados(callback) {
+        const query = 'SELECT Estado FROM Citas';
+        db.query(query, (err, results) => {
+            if (err) return callback(err);
+            callback(null, results);
+        });
+    }
+
+
+    // Función para agregar una nueva cita
+    function agregarCita(clienteId, empleadoId, servicioId, fecha, hora, callback) {
+        const query = 'INSERT INTO citas (Cliente_ID, Servicio_ID, Fecha, Hora) VALUES (?, ?, ?, ?)';
+        db.query(query, [clienteId, servicioId, fecha, hora], (err, results) => {
+            if (err) return callback(err);
             const citaId = results.insertId;
             const queryEmpleadosCitas = 'INSERT INTO empleados_citas (Empleados_ID, Cita_ID) VALUES (?, ?)';
             db.query(queryEmpleadosCitas, [empleadoId, citaId], callback);
         });
     }
 
-    // Eliminar una cita
-    function eliminarCita(citaId, callback) {
+// Eliminar una cita y las referencias en empleados_citas
+function eliminarCita(citaId, callback) {
+    const queryEmpleadosCitas = 'DELETE FROM empleados_citas WHERE Cita_ID = ?';
+    db.query(queryEmpleadosCitas, [citaId], (err) => {
+        if (err) return callback(err);
+        
         const query = 'DELETE FROM citas WHERE Cita_ID = ?';
         db.query(query, [citaId], (err, results) => {
             if (err) return callback(err);
             callback(null, results);
         });
-    }
-
-    // Función para obtener una cita por ID
-function obtenerCitaPorId(citaId, callback) {
-    const query = 'SELECT * FROM citas WHERE Cita_ID = ?';
-    db.query(query, [citaId], (err, results) => {
-        if (err) return callback(err);
-        callback(null, results[0]);
     });
 }
+
+
+    // Función para obtener una cita por ID
+    function obtenerCitaPorId(citaId, callback) {
+        const query = 'SELECT * FROM citas WHERE Cita_ID = ?';
+        db.query(query, [citaId], (err, results) => {
+            if (err) return callback(err);
+            callback(null, results[0]);
+        });
+    }
+
+    // Función para actualizar una cita
+    function actualizarCita(id, data, callback) {
+        const sql = 'UPDATE citas SET ? WHERE Cita_ID = ?';
+        db.query(sql, [data, id], (error, results) => {
+            if (error) {
+                return callback(error);
+            }
+            callback(null, results);
+        });
+    }
 
     return {
         verificarInicioSesion,
@@ -99,6 +133,9 @@ function obtenerCitaPorId(citaId, callback) {
         eliminarCita,
         obtenerClientes,
         obtenerEmpleados,
-        obtenerCitaPorId
+        obtenerCitaPorId,
+        obtenerServicios,
+        actualizarCita,
+        obtenerEstados
     };
 };

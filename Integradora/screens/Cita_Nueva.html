@@ -3,34 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Nueva Cita</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Asegúrate de tener una hoja de estilo -->
+    <title>Nueva Cita</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>Registrar Nueva Cita</h1>
-        <div id="bienvenido"></div>
-        <button onclick="cerrarSesion()">Cerrar Sesión</button>
-    </header>
-    <main>
-        <form id="citaForm">
-            <label for="clienteSelect">Seleccionar Cliente:</label>
-            <select id="clienteSelect" required></select>
-
-            <label for="empleadoSelect">Seleccionar Empleado:</label>
-            <select id="empleadoSelect" required></select>
-
-            <label for="fechaInput">Fecha:</label>
-            <input type="date" id="fechaInput" required />
-
-            <label for="horaInput">Hora:</label>
-            <input type="time" id="horaInput" required />
-
-            <button type="button" onclick="guardarCita()">Guardar Cita</button>
-        </form>
-    </main>
-
+    <h1>Registrar Nueva Cita</h1>
+    <form id="nuevaCitaForm">
+        <label for="clienteSelect">Seleccionar Cliente:</label>
+        <select id="clienteSelect" required></select>
+        
+        <label for="empleadoSelect">Seleccionar Empleado:</label>
+        <select id="empleadoSelect" required></select>
+        
+        <label for="servicioSelect">Seleccionar Servicio:</label>
+        <select id="servicioSelect" required></select>
+        
+        <label for="fecha">Fecha:</label>
+        <input type="date" id="fecha" required>
+        
+        <label for="hora">Hora:</label>
+        <input type="time" id="hora" required>
+        
+        <button type="submit">Agregar Cita</button>
+    </form>
+    
     <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            await cargarClientes();
+            await cargarEmpleados();
+            await cargarServicios();
+        });
+
         async function cargarClientes() {
             const response = await fetch('/clientes');
             const clientes = await response.json();
@@ -55,50 +58,39 @@
             });
         }
 
-        async function guardarCita() {
+        async function cargarServicios() {
+            const response = await fetch('/servicios');
+            const servicios = await response.json();
+            const servicioSelect = document.getElementById('servicioSelect');
+            servicios.forEach(servicio => {
+                const option = document.createElement('option');
+                option.value = servicio.Servicio_ID;
+                option.textContent = servicio.Nombre;
+                servicioSelect.appendChild(option);
+            });
+        }
+
+        document.getElementById('nuevaCitaForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
             const clienteId = document.getElementById('clienteSelect').value;
             const empleadoId = document.getElementById('empleadoSelect').value;
-            const fecha = document.getElementById('fechaInput').value;
-            const hora = document.getElementById('horaInput').value;
-
-            if (!clienteId || !empleadoId || !fecha || !hora) {
-                alert('Por favor, completa todos los campos.');
-                return;
-            }
+            const servicioId = document.getElementById('servicioSelect').value;
+            const fecha = document.getElementById('fecha').value;
+            const hora = document.getElementById('hora').value;
 
             const response = await fetch('/nueva_cita', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ clienteId, empleadoId, fecha, hora })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ clienteId, empleadoId, servicioId, fecha, hora }),
             });
 
             if (response.ok) {
-                alert('Cita guardada con éxito');
-                // Aquí puedes redirigir o limpiar el formulario
-                document.getElementById('citaForm').reset();
+                alert('Cita agregada con éxito');
+                window.location.href = 'Citas_Registradas.html'; // Redirige a la página de citas registradas
             } else {
-                alert('Error al guardar la cita');
+                alert('Error al agregar la cita');
             }
-        }
-
-        function mostrarUsuNomb() {
-            const usuario = localStorage.getItem('usuario');
-            document.getElementById("bienvenido").textContent = usuario ? `Bienvenido ${usuario}` : "Bienvenido, Usuario Desconocido";
-        }
-
-        function cerrarSesion() {
-            localStorage.removeItem('usuario');
-            window.location.href = "../index.html";
-        }
-
-        // Cargar clientes y empleados al cargar la página
-        window.onload = () => {
-            mostrarUsuNomb();
-            cargarClientes();
-            cargarEmpleados();
-        };
+        });
     </script>
 </body>
 </html>

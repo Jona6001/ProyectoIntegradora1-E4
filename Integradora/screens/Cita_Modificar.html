@@ -1,45 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar Cita</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="../scripts/script.js"></script>
 </head>
 <body>
-    <header>
-        <h1>Bienvenido hoy es :</h1>
-        <p id="fecha"></p>
-        <button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
-    </header>
-
-    <div id="formulario-cita">
-        <h2>Modificar Cita</h2>
+    <h1>Modificar Cita</h1>
+    <form id="modificarCitaForm">
+        <label for="clienteSelect">Seleccionar Cliente:</label>
+        <select id="clienteSelect" required></select>
+    
+        <label for="servicioSelect">Seleccionar Servicio:</label>
+        <select id="servicioSelect" required></select>
         
-        <div class="campo">
-            <label for="clienteSelect">Seleccionar Cliente:</label>
-            <select id="clienteSelect" required></select>
-        </div>
-
-        <div class="campo">
-            <label for="fechaCita">Fecha de la cita:</label>
-            <input type="date" id="fechaCita" required>
-        </div>
-        <div class="campo">
-            <label for="horaCita">Hora de la cita:</label>
-            <input type="time" id="horaCita" required>
-        </div>
+        <label for="fecha">Fecha:</label>
+        <input type="date" id="fecha" required>
         
-        <button type="button" class="guardar-cita" onclick="guardarCita()">
+        <label for="hora">Hora:</label>
+        <input type="time" id="hora" required>
+
+        <label for="estadoSelect">Selecciona el estado de la cita:</label>
+        <select id="estadoSelect" required>
+            <option value="pendiente">pendiente</option>
+            <option value="realizada">realizada</option>
+        </select>
+
+        <button type="button" class="guardar-cita" onclick="actualizarCita()">
             Guardar Cita 
             <img src="imagenes/guardar.png" alt="guardar" width="40" height="40">
         </button>
-        <br>
-        <a href="Citas_Registradas.html"><button type="button">Regresar</button></a>
-    </div>
+    </form>
 
     <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const citaID = urlParams.get('citaID');
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await cargarClientes();
+            await cargarServicios();
+            await cargarCita();
+        });
+
         async function cargarClientes() {
             const response = await fetch('/clientes');
             const clientes = await response.json();
@@ -47,57 +50,55 @@
             clientes.forEach(cliente => {
                 const option = document.createElement('option');
                 option.value = cliente.Cliente_ID;
-                option.textContent = `${cliente.Nombre} ${cliente.Apellido_Paterno}`;
+                option.textContent = `${cliente.Nombre} ${cliente.Apellido_Paterno}`; // Corrección aquí
                 clienteSelect.appendChild(option);
             });
         }
 
-        async function guardarCita() {
+        async function cargarServicios() {
+            const response = await fetch('/servicios');
+            const servicios = await response.json();
+            const servicioSelect = document.getElementById('servicioSelect');
+            servicios.forEach(servicio => {
+                const option = document.createElement('option');
+                option.value = servicio.Servicio_ID;
+                option.textContent = servicio.Nombre;
+                servicioSelect.appendChild(option);
+            });
+        }
+
+        async function cargarCita() {
+            const response = await fetch(`/cita/${citaID}`); // Agregar comillas aquí
+            const cita = await response.json();
+            document.getElementById('clienteSelect').value = cita.Cliente_ID;
+            document.getElementById('servicioSelect').value = cita.Servicio_ID;
+            document.getElementById('fecha').value = cita.Fecha.split('T')[0]; 
+            document.getElementById('hora').value = cita.Hora; 
+            document.getElementById('estadoSelect').value = cita.Estado; 
+        }
+
+      
+
+        async function actualizarCita() {
             const clienteId = document.getElementById('clienteSelect').value;
-            const fecha = document.getElementById('fechaCita').value;
-            const hora = document.getElementById('horaCita').value;
-            const urlParams = new URLSearchParams(window.location.search);
-            const citaID = urlParams.get('citaID');
+            const servicioId = document.getElementById('servicioSelect').value;
+            const fecha = document.getElementById('fecha').value;
+            const hora = document.getElementById('hora').value;
+            const estado = document.getElementById('estadoSelect').value; // Obtiene el estado seleccionado
 
-            if (!clienteId || !fecha || !hora) {
-                alert('Por favor, completa todos los campos.');
-                return;
-            }
-
-            const response = await fetch(`/modificar_cita/${citaID}`, {
+            const response = await fetch(`/citas/${citaID}`, { // Agregar comillas aquí
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ clienteId, fecha, hora })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ clienteId, servicioId, fecha, hora, estado }), // Incluye el estado en el cuerpo
             });
 
             if (response.ok) {
-                alert('Cita modificada con éxito');
-                // Aquí puedes redirigir o limpiar el formulario
+                alert('Cita actualizada con éxito');
+                window.location.href = 'Citas_Registradas.html'; // Redirige a la página de citas registradas
             } else {
-                alert('Error al modificar la cita');
+                alert('Error al actualizar la cita');
             }
         }
-
-        // Cargar datos de la cita y clientes al cargar la página
-        window.onload = async function() {
-            await cargarClientes(); // Cargar clientes
-
-            const urlParams = new URLSearchParams(window.location.search);
-            const citaID = urlParams.get('citaID');
-            if (citaID) {
-                try {
-                    const response = await fetch(`/cita/${citaID}`);
-                    const cita = await response.json();
-                    document.getElementById('clienteSelect').value = cita.Cliente_ID; // Establecer el cliente seleccionado
-                    document.getElementById('fechaCita').value = new Date(cita.Fecha).toISOString().split('T')[0];
-                    document.getElementById('horaCita').value = cita.Hora;
-                } catch (error) {
-                    console.error('Error al cargar la cita:', error);
-                }
-            }
-        };
     </script>
 </body>
 </html>

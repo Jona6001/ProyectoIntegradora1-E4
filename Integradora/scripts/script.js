@@ -96,7 +96,9 @@ function mostrarResultadosCitas(citasArray, idTablaCitas, conBotones) {
             <td>${cita.Nombre} ${cita.Apellido_Paterno}</td>
             <td>${new Date(cita.Fecha).toLocaleDateString('es-MX')}</td>
             <td>${cita.Hora}</td>
+            <td>${cita.Servicio}</td>
             <td>${cita.Estado}</td>
+
             ${conBotones ? `<td><button onclick="editarCita(${cita.Cita_ID})">Editar</button>
             <button onclick="eliminarCita(${cita.Cita_ID})">Eliminar</button></td>` : '' }
         </tr>`;
@@ -150,3 +152,5 @@ function eliminarCita(citaID) {
 
 // Agregar el evento al botón de "Mostrar Citas Próximas"
 document.getElementById('citasProximasBtn').addEventListener('click', mostrarCitasProximas);
+
+

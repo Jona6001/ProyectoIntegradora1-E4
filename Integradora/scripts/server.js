@@ -109,13 +109,20 @@ app.delete('/eliminarCita/:id', (req, res) => {
 
 // Ruta para agregar una nueva cita
 app.post('/nueva_cita', (req, res) => {
-    const { clienteId, empleadoId, fecha, hora } = req.body;
+    const { clienteId, empleadoId, servicioId, fecha, hora } = req.body;
 
-    consultas.agregarCita(clienteId, empleadoId, fecha, hora, (err) => {
-        if (err) return res.status(500).json({ message: 'Error al agregar la cita' });
+    console.log('Datos recibidos para nueva cita:', { clienteId, empleadoId, servicioId, fecha, hora }); // Agregar este log
+
+    consultas.agregarCita(clienteId, empleadoId, servicioId, fecha, hora, (err) => {
+        if (err) {
+            console.error('Error al agregar la cita:', err); // Log del error
+            return res.status(500).json({ message: 'Error al agregar la cita' });
+        }
         res.status(200).json({ message: 'Cita agregada con éxito' });
     });
 });
+
+
 
 // Ruta para obtener clientes
 app.get('/clientes', (req, res) => {
@@ -129,6 +136,27 @@ app.get('/clientes', (req, res) => {
 app.get('/empleados', (req, res) => {
     consultas.obtenerEmpleados((err, resultados) => {
         if (err) return res.status(500).json({ error: 'Error al obtener empleados' });
+        res.json(resultados);
+    });
+});
+
+
+// Ruta para obtener servicios
+app.get('/servicios', (req, res) => {
+    const query = 'SELECT Servicio_ID, Nombre FROM servicios'; // Asegúrate de que el nombre de la tabla y columnas sean correctos
+    db.query(query, (error, results) => {
+        if (error) {
+            return res.status(500).send('Error al obtener servicios');
+        }
+        res.json(results); // Devuelve los resultados como JSON
+    });
+});
+
+
+// Ruta para obtener estados
+app.get('/estados', (req, res) => {
+    consultas.obtenerEstados((err, resultados) => {
+        if (err) return res.status(500).json({ error: 'Error al obtener estados' });
         res.json(resultados);
     });
 });
@@ -148,6 +176,20 @@ app.get('/cita/:id', (req, res) => {
         res.status(200).json(result);
     });
 });
+
+
+// Ruta para actualizar una cita
+app.put('/citas/:id', (req, res) => {
+    const citaId = req.params.id;
+    const { clienteId, servicioId, fecha, hora, estado } = req.body; 
+    const data = { Cliente_ID: clienteId, Servicio_ID: servicioId, Fecha: fecha, Hora: hora, Estado: estado };
+    consultas.actualizarCita(citaId, data, (err, result) => {
+        if (err) return res.status(500).json({ error: 'Error al actualizar la cita' });
+        res.json({ success: true, result });
+    });
+});
+
+
 
 
 // Iniciar el servidor cuando se ejecuta desde el CMD
