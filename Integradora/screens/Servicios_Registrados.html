@@ -1,37 +1,37 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="../scripts/script.js"></script>
+    <title>Servicios Registrados</title>
+    <script src="../scripts/script.js" defer></script>
+    <script>
+        window.onload = function() { cargarServicios(); }; // Llama a cargarServicios al cargar la página
+    </script>
 </head>
 <body>
-<img src="" alt="Diente"> <center><h1>Gestor de citas</h1></center> <button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
-
+    <img src="" alt="Diente">
+    <center><h1>Gestor de citas</h1></center>
+    <button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
     <center><h2>Servicios Registrados</h2></center>
-<br>
+    <br>
     <center>
-        <table border="1">
-            <tr>
-                <th>ID_Servicio</th>
-                <th>Nombre</th>
-                <th>Costo</th>
-                <th>Descripcion</th>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-    </table>
+        <table border="1" id="tablaServicios">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Costo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="ServicioBody"></tbody>
+        </table>
+        <div id="paginationServicios"></div>
+        
+        <a href="Servicio_Nuevo.html"><button type="button" id="NuevoServicio">Agregar un Servicio nuevo</button></a>
     </center>
-<br>
-   <center><a href="Servicio_Nuevo.html"><button type="button" id="NuevoServicio">Nuevo Servicio</button> </a>
-    
-    <a href="Servicio_Modificar.html"><button type="button" id="ModificarServicio">Modificar Servicio</button> </a>
-    
-    <a href="Servicio_Eliminar.html"><button type="button" id="EliminarServicio">Eliminar Servicio</button> </a> </center> 
-   <center> <a href="main.html"><button  type="button" id="Salir">Salir</button></a></center>
+    <br>
+    <center><a href="main.html"><button type="button" id="Salir">Salir</button></a></center>
 </body>
 </html>

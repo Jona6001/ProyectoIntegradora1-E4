@@ -1,27 +1,38 @@
-<html lang="en">
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Gestor de Citas</title>
     <script src="../scripts/script.js"></script>
-
+    <script src="../scripts/consultas.js"></script>
+    <script> window.onload = function() {mostrarClientes('clientesBody');};</script>
 </head>
 <body>
-<img src="" alt="Diente"> <center><h1>Gestor de citas</h1></center> <button type="button" id="CerrarSesion">Cerrar Sesion</button>
+    <img src="" alt="Diente">
+    <center><h1>Gestor de citas</h1></center>
+    <button type="button" id="CerrarSesion" onclick="cerrarSesion()">Cerrar Sesión</button>
     <center><h2>Clientes Registrados</h2></center>
-<br>
+    <br>
     <center>
-        <table border="1">
-            <tr>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Telefono</th>
-                <th>Direccion</th>
-            </tr>
-    </table>
-    </center>
-<br>
+        <table border="1" id="tablaClientes">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Teléfono</th>
+                    <th>Dirección</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="clientesBody"></tbody>
+        </table>
+        <div id="paginationClientes"></div>
     
-    <a href="main.html"><button  type="button" id="Salir">Salir</button></a></center>
+        <a href="Cliente_Nuevo.html"><button type="button" id="NuevoCliente">Agregar cliente</button></a>
+    
+    <br>
+    <a href="main.html"><button type="button" id="Salir">Salir</button></a>
+    </center>
 </body>
 </html>

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestor de citas</title>
     <script src="../scripts/script.js"></script>
+    <script>window.onload = function() { mostrarCitasRecientes('citasBody', true); }; </script>
+
 </head>
 <body>
 
@@ -16,7 +18,7 @@
     <label for="fechaFiltro">Mostrar citas desde:</label>
     <input type="date" id="fechaFiltro">
     <button type="button" onclick="buscarCitasPorFecha()">Buscar Citas</button>
-    <button type="button" onclick="mostrarCitasRecientes('citasBody',true)">Mostrar Citas para Hoy</button>
+    <button type="button" onclick="mostrarCitasRecientes('citasBody', true)">Mostrar Citas para Hoy</button>
     <button type="button" onclick="mostrarCitasProximas()" id="citasProximasBtn">Mostrar Citas Próximas</button>
 </center>
 
@@ -40,7 +42,6 @@
 
 <div id="pagination" style="text-align: center; margin-top: 10px;"></div>
 
-
 <br>
 
 <center>
@@ -51,7 +52,5 @@
     <a href="main.html"><button type="button" id="Salir">Salir</button></a>
 </center>
 
-
 </body>
 </html>
-    

@@ -12,9 +12,6 @@
     <p id="fecha"></p>
     <button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
 </header>
-<!-- Enlace al archivo JavaScript -->
-<script src="scrip.js"></script>
-<css srs="styles.css"></css>
 <br>
 <body>
     <div id="formulario-cita">
@@ -22,17 +19,17 @@
         
         <div class="campo">
             <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" required placeholder="Ingrese su nombre">
-        </div>
-    
-        <div class="campo">
-            <label for="costo">Costo:</label> <!-- Nuevo campo para apellido -->
-            <input type="text" id="costo" required placeholder="Ingrese su apellido"> <!-- Placeholder agregado -->
+            <input type="text" id="nombreServicio" required placeholder="Ingrese el nombre del servicio">
         </div>
 
         <div class="campo">
-            <label for="telefono">Telefono:</label> <!-- Nuevo campo para apellido -->
-            <input type="text" id="telefono" required placeholder="Ingrese el telefono"> <!-- Placeholder agregado -->
+            <label for="telefono">Descripción</label> 
+            <input type="text" id="descripción" required placeholder="Ingrese una Descripción del servicio"> 
+        </div>
+
+        <div class="campo">
+            <label for="costo">Costo:</label> 
+            <input type="number" id="costo" required placeholder="Ingrese el costo del servicio">
         </div>
 
     
@@ -45,5 +42,41 @@
         <a href="Servicios_Registrados.html"><button type="button">regresar</button></a>
     </div>
     
+    <script>// script.js
+
+        function guardarServicio() {
+            const nombre = document.getElementById('nombreServicio').value;
+            const costo = document.getElementById('costo').value;
+            const descripcion = document.getElementById('descripción').value;
+        
+            const servicio = {
+                nombre: nombre,
+                costo: costo,
+                descripcion: descripcion
+            };
+        
+            fetch('/nuevo_servicio', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(servicio)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error al agregar el servicio');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert(data.message); // Mensaje de éxito
+                window.location.href = 'Servicios_Registrados.html'; // Redirige a la página de servicios registrados
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('No se pudo agregar el servicio'); // Mensaje de error
+            });
+        }
+        </script>
 </body>
 </html>

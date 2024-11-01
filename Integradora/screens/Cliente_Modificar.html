@@ -3,76 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Citas</title>
+    <title>Modificar Cliente</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="../scripts/script.js"></script>
-
 </head>
 <header>
     <h1>Bienvenido hoy es :</h1>
     <p id="fecha"></p>
     <button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
 </header>
-<!-- Enlace al archivo JavaScript -->
-<script src="scrip.js"></script>
-<css srs="styles.css"></css>
-<br>
 <body>
     <div id="formulario-cita">
         <h2>Modificar Cliente</h2>
-        
-        <center>
-            <table border="1">
-                <tr>
-                    <th>ID_Cliente</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Telefono</th>
-                    <th>Direccion</th>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <th></th>
-                </tr>
-        </table>
-        </center>
-        <br><br>
-
-        <div class="campo">
-            <label for="ID">ID de Cliente:</label>
-            <input type="text" id="IdCliente" required placeholder="Ingrese el ID">
-        </div>
         <br>
         <div class="campo">
             <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" required placeholder="Ingrese su nombre">
+            <input type="text" id="nombre" required>
         </div>
-    
         <div class="campo">
-            <label for="apellido">Apellido:</label> <!-- Nuevo campo para apellido -->
-            <input type="text" id="apellido" required placeholder="Ingrese su apellido"> <!-- Placeholder agregado -->
+            <label for="apellidoP">Apellido Paterno:</label>
+            <input type="text" id="apellidoP" required>
         </div>
-
         <div class="campo">
-            <label for="telefono">Telefono:</label> <!-- Nuevo campo para apellido -->
-            <input type="text" id="telefono" required placeholder="Ingrese el telefono"> <!-- Placeholder agregado -->
+            <label for="apellidoM">Apellido Materno:</label>
+            <input type="text" id="apellidoM" required>
         </div>
-
         <div class="campo">
-            <label for="direccion">Direccion:</label> <!-- Nuevo campo para apellido -->
-            <input type="text" id="direccion" required placeholder="Ingrese la direccion"> <!-- Placeholder agregado -->
+            <label for="telefono">Teléfono:</label>
+            <input type="text" id="telefono" required>
         </div>
-        
-        <button type="button" class="guardarCliete" onclick="guardarCliente()">
+        <div class="campo">
+            <label for="direccion">Dirección:</label>
+            <input type="text" id="direccion" required>
+        </div>
+        <button type="button" class="guardarCliente" onclick="actualizarCliente()">
             Guardar Cliente
             <img src="imagenes/guardar.png" alt="guardar" width="40" height="40">
         </button>
-<br>
-        <a href="Clientes_Registrados.html"><button type="button">regresar</button></a>
+        <br>
+        <a href="Clientes_Registrados.html"><button type="button">Regresar</button></a>
     </div>
-    
+
+    <script>
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const clienteID = urlParams.get('clienteID');
+            if (clienteID) {
+                cargarCliente(clienteID);
+            }
+        }
+
+        async function cargarCliente(clienteID) {
+            try {
+                const response = await fetch(`/clientes/${clienteID}`);
+                const cliente = await response.json();
+
+                if (cliente) {
+                    document.getElementById('nombre').value = cliente.Nombre;
+                    document.getElementById('apellidoP').value = cliente.Apellido_Paterno;
+                    document.getElementById('apellidoM').value = cliente.Apellido_Materno;
+                    document.getElementById('telefono').value = cliente.Tel;
+                    document.getElementById('direccion').value = cliente.Direccion;
+                } else {
+                    alert('Cliente no encontrado');
+                }
+            } catch (error) {
+                console.error('Error al cargar cliente:', error);
+                alert('No se pudo cargar el cliente.');
+            }
+        }
+
+        async function actualizarCliente() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const clienteID = urlParams.get('clienteID');
+
+            const clienteModificado = {
+                Nombre: document.getElementById('nombre').value,
+                Apellido_Paterno: document.getElementById('apellidoP').value,
+                Apellido_Materno: document.getElementById('apellidoM').value,
+                Tel: document.getElementById('telefono').value,
+                Direccion: document.getElementById('direccion').value
+            };
+
+            try {
+                const response = await fetch(`/clientes/${clienteID}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(clienteModificado)
+                });
+
+                if (response.ok) {
+                    alert('Cliente modificado con éxito');
+                    window.location.href = 'Clientes_Registrados.html';
+                } else {
+                    alert('Error al modificar el cliente');
+                }
+            } catch (error) {
+                console.error('Error al guardar el cliente:', error);
+                alert('Error al guardar el cliente.');
+            }
+        }
+    </script>
 </body>
 </html>

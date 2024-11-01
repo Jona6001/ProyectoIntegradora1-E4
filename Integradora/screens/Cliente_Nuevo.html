@@ -3,20 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrar Citas</title>
+    <title>Agregar Cliente</title>
     <link rel="stylesheet" href="styles.css">
     <script src="../scripts/script.js"></script>
-
 </head>
 <header>
     <h1>Bienvenido hoy es :</h1>
     <p id="fecha"></p>
     <button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
 </header>
-<!-- Enlace al archivo JavaScript -->
-<script src="scrip.js"></script>
-<css srs="styles.css"></css>
-<br>
 <body>
     <div id="formulario-cita">
         <h2>Agregar Cliente</h2>
@@ -25,30 +20,63 @@
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" required placeholder="Ingrese su nombre">
         </div>
-    
+        
         <div class="campo">
-            <label for="apellido">Apellido:</label> <!-- Nuevo campo para apellido -->
-            <input type="text" id="apellido" required placeholder="Ingrese su apellido"> <!-- Placeholder agregado -->
+            <label for="apellidoPaterno">Apellido Paterno:</label>
+            <input type="text" id="apellidoPaterno" required placeholder="Ingrese su apellido paterno">
         </div>
 
         <div class="campo">
-            <label for="telefono">Telefono:</label> <!-- Nuevo campo para apellido -->
-            <input type="text" id="telefono" required placeholder="Ingrese el telefono"> <!-- Placeholder agregado -->
+            <label for="apellidoMaterno">Apellido Materno:</label>
+            <input type="text" id="apellidoMaterno" required placeholder="Ingrese su apellido materno">
         </div>
 
         <div class="campo">
-            <label for="direccion">Direccion:</label> <!-- Nuevo campo para apellido -->
-            <input type="text" id="direccion" required placeholder="Ingrese la direccion"> <!-- Placeholder agregado -->
+            <label for="telefono">Teléfono:</label>
+            <input type="number" id="telefono" required placeholder="Ingrese el teléfono">
         </div>
-    
+
+        <div class="campo">
+            <label for="direccion">Dirección:</label>
+            <input type="text" id="direccion" required placeholder="Ingrese la dirección">
+        </div>
         
         <button type="button" class="guardar-cliente" onclick="guardarCliente()">
             Guardar Cliente 
             <img src="imagenes/guardar.png" alt="guardar" width="40" height="40">
         </button>
-<br>
-        <a href="Clientes_Registrados.html"><button type="button">regresar</button></a>
+        <br>
+        <a href="Clientes_Registrados.html"><button type="button">Regresar</button></a>
     </div>
+    <script> 
+    function guardarCliente() {
+        const cliente = {
+            nombre: document.getElementById('nombre').value,
+            apellidoPaterno: document.getElementById('apellidoPaterno').value,
+            apellidoMaterno: document.getElementById('apellidoMaterno').value,
+            telefono: document.getElementById('telefono').value,
+            direccion: document.getElementById('direccion').value,
+        };
     
+        fetch('/nuevo_cliente', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(cliente),
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Cliente agregado con éxito');
+                window.location.href = 'Clientes_Registrados.html'; // Redirige a la página de clientes registrados
+            } else {
+                alert('Error al agregar el cliente');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al conectar con el servidor');
+        });
+    }
+    
+     </script>
 </body>
 </html>

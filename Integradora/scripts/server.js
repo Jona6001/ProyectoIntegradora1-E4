@@ -15,7 +15,6 @@ const db = mysql.createConnection({
     database: 'sistemacitas'
 });
 
-// Confirmar conexion a la BD
 db.connect((err) => {
     if (err) {
         console.error('Error al conectar a la base de datos:', err);
@@ -31,7 +30,6 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../index.html'));
 });
 
-// Confirmar inicio de sesión en el archivo de consultas 
 const consultas = require('./consultas')(db); // Pasa la conexión a consultas
 
 // Ruta para manejar el inicio de sesión
@@ -51,6 +49,7 @@ app.post('/login', (req, res) => {
         }
     });
 });
+
 
 // Ruta para obtener citas recientes o buscar por fecha
 app.get('/citas_recientes', (req, res) => {
@@ -142,15 +141,16 @@ app.get('/empleados', (req, res) => {
 
 
 // Ruta para obtener servicios
-app.get('/servicios', (req, res) => {
-    const query = 'SELECT Servicio_ID, Nombre FROM servicios'; // Asegúrate de que el nombre de la tabla y columnas sean correctos
-    db.query(query, (error, results) => {
-        if (error) {
+app.get('/obtenerServicios', (req, res) => {
+    consultas.obtenerServicios((err, servicios) => {
+        if (err) {
             return res.status(500).send('Error al obtener servicios');
         }
-        res.json(results); // Devuelve los resultados como JSON
+        res.json(servicios);
     });
 });
+
+
 
 
 // Ruta para obtener estados
@@ -163,19 +163,21 @@ app.get('/estados', (req, res) => {
 
 
 // Ruta para obtener una cita por ID
-app.get('/cita/:id', (req, res) => {
-    const citaId = req.params.id;
-    consultas.obtenerCitaPorId(citaId, (err, result) => {
-        if (err) {
-            console.error('Error al obtener cita:', err);
-            return res.status(500).json({ message: 'Error al obtener la cita' });
+app.get('/cita/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const cita = await consultas.obtenerCitaPorId(id); // Verifica que esta función esté definida correctamente
+        if (cita) {
+            res.json(cita);
+        } else {
+            res.status(404).send('Cita no encontrada');
         }
-        if (!result) {
-            return res.status(404).json({ message: 'Cita no encontrada' });
-        }
-        res.status(200).json(result);
-    });
+    } catch (error) {
+        console.error('Error al obtener la cita:', error);
+        res.status(500).send('Error del servidor');
+    }
 });
+
 
 
 // Ruta para actualizar una cita
@@ -190,8 +192,147 @@ app.put('/citas/:id', (req, res) => {
 });
 
 
+// Ruta para eliminar un cliente
+app.delete('/eliminarCliente/:id', (req, res) => {
+    const clienteId = req.params.id;
+    
+    // Elimina las citas relacionadas primero
+    consultas.eliminarCitasPorCliente(clienteId, (err) => {
+        if (err) {
+            console.error('Error al eliminar citas del cliente:', err);
+            return res.status(500).json({ message: 'Error al eliminar citas del cliente' });
+        }
+        
+        // Ahora elimina el cliente
+        consultas.eliminarCliente(clienteId, (err) => {
+            if (err) {
+                console.error('Error al eliminar cliente:', err);
+                return res.status(500).json({ message: 'Error al eliminar el cliente' });
+            }
+            res.status(200).json({ message: 'Cliente eliminado con éxito' });
+        });
+    });
+});
 
 
+// Ruta para obtener los clientes por ID
+app.get('/clientes/:clienteID', (req, res) => {
+    const clienteID = req.params.clienteID;
+    console.log(`Recibiendo solicitud para obtener cliente con ID: ${clienteID}`); // Log para depuración
+
+    consultas.obtenerClientePorId(clienteID, (error, cliente) => {
+        if (error) {
+            console.error('Error al obtener cliente:', error); // Log de error
+            return res.status(500).json({ error: 'Error al obtener cliente' });
+        }
+        if (!cliente) {
+            console.warn(`Cliente con ID ${clienteID} no encontrado`); // Log si el cliente no se encuentra
+            return res.status(404).json({ error: 'Cliente no encontrado' });
+        }
+        console.log('Cliente encontrado:', cliente); // Log del cliente encontrado
+        res.json(cliente);
+    });
+});
+
+
+
+// Ruta para actualizar un cliente
+app.put('/clientes/:id', (req, res) => {
+    const clienteId = req.params.id;
+    const { Nombre, Apellido_Paterno, Apellido_Materno, Tel, Direccion } = req.body; 
+    const data = { Nombre, Apellido_Paterno, Apellido_Materno, Tel, Direccion };
+    
+    consultas.actualizarCliente(clienteId, data, (err, result) => {
+        if (err) return res.status(500).json({ error: 'Error al actualizar el cliente' });
+        res.json({ success: true, result });
+    });
+});
+
+
+// Ruta para agregar un nuevo cliente
+app.post('/nuevo_cliente', (req, res) => {
+    const cliente = req.body; // Aquí recibimos el cliente del cuerpo de la solicitud
+
+    console.log('Datos recibidos para nuevo cliente:', cliente); // Agregar este log para depuración
+
+    consultas.agregarCliente(cliente)
+        .then(() => {
+            res.status(200).json({ message: 'Cliente agregado con éxito' });
+        })
+        .catch(err => {
+            console.error('Error al agregar el cliente:', err); // Log del error
+            res.status(500).json({ message: 'Error al agregar el cliente' });
+        });
+});
+
+
+// Ruta para agregar un nuevo servicio
+app.post('/nuevo_servicio', (req, res) => {
+    const servicio = req.body; // Aquí recibimos el servicio del cuerpo de la solicitud
+
+    console.log('Datos recibidos para nuevo servicio:', servicio); // Agregar este log para depuración
+
+    consultas.agregarServicio(servicio)
+        .then(() => {
+            res.status(200).json({ message: 'Servicio agregado con éxito' });
+        })
+        .catch(err => {
+            console.error('Error al agregar el servicio:', err); // Log del error
+            res.status(500).json({ message: 'Error al agregar el servicio' });
+        });
+});
+
+
+// Ruta para obtener un servicio por ID
+app.get('/servicios/:id', (req, res) => {
+    const servicioId = req.params.id;
+    consultas.obtenerServicioPorId(servicioId)
+        .then(servicio => res.json(servicio))
+        .catch(err => {
+            console.error('Error al obtener servicio:', err);
+            res.status(500).json({ error: 'Error al obtener servicio' });
+        });
+});
+
+// Ruta para actualizar un servicio
+app.put('/servicios/:servicioID', (req, res) => {
+    const servicioID = req.params.servicioID;
+    const servicioModificado = req.body; // Asegúrate de que tu cuerpo de la solicitud esté correctamente estructurado
+    consultas.actualizarServicio(servicioID, servicioModificado)
+        .then(() => res.status(200).json({ message: 'Servicio actualizado' }))
+        .catch(error => res.status(500).json({ message: 'Error al actualizar el servicio', error }));
+});
+
+
+// Ruta para eliminar un servicio
+app.delete('/eliminarServicio/:id', (req, res) => {
+    const servicioId = req.params.id;
+    
+    // Elimina las citas relacionadas primero
+    consultas.eliminarCitasPorServicio(servicioId, (err) => {
+        if (err) {
+            console.error('Error al eliminar citas del servicio:', err);
+            return res.status(500).json({ message: 'Error al eliminar citas del servicio' });
+        }
+
+        // Elimina las referencias en empleados_citas por servicio
+        consultas.eliminarReferenciasEnEmpleadosCitasPorServicio(servicioId, (err) => {
+            if (err) {
+                console.error('Error al eliminar referencias de empleados_citas:', err);
+                return res.status(500).json({ message: 'Error al eliminar referencias de empleados_citas' });
+            }
+            
+            // Ahora elimina el servicio
+            consultas.eliminarServicio(servicioId, (err) => {
+                if (err) {
+                    console.error('Error al eliminar servicio:', err);
+                    return res.status(500).json({ message: 'Error al eliminar el servicio' });
+                }
+                res.status(200).json({ message: 'Servicio eliminado con éxito' });
+            });
+        });
+    });
+});
 
 
 

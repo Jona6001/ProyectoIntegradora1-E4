@@ -59,7 +59,7 @@
         }
 
         async function cargarServicios() {
-            const response = await fetch('/servicios');
+            const response = await fetch('/obtenerServicios');
             const servicios = await response.json();
             const servicioSelect = document.getElementById('servicioSelect');
             servicios.forEach(servicio => {

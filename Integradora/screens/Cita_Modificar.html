@@ -50,13 +50,13 @@
             clientes.forEach(cliente => {
                 const option = document.createElement('option');
                 option.value = cliente.Cliente_ID;
-                option.textContent = `${cliente.Nombre} ${cliente.Apellido_Paterno}`; // Corrección aquí
+                option.textContent = `${cliente.Nombre} ${cliente.Apellido_Paterno}`;
                 clienteSelect.appendChild(option);
             });
         }
 
         async function cargarServicios() {
-            const response = await fetch('/servicios');
+            const response = await fetch('/obtenerServicios');
             const servicios = await response.json();
             const servicioSelect = document.getElementById('servicioSelect');
             servicios.forEach(servicio => {

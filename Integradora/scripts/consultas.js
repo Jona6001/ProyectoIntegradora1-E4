@@ -43,7 +43,7 @@ module.exports = (db) => {
 
     // Función para obtener la lista de clientes
     function obtenerClientes(callback) {
-        const query = 'SELECT Cliente_ID, Nombre, Apellido_Paterno FROM clientes';
+        const query = 'SELECT * FROM clientes';
         db.query(query, (err, results) => {
             if (err) return callback(err);
             callback(null, results);
@@ -61,7 +61,7 @@ module.exports = (db) => {
 
     // Función para obtener la lista de servicios
     function obtenerServicios(callback) {
-        const query = 'SELECT Servicio_ID, Nombre FROM servicios';
+        const query = 'SELECT * FROM servicios';
         db.query(query, (err, results) => {
             if (err) return callback(err);
             callback(null, results);
@@ -109,7 +109,6 @@ function eliminarCita(citaId, callback) {
         const query = 'SELECT * FROM citas WHERE Cita_ID = ?';
         db.query(query, [citaId], (err, results) => {
             if (err) return callback(err);
-            callback(null, results[0]);
         });
     }
 
@@ -124,6 +123,133 @@ function eliminarCita(citaId, callback) {
         });
     }
 
+    // Función para eliminar un cliente
+    function eliminarCliente(clienteId, callback) {
+        const sql = 'DELETE FROM clientes WHERE Cliente_ID = ?';
+        db.query(sql, [clienteId], callback);
+    }
+        // Función para eliminar citas por cliente
+    function eliminarCitasPorCliente(clienteId, callback) {
+        const sql = 'DELETE FROM citas WHERE Cliente_ID = ?';
+        db.query(sql, [clienteId], callback);
+    }
+
+    // Función para eliminar referencias en empleados_citas
+    function eliminarReferenciasEnEmpleadosCitas(clienteId, callback) {
+        const sql = `
+            DELETE FROM empleados_citas 
+            WHERE Cita_ID IN (
+                SELECT Cita_ID FROM citas WHERE Cliente_ID = ?
+            )
+        `;
+        db.query(sql, [clienteId], callback);
+    }
+
+    // Función para obtener una cliente por ID
+    function obtenerClientePorId(clienteID, callback)  {
+        const query = 'SELECT * FROM clientes WHERE Cliente_ID = ?'; 
+        db.query(query, [clienteID], (error, results) => {
+            if (error) {
+                return callback(error);
+            }
+            // Asegúrate de que devuelves solo un cliente
+            const cliente = results.length > 0 ? results[0] : null;
+            callback(null, cliente);
+        });
+    }
+
+    // Funcion para actualizar un cliente
+    function actualizarCliente(id, data, callback) {
+        const sql = 'UPDATE clientes SET ? WHERE Cliente_ID = ?';
+        db.query(sql, [data, id], (error, results) => {
+            if (error) {
+                return callback(error);
+            }
+            callback(null, results);
+        });
+    }
+
+    // Funcion para agregar un cliente
+    function agregarCliente(cliente) {
+        return new Promise((resolve, reject) => {
+            const query = 'INSERT INTO clientes (Nombre, Apellido_Paterno, Apellido_Materno, Tel, Direccion) VALUES (?, ?, ?, ?, ?)';
+            db.query(query, [cliente.nombre, cliente.apellidoPaterno, cliente.apellidoMaterno, cliente.telefono, cliente.direccion], (error, results) => {
+                if (error) {
+                    return reject(error);
+                }
+                resolve(results);
+            });
+        });
+    }
+    
+     // Función para eliminar un servicio
+    function eliminarServicio(servicioId, callback) {
+        const sql = 'DELETE FROM servicios WHERE Servicio_ID = ?';
+        db.query(sql, [servicioId], callback);
+    }
+
+    // Función para eliminar citas por servicio
+    function eliminarCitasPorServicio(servicioId, callback) {
+        const sql = 'DELETE FROM citas WHERE Servicio_ID = ?';
+        db.query(sql, [servicioId], callback);
+    }
+
+    // Función para eliminar referencias en empleados_citas por servicio
+    function eliminarReferenciasEmpleadosCitasPorServicio(servicioId, callback) {
+        const sql = `
+            DELETE FROM empleados_citas 
+            WHERE Cita_ID IN (
+                SELECT Cita_ID FROM citas WHERE Servicio_ID = ?
+            )
+        `;
+        db.query(sql, [servicioId], callback);
+    }
+
+
+    
+   // Función para agregar un servicio
+    function agregarServicio(servicio) {
+        return new Promise((resolve, reject) => {
+            const query = 'INSERT INTO servicios (Nombre, Descripcion, Costo) VALUES (?, ?, ?)';
+            db.query(query, [servicio.nombre, servicio.descripcion, servicio.costo,], (error, results) => {
+                if (error) {
+                    return reject(error);
+                }
+                resolve(results);
+            });
+        });
+    }
+
+    // Función para obtener un servicio por ID
+function obtenerServicioPorId(id) {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM servicios WHERE Servicio_ID = ?'; 
+        db.query(sql, [id], (error, results) => {
+            if (error) {
+                return reject(error);
+            }
+            resolve(results[0]); // Devuelve el primer resultado
+        });
+    });
+}
+
+        
+    // Función para actualizar un servicio
+function actualizarServicio(id, data) {
+    return new Promise((resolve, reject) => {
+        const sql = 'UPDATE servicios SET ? WHERE Servicio_ID = ?';
+        db.query(sql, [data, id], (error, results) => {
+            if (error) {
+                return reject(error);
+            }
+            resolve(results);
+        });
+    });
+}
+
+
+
+
     return {
         verificarInicioSesion,
         obtenerCitasRecientes,
@@ -136,6 +262,18 @@ function eliminarCita(citaId, callback) {
         obtenerCitaPorId,
         obtenerServicios,
         actualizarCita,
-        obtenerEstados
+        obtenerEstados,
+        eliminarCliente,
+        eliminarCitasPorCliente,
+        eliminarReferenciasEnEmpleadosCitas,
+        actualizarCliente,
+        obtenerClientePorId,
+        agregarCliente,
+        eliminarServicio,
+        eliminarCitasPorServicio,
+        eliminarReferenciasEmpleadosCitasPorServicio,
+        agregarServicio,
+        obtenerServicioPorId,
+        actualizarServicio
     };
 };
