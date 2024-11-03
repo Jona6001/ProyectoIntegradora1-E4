@@ -104,21 +104,20 @@
          });
     
   
-   // Verificar el rol del usuario para mostrar la sección de gestión de empleados
-    fetch('/api/session')
-        .then(response => response.json())
-        .then(data => {
-            console.log('Datos de sesión en el cliente:', data); // Debugging: verifica los datos en el cliente
-            if (data.loggedIn) {
-                // Mostrar "gestor-empleado" solo si el rol es "admin"
-                if (data.rol === 'admin') {
-                    document.getElementById('gestor-empleado').style.display = 'block';
-                } else {
-                    document.getElementById('gestor-empleado').style.display = 'none';
-                }
+         fetch('/api/session')
+    .then(response => response.json())
+    .then(data => {
+        console.log('Datos de sesión en el cliente:', data); // Debugging: verifica los datos en el cliente
+        if (data.loggedIn) {
+            // Mostrar "gestor-empleado" solo si el rol es "admin"
+            if (data.rol === 'admin') { // 'rol' debe coincidir con la propiedad que almacenas
+                document.getElementById('gestor-empleado').style.display = 'block';
+            } else {
+                document.getElementById('gestor-empleado').style.display = 'none';
             }
-        })
-        .catch(error => console.error('Error al obtener la sesión:', error));
+        }
+    })
+    .catch(error => console.error('Error al obtener la sesión:', error));
 
     </script>
     

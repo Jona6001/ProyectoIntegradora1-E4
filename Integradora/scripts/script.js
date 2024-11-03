@@ -393,7 +393,6 @@ function cargarServicios() {
 
 // Función para editar un servicio
 function editarServicio(servicioID) {
-    // Redirige a la página de edición de servicios con el ID del servicio
     window.location.href = `Servicio_Modificar.html?servicioID=${servicioID}`;
 }
 
@@ -425,14 +424,19 @@ function mostrarEmpleados(tablaEmpleados) {
     empleadosBody.innerHTML = '';
 
     fetch('/empleados')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al obtener los empleados');
+            }
+            return response.json();
+        })
         .then(data => {
-            console.log('Datos recibidos de /empleados:', data); // Agregar log para verificar los datos
+            console.log('Datos recibidos de /empleados:', data); // Verificar datos
             empleados = data; 
             mostrarResultadosEmpleados(empleados, empleadosBody);
         })
         .catch(error => {
-            console.error('Error al mostrar los empleados', error);
+            console.error('Error al mostrar los empleados:', error);
         });
 }
 
@@ -447,16 +451,16 @@ function mostrarResultadosEmpleados(empleadosArray, empleadosBody) {
 
     // Calcular el índice inicial y final para la paginación
     const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = Math.min(startIndex + itemsPerPage, empleadosArray.length); // Cambiar de clientesArray a empleadosArray
+    const endIndex = Math.min(startIndex + itemsPerPage, empleadosArray.length); // Usar empleadosArray.length
 
-    console.log(`Mostrando empleados de la página ${currentPage}:`, empleadosArray.slice(startIndex, endIndex)); // Agregar log para verificar los empleados que se mostrarán
+    console.log(`Mostrando empleados de la página ${currentPage}:`, empleadosArray.slice(startIndex, endIndex)); // Verificar empleados mostrados
 
     // Mostrar solo los empleados de la página actual
     for (let i = startIndex; i < endIndex; i++) {
         const empleado = empleadosArray[i];
         const row = `
         <tr>
-            <td>${empleado.Nombre}</td>
+            <td>${empleado.Username}</td>
             <td>${empleado.Rol}</td>
             <td>
                 <button onclick="editarEmpleado(${empleado.Empleados_ID})">Editar</button>
@@ -481,42 +485,25 @@ function mostrarPaginacionEmpleados(totalPages, empleadosArray) {
         button.textContent = i;
         button.onclick = () => {
             currentPage = i;
-            mostrarResultadosEmpleados(empleadosArray, document.getElementById('empleadosBody')); // Usar la variable correcta
+            mostrarResultadosEmpleados(empleadosArray, document.getElementById('empleadosBody'));
         };
         paginationContainer.appendChild(button);
     }
 }
 
-function cargarEmpleados() {
-    fetch('/obtenerEmpleados')
-        .then(response => response.json())
-        .then(servicios => {
-            console.log('Datos recibidos de /obtenerEmpleados:', servicios); // Agregar log para verificar los datos
-            mostrarResultadosEmpleados(servicios, document.getElementById('empleadosBody'));
-        })
-        .catch(error => {
-            console.error('Error al cargar empleados:', error);
-        });
-}
-
-
-
-
-
 // Función para editar un empleado
-function editarEmpleado(id) {
-    
-    console.log(`Editar empleado con ID: ${id}`);
+function editarEmpleado(Empleados_ID) {
+    window.location.href = `Empleado_Modificar.html?Empleados_ID=${Empleados_ID}`;
 }
 
 // Función para eliminar un empleado
-function eliminarEmpleado(id) {
+function eliminarEmpleado(Empleados_ID) {
     if (confirm('¿Estás seguro de que deseas eliminar este empleado?')) {
-        fetch(`/eliminarEmpleado/${id}`, { method: 'DELETE' })
+        fetch(`/eliminarEmpleado/${Empleados_ID}`, { method: 'DELETE' })
             .then(response => {
                 if (response.ok) {
                     alert('Empleado eliminado con éxito');
-                    cargarEmpleados(); // Recargar la lista después de eliminar
+                    mostrarEmpleados('empleadosBody'); // Recargar la lista después de eliminar
                 } else {
                     alert('Error al eliminar el empleado');
                 }

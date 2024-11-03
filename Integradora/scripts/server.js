@@ -57,10 +57,11 @@ app.post('/login', (req, res) => {
             return res.status(500).json({ message: 'Error en el servidor' });
         }
         if (results.length > 0) {
-            // Almacenar el usuario y el rol en la sesión
+            console.log('Resultados de la consulta:', results);
+
             req.session.user = {
                 username: results[0].Username,
-                rol: results[0].rol
+                rol: results[0].Rol // Asegúrate de que esto sea correcto
             };
             return res.status(200).json({ message: 'Inicio de sesión exitoso' });
         } else {
@@ -70,9 +71,10 @@ app.post('/login', (req, res) => {
 });
 
 
+
 // Ruta para obtener la sesión actual
 app.get('/api/session', (req, res) => {
-    console.log('Datos de sesión:', req.session.user); // Debugging: verifica la sesión en la consola
+    console.log('Datos de sesión:', req.session.user); // Verifica que req.session.user tenga el rol correcto
     if (req.session.user) {
         res.json({
             loggedIn: true,
@@ -83,6 +85,7 @@ app.get('/api/session', (req, res) => {
         res.json({ loggedIn: false });
     }
 });
+
 
 
 // Ruta para manejar el cierre de sesión
@@ -405,29 +408,79 @@ app.delete('/eliminarServicio/:id', (req, res) => {
 });
 
 
-
-// Ruta para agregar un nuevo empleado
-app.post('/nuevo_empleado', (req, res) => {
-    const empleado = req.body;
-    consultas.agregarEmpleado(empleado)
-        .then(() => res.status(200).json({ message: 'Empleado agregado con éxito' }))
-        .catch(err => {
-            console.error('Error al agregar empleado:', err);
-            res.status(500).json({ error: 'Error al agregar empleado' });
-        });
-});
-
 // Ruta para eliminar un empleado
 app.delete('/eliminarEmpleado/:id', (req, res) => {
     const empleadoId = req.params.id;
-    
-    consultas.eliminarEmpleado(empleadoId)
-        .then(() => res.status(200).json({ message: 'Empleado eliminado con éxito' }))
-        .catch(err => {
+
+    // Llamar a la función de eliminación
+    consultas.eliminarEmpleado(empleadoId, (err, results) => {
+        if (err) {
             console.error('Error al eliminar empleado:', err);
-            res.status(500).json({ error: 'Error al eliminar empleado' });
+            return res.status(500).json({ error: 'Error al eliminar empleado' });
+        }
+        res.status(200).json({ message: 'Empleado eliminado con éxito' });
+    });
+});
+
+
+
+// Ruta para obtener un empleado por ID
+app.get('/empleados/:id', (req, res) => {
+    const empleadoId = req.params.id;
+    consultas.obtenerEmpleadoPorId(empleadoId)
+        .then(empleado => {
+            if (!empleado) {
+                return res.status(404).json({ error: 'Empleado no encontrado' });
+            }
+            res.json(empleado);
+        })
+        .catch(error => {
+            console.error(error);
+            res.status(500).json({ error: 'Error al obtener el empleado' });
         });
 });
+
+// Ruta para actualizar un empleado
+app.put('/empleados/:empleadoID', (req, res) => {
+    const empleadoID = req.params.empleadoID; // Obtiene el ID del empleado de los parámetros de la URL
+    const empleadoModificado = req.body; // Asegúrate de que el cuerpo de la solicitud tenga la estructura correcta
+
+    // Llama a la función de actualización de empleado
+    consultas.actualizarEmpleado(empleadoID, empleadoModificado)
+        .then(() => res.status(200).json({ message: 'Empleado actualizado correctamente' }))
+        .catch(error => res.status(500).json({ message: 'Error al actualizar el empleado', error }));
+});
+
+
+
+// Ruta para obtener todos los roles
+app.get('/roles', (req, res) => {
+    consultas.obtenerRoles()
+        .then(roles => res.json(roles))
+        .catch(err => {
+            console.error('Error al obtener roles:', err);
+            res.status(500).json({ error: 'Error al obtener roles' });
+        });
+});
+
+
+// Ruta para agregar un nuevo empleado
+app.post('/nuevo_empleado', (req, res) => {
+    const { username, rol, password } = req.body;
+
+    // Asegúrate de que la contraseña esté encriptada antes de guardarla
+    const hashedPassword = bcrypt.hashSync(password, 10);
+
+    consultas.agregarEmpleado({ username, rol, password: hashedPassword }, (error, results) => {
+        if (error) {
+            console.error('Error al agregar empleado:', error);
+            return res.status(500).json({ message: 'Error en el servidor' });
+        }
+        return res.status(201).json({ message: 'Empleado agregado exitosamente' });
+    });
+});
+
+
 
 
 // Iniciar el servidor cuando se ejecuta desde el CMD

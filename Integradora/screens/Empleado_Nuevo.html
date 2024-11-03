@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Empleado</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="../scripts/script.js"></script>
+</head>
+<header>
+    <h1>Bienvenido hoy es :</h1>
+    <p id="fecha"></p>
+    <button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
+</header>
+<body>
+    <div id="formulario-empleado">
+        <h2>Agregar Empleado</h2>
+        
+        <div class="campo">
+            <label for="usuario">Escribe el usuario del empleado:</label>
+            <input type="text" id="usuario" required placeholder="Ingrese el usuario">
+        </div>
+        
+        <div class="campo">
+            <label for="rolSelect">Seleccionar Rol del empleado:</label>
+            <select id="rolSelect" required>
+                <option value="empleado">Empleado</option>
+                <option value="admin">Admin</option>
+            </select>
+        </div>
+
+        <div class="campo">
+            <label for="password">Ingresa la contraseña que tendrá el usuario:</label>
+            <input type="password" id="password" required placeholder="Ingrese la contraseña">
+        </div>
+        
+        <button type="button" class="guardar-empleado" onclick="guardarEmpleado()">
+            Guardar Empleado 
+            <img src="imagenes/guardar.png" alt="guardar" width="40" height="40">
+        </button>
+        <br>
+        <a href="Empleados_Registados.html"><button type="button">Regresar</button></a>
+    </div>
+    
+    <script> 
+function guardarEmpleado() {
+    const empleado = {
+        username: document.getElementById('usuario').value,
+        rol: document.getElementById('rolSelect').value,
+        password: document.getElementById('password').value,
+    };
+
+    fetch('/nuevo_empleado', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(empleado),
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Empleado agregado con éxito');
+            window.location.href = 'Empleados_Registados.html';
+        } else {
+            return response.json().then(err => {
+                alert(`Error: ${err.message}`); // Muestra el mensaje de error del servidor
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al conectar con el servidor');
+    });
+}
+
+
+    
+    // Verificar si la sesión está activa
+    fetch('/isAuthenticated', { method: 'GET' })
+        .then(response => {
+            if (!response.ok) {
+                // Si no está autenticado, redirigir al inicio de sesión
+                window.location.href = '/';
+            }
+        });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch('/verificar_sesion', { method: 'GET', credentials: 'same-origin' })
+            .then(response => {
+                if (!response.ok) {
+                    window.location.href = '/'; // Redirige al inicio si no hay sesión
+                }
+            })
+            .catch(error => {
+                console.error('Error verificando la sesión:', error);
+                window.location.href = '/'; // Redirige al inicio en caso de error
+            });
+    });
+    </script>
+</body>
+</html>

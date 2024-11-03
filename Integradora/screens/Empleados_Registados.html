@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="../css/stylesregistrada.css">
     <script src="../scripts/script.js" defer></script>
     <link rel="shortcut icon" href="../img/logo.jpg" type="image/x-icon">
-    <script>window.onload = function() { cargarEmpleados(); }; </script>
+    <script>window.onload = function() { mostrarEmpleados('empleadosBody'); }; </script>
+
 
 </head>
 <body>
@@ -44,5 +45,48 @@
         <a href="main.html"><button type="button" id="Salir">Salir</button></a>
     </div>
 
+    <script>// Suponiendo que el ID del empleado se pasa en la URL como parámetro
+        const urlParams = new URLSearchParams(window.location.search);
+        const empleadoId = urlParams.get('id');
+        
+        // Función para cargar datos del empleado y roles
+        document.addEventListener('DOMContentLoaded', async () => {
+            await cargarEmpleado();
+            await cargarRoles();
+        });
+        
+        // Función para cargar los datos del empleado en el formulario
+        async function cargarEmpleado() {
+            try {
+                const response = await fetch(`/empleados/${empleadoId}`);
+                if (response.ok) {
+                    const empleado = await response.json();
+                    console.log('Datos del empleado:', empleado); // Verificar datos
+                    document.getElementById('nombre_empleado').value = empleado.Nombre;
+                    document.getElementById('rolSelect').value = empleado.Rol; // Selecciona el rol actual
+                } else {
+                }
+            } catch (error) {
+                console.error('Error al cargar empleado:', error);
+            }
+        }
+        
+        // Función para cargar los roles en el select
+        async function cargarRoles() {
+            try {
+                const response = await fetch('/roles'); // Ruta para obtener roles
+                const roles = await response.json();
+                const rolSelect = document.getElementById('rolSelect');
+                roles.forEach(rol => {
+                    const option = document.createElement('option');
+                    option.value = rol;
+                    option.textContent = rol;
+                    rolSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error al cargar roles:', error);
+            }
+        }
+        </script>
 </body>
 </html>

@@ -8,22 +8,118 @@
 </head>
 <body>
     <h1>Modificar Empleado</h1>
-    <form id="modificarCitaForm">
-
+    <form id="modificarEmpleadoForm">
         <div class="campo">
-            <label for="nombre">Nombre de Empleado:</label>
+            <label for="nombre_empleado">Nombre de Empleado:</label>
             <input type="text" id="nombre_empleado" required placeholder="Ingrese el nombre del empleado">
         </div>
     
-        <div class="campo">
-            <label for="Rol">Rol:</label>
-            <input type="text" id="Rol" required placeholder="Ingrese el Rol del empleado">
-        </div>
+        <label for="rolSelect">Seleccionar Rol del empleado: </label>
+        <select id="rolSelect" required></select>
 
         <button type="button" class="guardar-cita" onclick="actualizarEmpleado()">
             Guardar Cambios
-            <img src="imagenes/guardar.png" alt="guardar" width="40" height="40">
+            <img src="../imagenes/guardar.png" alt="guardar" width="40" height="40">
         </button>
+        <br>
+        <a href="Empleados_Registados.html"><button type="button">Regresar</button></a>
     </form>
+
+    <script>
+        // Función para cargar empleado y roles al inicio
+        document.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const empleadoID = params.get('Empleados_ID'); // Obtén el ID del empleado desde la URL
+
+            if (empleadoID) {
+                await cargarRoles(); // Carga los roles primero
+                await cargarEmpleado(empleadoID); // Luego carga el empleado
+            } else {
+                alert('ID de empleado no proporcionado.');
+            }
+        });
+    
+        async function cargarEmpleado(empleadoID) {
+    try {
+        console.log(`Cargando empleado con ID: ${empleadoID}`);
+        const response = await fetch(`/empleados/${empleadoID}`);
+        const empleado = await response.json();
+        console.log('Empleado obtenido:', empleado); // Verifica la estructura del objeto
+
+        // Asegúrate de que las propiedades que usas existen
+        if (empleado) {
+            // Cambia "Nombre" a "nombre" si así se llama la propiedad
+            document.getElementById('nombre_empleado').value = empleado.Username;
+            document.getElementById('rolSelect').value = empleado.rol || empleado.Rol; // Ajusta según el nombre real de la propiedad
+        } else {
+            alert('Empleado no encontrado');
+        }
+    } catch (error) {
+        console.error('Error al cargar empleado:', error);
+        alert('No se pudo cargar el empleado.');
+    }
+}
+
+        async function cargarRoles() {
+            try {
+                console.log('Cargando roles...');
+                const response = await fetch('/roles');
+                if (!response.ok) throw new Error('Error en la respuesta al obtener los roles');
+    
+                const roles = await response.json();
+                console.log('Roles obtenidos:', roles);
+                const rolSelect = document.getElementById('rolSelect');
+                rolSelect.innerHTML = ''; // Limpiar las opciones previas
+    
+                roles.forEach(rol => {
+                    const option = document.createElement('option');
+                    option.value = rol.rol; // Asegúrate de usar el campo correcto para el rol
+                    option.textContent = rol.rol; // Asegúrate de usar el campo correcto para mostrar
+                    rolSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error al cargar roles:', error);
+                alert('No se pudieron cargar los roles.');
+            }
+        }
+
+        async function actualizarEmpleado() {
+    const empleadoID = new URLSearchParams(window.location.search).get('Empleados_ID');
+    const username = document.getElementById('nombre_empleado').value; // Cambiar nombre a username
+    const rol = document.getElementById('rolSelect').value;
+
+    const response = await fetch(`/empleados/${empleadoID}`, {
+        method: 'PUT', // Cambia el método si es necesario
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, rol }) // Cambiar nombre a username
+    });
+
+    if (response.ok) {
+        alert('Empleado actualizado con éxito');
+        window.location.href = 'Empleados_Registados.html'; // Redirige a la lista de empleados
+    } else {
+        alert('Error al actualizar el empleado');
+    }
+}
+
+
+    </script>
+
+    <script>
+        // Verificar si la sesión está activa
+        fetch('/isAuthenticated', { method: 'GET' })
+            .then(response => {
+                if (!response.ok) {
+                    // Si no está autenticado, redirigir al inicio de sesión
+                    window.location.href = '/';
+                }
+            })
+            .catch(error => {
+                console.error('Error verificando la sesión:', error);
+                window.location.href = '/';
+            });
+    </script>
 </body>
 </html>
