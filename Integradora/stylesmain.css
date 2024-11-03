@@ -1,0 +1,231 @@
+/* Estilo general del cuerpo */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f0f4f8;
+    color: #333;
+}
+/* Encabezado */
+header {
+    display: flex;
+    justify-content: flex-end; /* Alinea el contenido a la derecha */
+    align-items: center;
+    background-color: #007BFF;
+    color: white;
+    padding: 20px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+header h1 {
+    font-size: 1.8em;
+    margin: 0;
+    flex-grow: 1; /* Deja el título alineado a la izquierda */
+}
+
+header #fecha {
+    font-size: 1em; 
+    color: #e0e0e0;
+    margin-right: 20px; 
+    font-weight: 300; 
+    letter-spacing: 0.5px; 
+    font-style: italic; 
+}
+header button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-right: 20px; 
+}
+
+header button:hover {
+    background-color: #ff4d4d;
+    transform: scale(1.05);
+}
+
+/* Logo y título principal */
+.logo-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.logo {
+    width: 80px;
+    margin-right: 15px;
+    border-radius: 50%;
+}
+
+.logo-title h1 {
+    font-size: 36px;
+    color: #007BFF;
+}
+/* Menú de navegación */
+nav#menu-gestores {
+    background-color: #007BFF;
+    padding: 10px 0;
+    text-align: center;
+    border-radius: 8px;
+}
+
+nav#menu-gestores ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+nav#menu-gestores ul li {
+    position: relative;
+    margin: 0 15px;
+}
+
+nav#menu-gestores ul li a {
+    color: #ffffff;
+    padding: 10px 15px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+nav#menu-gestores ul li a:hover {
+    color: #000000;
+}
+
+nav#menu-gestores ul li ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #2ba5e7;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+nav#menu-gestores ul li:hover ul {
+    display: block;
+}
+
+nav#menu-gestores ul li ul li {
+    margin: 0;
+}
+
+nav#menu-gestores ul li ul li a {
+    display: block;
+    padding: 10px 15px;
+    white-space: nowrap;
+}
+
+nav#menu-gestores ul li ul li a:hover {
+    background-color: #e2e6ea;
+}
+
+/* Tabla de citas */
+#tablaCitas {
+    width: 80%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    font-size: 16px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+#titulotabla{
+    color: black;
+    font-style: italic;
+    font-size: 2rem;
+}
+
+#tablaCitas thead {
+    background-color: #007BFF;
+    color: white;
+}
+
+#tablaCitas th, #tablaCitas td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+#tablaCitas tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+#paginationMain {
+    text-align: center;
+    padding: 10px 0;
+}
+
+/* Contenedor principal */
+.container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin: 20px auto;
+    max-width: 1000px;
+}
+
+/* Secciones del menú principal */
+section {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 20px;
+    margin: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 300px;
+}
+
+section:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+section h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+section p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+.button-image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+}
+
+.button-image img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+
+.button-image p {
+    font-size: 16px;
+    color: #007BFF;
+}
+
+.button-image:hover img {
+    transform: scale(1.1);
+}
+
+/* Estilos para la fecha en el encabezado */
+header p#fecha {
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    margin-right: 20px;
+}
