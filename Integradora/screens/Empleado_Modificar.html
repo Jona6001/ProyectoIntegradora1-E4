@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modificar Empleado</title>
+    <link rel="stylesheet" href="../css/stylesnueva.css">
+</head>
+<body>
+    <h1>Modificar Empleado</h1>
+    <form id="modificarCitaForm">
+
+        <div class="campo">
+            <label for="nombre">Nombre de Empleado:</label>
+            <input type="text" id="nombre_empleado" required placeholder="Ingrese el nombre del empleado">
+        </div>
+    
+        <div class="campo">
+            <label for="Rol">Rol:</label>
+            <input type="text" id="Rol" required placeholder="Ingrese el Rol del empleado">
+        </div>
+
+        <button type="button" class="guardar-cita" onclick="actualizarEmpleado()">
+            Guardar Cambios
+            <img src="imagenes/guardar.png" alt="guardar" width="40" height="40">
+        </button>
+    </form>
+</body>
+</html>

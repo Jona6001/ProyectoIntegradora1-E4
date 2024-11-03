@@ -12,9 +12,8 @@
     <header>
         <h1 id="bienvenido">Bienvenido</h1>
         <p id="fecha"></p>
-        <!-- Boton para sesión -->
-        <button id="logoutButton" class="btn-animated" onclick="cerrarSesion()">Cerrar Sesión</button>
-
+        <!-- Botón para cerrar sesión -->
+        <button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
     </header>
 
     <div class="logo-title">
@@ -22,21 +21,20 @@
         <h1>Consultorio Dental</h1>
     </div>
 
-   
-        <table border="1" id="tablaCitas"> Citas para el día de hoy
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Fecha</th>
-                    <th>Hora</th>
-                    <th>Servicio</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody id="citasBodyMain"></tbody>
-            
-        </table>
-        
+    <table border="1" id="tablaCitas"> Citas para el día de hoy
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Servicio</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody id="citasBodyMain"></tbody>
+    </table>
+    <div id="paginationMain"></div>
+    
     <nav>
         <ul>
             <li><a href="agregarcita.html">Agregar Cita</a></li>
@@ -72,8 +70,58 @@
                 <p>Ir al gestor de Servicios</p>
             </a>
         </section>
-    </div>
 
+        <!-- Nueva sección para gestionar usuarios -->
+        <section id="gestor-empleado">
+            <h2>Gestionar los empleados</h2>
+            <p>Edita y administra la información de los empleados.</p>
+            <a href="Empleados_Registados.html" class="button-image">
+                <img src="../img/agregarcliente.jpg" alt="Administrar Empleados">
+                <p>Ir al gestor de Empleados</p>
+            </a>
+        </section>
+    </div>
+    <script>
+        // Verificar si la sesión está activa
+        fetch('/isAuthenticated', { method: 'GET' })
+            .then(response => {
+                if (!response.ok) {
+                    // Si no está autenticado, redirigir al inicio de sesión
+                    window.location.href = '/';
+                }
+            });
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch('/verificar_sesion', { method: 'GET', credentials: 'same-origin' })
+            .then(response => {
+                if (!response.ok) {
+                    window.location.href = '/'; // Redirige al inicio si no hay sesión
+                }
+            })
+            .catch(error => {
+                console.error('Error verificando la sesión:', error);
+                window.location.href = '/';
+            });
+         });
+    
+  
+   // Verificar el rol del usuario para mostrar la sección de gestión de empleados
+    fetch('/api/session')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Datos de sesión en el cliente:', data); // Debugging: verifica los datos en el cliente
+            if (data.loggedIn) {
+                // Mostrar "gestor-empleado" solo si el rol es "admin"
+                if (data.rol === 'admin') {
+                    document.getElementById('gestor-empleado').style.display = 'block';
+                } else {
+                    document.getElementById('gestor-empleado').style.display = 'none';
+                }
+            }
+        })
+        .catch(error => console.error('Error al obtener la sesión:', error));
+
+    </script>
+    
+    
 </body>
 </html>
-

@@ -1,9 +1,10 @@
 // Variables para la paginación
 let currentPage = 1;
-const itemsPerPage = 8;
+const itemsPerPage = 6;
 let citas = [];
 let citasProximas = [];
-let clientes = []; // Variable global para almacenar los clientes
+let clientes = []; 
+let empleados = [];
 
 // Función para mostrar el nombre del usuario en el encabezado
 function mostrarUsuNomb() {
@@ -12,47 +13,43 @@ function mostrarUsuNomb() {
 }
 mostrarUsuNomb();
 
-// Función para mostrar la fecha actual
-function mostrarFecha() {
-    const hoy = new Date();
-    const fechaFormateada = hoy.getDate() + '/' + (hoy.getMonth() + 1) + '/' + hoy.getFullYear();
-    document.getElementById("fecha").textContent = fechaFormateada;
-}
-
 
 
 // Llamar la función de mostrar fecha al cargar la página
 window.onload = function() {
     mostrarFecha();
-    mostrarCitasRecientes('citasBodyMain'); // Cargar citas en la tabla principal
-    mostrarCitasRecientes('citasBody', true); // Cargar citas en la tabla del gestor de citas
-    mostrarClientes('clientesBody'); // Cargar clientes al iniciar
+    mostrarCitasRecientes('citasBodyMain');
+    mostrarClientes('clientesBody'); 
 };
 
-// Función para cerrar sesión
-// Función para cerrar sesión
-async function cerrarSesion() {
-    try {
-        const response = await fetch('/logout', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
 
-        const result = await response.json();
-
-        if (response.ok) {
-            localStorage.removeItem('usuario'); // Elimina el usuario de localStorage
-            window.location.href = "../index.html"; // Redirige al formulario de inicio de sesión
-        } else {
-            alert(result.message); // Manejo de errores si es necesario
+    // Función para cerrar sesión
+    function cerrarSesion() {
+        try {
+            // Realizar una solicitud para cerrar la sesión en el servidor
+            fetch('/logout', {
+                method: 'POST',
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Redirigir al usuario a la página de inicio de sesión
+                    window.location.href = "/index.html";
+                } else {
+                    throw new Error('Error al cerrar sesión');
+                }
+            })
+            .catch(error => {
+                console.error('Error al cerrar sesión:', error);
+                alert('Ha ocurrido un error al cerrar sesión.');
+            });
+        } catch (error) {
+            console.error('Error inesperado al cerrar sesión:', error);
+            alert('Ha ocurrido un error al cerrar sesión.');
         }
-    } catch (error) {
-        console.error('Error al cerrar sesión:', error);
-        alert('Ha ocurrido un error al cerrar sesión.'); // Mensaje de error en caso de fallo
     }
-}
+    
+
+
 
 
 // Función para buscar citas por fecha
@@ -105,7 +102,7 @@ async function mostrarCitasProximas() {
     } catch (error) {
         console.error('Error al cargar citas próximas:', error);
         const citasBody = document.getElementById('citasBody');
-        citasBody.innerHTML = '<tr><td colspan="5"><center>Error al cargar citas próximas.</center></td></tr>';
+        citasBody.innerHTML = '<tr><td colspan="6"><center>Error al cargar citas próximas.</center></td></tr>';
     }
 }
 
@@ -115,7 +112,7 @@ function mostrarResultadosCitasProximas(citasArray, idTablaCitas, conBotones) {
     citasBody.innerHTML = '';
 
     if (citasArray.length === 0) {
-        citasBody.innerHTML = '<tr><td colspan="5"><center>No hay citas próximas.</center></td></tr>';
+        citasBody.innerHTML = '<tr><td colspan="6"><center>No hay citas próximas.</center></td></tr>';
         return;
     }
 
@@ -421,3 +418,111 @@ function eliminarServicio(servicioId) {
     }
 }
 
+
+// Función para mostrar empleados con paginación
+function mostrarEmpleados(tablaEmpleados) {
+    const empleadosBody = document.getElementById(tablaEmpleados);
+    empleadosBody.innerHTML = '';
+
+    fetch('/empleados')
+        .then(response => response.json())
+        .then(data => {
+            console.log('Datos recibidos de /empleados:', data); // Agregar log para verificar los datos
+            empleados = data; 
+            mostrarResultadosEmpleados(empleados, empleadosBody);
+        })
+        .catch(error => {
+            console.error('Error al mostrar los empleados', error);
+        });
+}
+
+// Función para mostrar empleados en la tabla con paginación
+function mostrarResultadosEmpleados(empleadosArray, empleadosBody) {
+    empleadosBody.innerHTML = '';
+
+    if (empleadosArray.length === 0) {
+        empleadosBody.innerHTML = '<tr><td colspan="3"><center>No hay empleados registrados.</center></td></tr>';
+        return;
+    }
+
+    // Calcular el índice inicial y final para la paginación
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = Math.min(startIndex + itemsPerPage, empleadosArray.length); // Cambiar de clientesArray a empleadosArray
+
+    console.log(`Mostrando empleados de la página ${currentPage}:`, empleadosArray.slice(startIndex, endIndex)); // Agregar log para verificar los empleados que se mostrarán
+
+    // Mostrar solo los empleados de la página actual
+    for (let i = startIndex; i < endIndex; i++) {
+        const empleado = empleadosArray[i];
+        const row = `
+        <tr>
+            <td>${empleado.Nombre}</td>
+            <td>${empleado.Rol}</td>
+            <td>
+                <button onclick="editarEmpleado(${empleado.Empleados_ID})">Editar</button>
+                <button onclick="eliminarEmpleado(${empleado.Empleados_ID})">Eliminar</button>
+            </td>
+        </tr>`;
+        empleadosBody.innerHTML += row;
+    }
+
+    // Calcular el total de páginas y mostrar la paginación
+    const totalPages = Math.ceil(empleadosArray.length / itemsPerPage);
+    mostrarPaginacionEmpleados(totalPages, empleadosArray); 
+}
+
+// Función para mostrar botones de paginación para empleados
+function mostrarPaginacionEmpleados(totalPages, empleadosArray) {
+    const paginationContainer = document.getElementById('paginationEmpleados');
+    paginationContainer.innerHTML = '';
+
+    for (let i = 1; i <= totalPages; i++) {
+        const button = document.createElement('button');
+        button.textContent = i;
+        button.onclick = () => {
+            currentPage = i;
+            mostrarResultadosEmpleados(empleadosArray, document.getElementById('empleadosBody')); // Usar la variable correcta
+        };
+        paginationContainer.appendChild(button);
+    }
+}
+
+function cargarEmpleados() {
+    fetch('/obtenerEmpleados')
+        .then(response => response.json())
+        .then(servicios => {
+            console.log('Datos recibidos de /obtenerEmpleados:', servicios); // Agregar log para verificar los datos
+            mostrarResultadosEmpleados(servicios, document.getElementById('empleadosBody'));
+        })
+        .catch(error => {
+            console.error('Error al cargar empleados:', error);
+        });
+}
+
+
+
+
+
+// Función para editar un empleado
+function editarEmpleado(id) {
+    
+    console.log(`Editar empleado con ID: ${id}`);
+}
+
+// Función para eliminar un empleado
+function eliminarEmpleado(id) {
+    if (confirm('¿Estás seguro de que deseas eliminar este empleado?')) {
+        fetch(`/eliminarEmpleado/${id}`, { method: 'DELETE' })
+            .then(response => {
+                if (response.ok) {
+                    alert('Empleado eliminado con éxito');
+                    cargarEmpleados(); // Recargar la lista después de eliminar
+                } else {
+                    alert('Error al eliminar el empleado');
+                }
+            })
+            .catch(error => {
+                console.error('Error al eliminar empleado:', error);
+            });
+    }
+}

@@ -1,12 +1,15 @@
+const bcrypt = require('bcrypt');
 module.exports = (db) => {
-    // Verificar el inicio de sesión
+    // Verificar el inicio de sesión 
     function verificarInicioSesion(username, password, callback) {
-        const query = 'SELECT * FROM empleados WHERE username = ? AND password = ?';
+        const query = 'SELECT Username, rol FROM empleados WHERE username = ? AND password = ?';
         db.query(query, [username, password], (err, results) => {
             if (err) return callback(err);
             callback(null, results);
         });
     }
+
+
 
     // Obtener citas recientes
     function obtenerCitasRecientes(callback) {
@@ -52,7 +55,7 @@ module.exports = (db) => {
 
     // Función para obtener la lista de empleados
     function obtenerEmpleados(callback) {
-        const query = 'SELECT Empleados_ID, Username FROM empleados';
+        const query = 'SELECT * FROM empleados';
         db.query(query, (err, results) => {
             if (err) return callback(err);
             callback(null, results);
@@ -247,6 +250,55 @@ function actualizarServicio(id, data) {
     });
 }
 
+// Función para obtener un empleado por ID
+function obtenerEmpleadoPorId(id) {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * FROM empleados WHERE Empleado_ID = ?';
+        db.query(sql, [id], (error, results) => {
+            if (error) {
+                return reject(error);
+            }
+            resolve(results[0]); // Devuelve el primer resultado
+        });
+    });
+}
+
+// Función para agregar un empleado con contraseña encriptada
+function agregarEmpleado(empleado) {
+    return new Promise((resolve, reject) => {
+        const query = 'INSERT INTO empleados (Username, Rol, Password) VALUES (?, ?, ?)';
+        bcrypt.hash(empleado.password, 10, (err, hashedPassword) => {
+            if (err) return reject(err);
+            db.query(query, [empleado.username, empleado.rol, hashedPassword], (error, results) => {
+                if (error) return reject(error);
+                resolve(results);
+            });
+        });
+    });
+}
+
+// Función para actualizar un empleado
+function actualizarEmpleado(id, empleadoModificado) {
+    return new Promise((resolve, reject) => {
+        const query = 'UPDATE empleados SET Username = ?, Rol = ? WHERE Empleado_ID = ?';
+        db.query(query, [empleadoModificado.nombre, empleadoModificado.apellido, empleadoModificado.rol, id], (error, results) => {
+            if (error) {
+                return reject(error);
+            }
+            resolve(results);
+        });
+    });
+}
+
+// Función para eliminar un empleado
+function eliminarEmpleado(id, callback) {
+    const query = 'DELETE FROM empleados WHERE Empleado_ID = ?';
+    db.query(query, [id], (err, results) => {
+        if (err) return callback(err);
+        callback(null, results);
+    });
+}
+
 
 
 
@@ -274,6 +326,9 @@ function actualizarServicio(id, data) {
         eliminarReferenciasEmpleadosCitasPorServicio,
         agregarServicio,
         obtenerServicioPorId,
-        actualizarServicio
+        actualizarServicio,
+        obtenerEmpleadoPorId,
+        agregarEmpleado,
+        actualizarEmpleado
     };
 };

@@ -2,8 +2,9 @@ const express = require('express');
 const path = require('path');
 const mysql = require('mysql2');
 const open = require('open');
+const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
-
+const session = require('express-session');
 const app = express();
 const PORT = process.env.PORT || 6001;
 
@@ -14,7 +15,6 @@ const db = mysql.createConnection({
     password: '',
     database: 'sistemacitas'
 });
-
 db.connect((err) => {
     if (err) {
         console.error('Error al conectar a la base de datos:', err);
@@ -22,19 +22,33 @@ db.connect((err) => {
     }
     console.log('Conectado a la base de datos MySQL');
 });
-
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../')));
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../index.html'));
+});
+const consultas = require('./consultas')(db); // Pasa la conexión a consultas
 
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Configuración de la sesión
+app.use(session({
+    secret: 'homies6001', // Cambia esto por un secreto más seguro
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false } // Cambia a true si estás usando HTTPS
+}));
+
+
+
+// Ruta de inicio
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../index.html'));
 });
 
-const consultas = require('./consultas')(db); // Pasa la conexión a consultas
-
 // Ruta para manejar el inicio de sesión
 app.post('/login', (req, res) => {
-    console.log('Iniciando sesión con:', req.body); // Agregar este log
     const { username, password } = req.body;
 
     consultas.verificarInicioSesion(username, password, (err, results) => {
@@ -43,12 +57,67 @@ app.post('/login', (req, res) => {
             return res.status(500).json({ message: 'Error en el servidor' });
         }
         if (results.length > 0) {
+            // Almacenar el usuario y el rol en la sesión
+            req.session.user = {
+                username: results[0].Username,
+                rol: results[0].rol
+            };
             return res.status(200).json({ message: 'Inicio de sesión exitoso' });
         } else {
             return res.status(401).json({ message: 'Usuario o contraseña incorrectos' });
         }
     });
 });
+
+
+// Ruta para obtener la sesión actual
+app.get('/api/session', (req, res) => {
+    console.log('Datos de sesión:', req.session.user); // Debugging: verifica la sesión en la consola
+    if (req.session.user) {
+        res.json({
+            loggedIn: true,
+            username: req.session.user.username,
+            rol: req.session.user.rol
+        });
+    } else {
+        res.json({ loggedIn: false });
+    }
+});
+
+
+// Ruta para manejar el cierre de sesión
+app.post('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            console.error('Error al cerrar sesión:', err);
+            return res.status(500).json({ message: 'Error al cerrar sesión' });
+        }
+        res.redirect('/'); // Redirige al login después de cerrar sesión
+    });
+});
+
+app.get('/isAuthenticated', (req, res) => {
+    if (req.session.user) {
+        res.sendStatus(200); // Usuario autenticado
+    } else {
+        res.sendStatus(401); // Usuario no autenticado
+    }
+});
+
+app.use((req, res, next) => {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+    next();
+});
+
+// Ruta para verificar la sesión desde el frontend
+app.get('/verificar_sesion', (req, res) => {
+    if (req.session.user) {
+        res.status(200).json({ autenticado: true });
+    } else {
+        res.status(401).json({ autenticado: false });
+    }
+});
+
 
 
 // Ruta para obtener citas recientes o buscar por fecha
@@ -140,6 +209,8 @@ app.get('/empleados', (req, res) => {
 });
 
 
+
+
 // Ruta para obtener servicios
 app.get('/obtenerServicios', (req, res) => {
     consultas.obtenerServicios((err, servicios) => {
@@ -149,7 +220,6 @@ app.get('/obtenerServicios', (req, res) => {
         res.json(servicios);
     });
 });
-
 
 
 
@@ -336,6 +406,28 @@ app.delete('/eliminarServicio/:id', (req, res) => {
 
 
 
+// Ruta para agregar un nuevo empleado
+app.post('/nuevo_empleado', (req, res) => {
+    const empleado = req.body;
+    consultas.agregarEmpleado(empleado)
+        .then(() => res.status(200).json({ message: 'Empleado agregado con éxito' }))
+        .catch(err => {
+            console.error('Error al agregar empleado:', err);
+            res.status(500).json({ error: 'Error al agregar empleado' });
+        });
+});
+
+// Ruta para eliminar un empleado
+app.delete('/eliminarEmpleado/:id', (req, res) => {
+    const empleadoId = req.params.id;
+    
+    consultas.eliminarEmpleado(empleadoId)
+        .then(() => res.status(200).json({ message: 'Empleado eliminado con éxito' }))
+        .catch(err => {
+            console.error('Error al eliminar empleado:', err);
+            res.status(500).json({ error: 'Error al eliminar empleado' });
+        });
+});
 
 
 // Iniciar el servidor cuando se ejecuta desde el CMD

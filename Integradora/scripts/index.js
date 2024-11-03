@@ -1,6 +1,9 @@
-// Iniciar sesion
+document.addEventListener("DOMContentLoaded", function() {
+});
+
+// Iniciar sesión
 document.getElementById('loginForm').addEventListener('submit', async function(event) {
-    event.preventDefault(); 
+    event.preventDefault();
 
     const username = document.getElementById('usu').value;
     const password = document.getElementById('pass').value;
@@ -14,11 +17,12 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             body: JSON.stringify({ username, password }),
         });
         const result = await response.json();
-  
+
         if (response.ok) {
             localStorage.setItem('usuario', username);
-            window.location.href = '../screens/main.html';
+            window.location.href = '/screens/main.html';
         } else {
+            console.error(result.message);
             alert(result.message); 
         }
     } catch (error) {
@@ -27,22 +31,6 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     }
 });
 
-function verificarToken(req, res, next) {
-    const token = req.headers['authorization'];
-
-    if (!token) {
-        return res.status(403).json({ message: 'No se proporcionó un token' });
-    }
-
-    jwt.verify(token, SECRET_KEY, (err, decoded) => {
-        if (err) {
-            return res.status(401).json({ message: 'Token no válido' });
-        }
-        req.userId = decoded.id; // Guarda el ID del usuario en la solicitud
-        next();
-    });
-}
-    
 
 // Función para mostrar la fecha actual
 function mostrarFecha() {

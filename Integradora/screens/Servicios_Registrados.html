@@ -33,5 +33,28 @@
     </center>
     <br>
     <center><a href="main.html"><button type="button" id="Salir">Salir</button></a></center>
+
+    <script>
+        // Verificar si la sesión está activa
+        fetch('/isAuthenticated', { method: 'GET' })
+            .then(response => {
+                if (!response.ok) {
+                    // Si no está autenticado, redirigir al inicio de sesión
+                    window.location.href = '/';
+                }
+            });
+            document.addEventListener('DOMContentLoaded', () => {
+            fetch('/verificar_sesion', { method: 'GET', credentials: 'same-origin' })
+                .then(response => {
+                    if (!response.ok) {
+                        window.location.href = '/'; // Redirige al inicio si no hay sesión
+                    }
+                })
+                .catch(error => {
+                    console.error('Error verificando la sesión:', error);
+                    window.location.href = '/'; // Redirige al inicio en caso de error
+                });
+        });
+    </script>
 </body>
 </html>

@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestor de citas</title>
-    <script src="../scripts/script.js"></script>
+    <script src="../scripts/script.js" defer></script>
     <script>window.onload = function() { mostrarCitasRecientes('citasBody', true); }; </script>
 
 </head>
 <body>
 
 <center><h1>Gestor de citas</h1></center>
-<button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
+<button id="logoutButton" class="btn-animated" onclick="cerrarSesion()">Cerrar Sesión</button>
 <center><h2>Citas Registradas</h2></center>
 
 <center>
@@ -51,6 +51,30 @@
 <center>
     <a href="main.html"><button type="button" id="Salir">Salir</button></a>
 </center>
+<script>
+    // Verificar si la sesión está activa
+    fetch('/isAuthenticated', { method: 'GET' })
+        .then(response => {
+            if (!response.ok) {
+                // Si no está autenticado, redirigir al inicio de sesión
+                window.location.href = '/';
+            }
+        });
+</script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch('/verificar_sesion', { method: 'GET', credentials: 'same-origin' })
+            .then(response => {
+                if (!response.ok) {
+                    window.location.href = '/'; // Redirige al inicio si no hay sesión
+                }
+            })
+            .catch(error => {
+                console.error('Error verificando la sesión:', error);
+                window.location.href = '/'; // Redirige al inicio en caso de error
+            });
+    });
+    </script>
 </body>
 </html>

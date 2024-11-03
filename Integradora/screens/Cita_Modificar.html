@@ -100,5 +100,15 @@
             }
         }
     </script>
+    <script>
+        // Verificar si la sesión está activa
+        fetch('/isAuthenticated', { method: 'GET' })
+            .then(response => {
+                if (!response.ok) {
+                    // Si no está autenticado, redirigir al inicio de sesión
+                    window.location.href = '/';
+                }
+            });
+    </script>
 </body>
 </html>
