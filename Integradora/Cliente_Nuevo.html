@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Cliente</title>
+    <link rel="stylesheet" href="../css/stylesnueva.css">
+    <script src="../scripts/script.js"></script>
+</head>
+    <!-- Encabezado -->
+    <header>
+        <div class="logo-title">
+            <a href="main.html">
+                <img src="../img/logo.jpg" alt="Logo Agenda Dental" class="logo">
+            </a>
+            <div class="welcome-message">
+              <!-- Menú horizontal con accesos desplegables -->
+    <nav id="menu-gestores">
+        <ul>
+            <li><a href="#">Gestión de Citas</a>
+                <ul>
+                    <li><a href="../screens/Cita_Nueva.html">Agregar Cita</a></li>
+                    <li><a href="../screens/Citas_Registradas.html">Ver Citas Registradas</a></li>
+                   
+                </ul>
+            </li>
+            <li><a href="#">Gestión de Clientes</a>
+                <ul>
+                    <li><a href="Cliente_Nuevo.html">Agregar Cliente</a></li>
+                    <li><a href="Clientes_Registrados.html">Ver Clientes Registrados</a></li>
+                   
+                </ul>
+            </li>
+            <li><a href="#">Gestión de Servicios</a>
+                <ul>
+                    <li><a href="Servicio_Nuevo.html">Agregar Servicio</a></li>
+                    <li><a href="Servicios_Registrados.html">Ver Servicios</a></li>
+                   
+                </ul>
+            </li>
+            <li><a href="#">Gestión de Empleados</a>
+                <ul>
+                    <li><a href="Empleado_Nuevo.html">Agregar Empleado</a></li>
+                    <li><a href="Empleados_Registrados.html">Ver Empleados Registrados</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+    </nav>   
+            </div>
+        </div>
+        <button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
+    </header>
+        <div id="formulario-cita">
+            <h2>Agregar Cliente</h2>
+            
+            <div class="campo">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" required placeholder="Ingrese su nombre">
+            </div>
+            
+            <div class="campo">
+                <label for="apellidoPaterno">Apellido Paterno:</label>
+                <input type="text" id="apellidoPaterno" required placeholder="Ingrese su apellido paterno">
+            </div>
+        
+            <div class="campo">
+                <label for="apellidoMaterno">Apellido Materno:</label>
+                <input type="text" id="apellidoMaterno" required placeholder="Ingrese su apellido materno">
+            </div>
+        
+            <div class="campo">
+                <label for="telefono">Teléfono:</label>
+                <input type="number" id="telefono" required placeholder="Ingrese el teléfono">
+            </div>
+        
+            <div class="campo">
+                <label for="direccion">Dirección:</label>
+                <input type="text" id="direccion" required placeholder="Ingrese la dirección">
+            </div>
+            
+            <button type="button" class="guardar-cliente" onclick="guardarCliente()">
+                Guardar Cliente 
+                <img src="../img/guardar.png" alt="guardar" width="40" height="40">
+            </button>
+    <br>
+            <a href="Clientes_Registrados.html"><button type="button">Regresar</button></a>
+        </div>
+        <script> 
+            function guardarCliente() {
+                const cliente = {
+                    nombre: document.getElementById('nombre').value,
+                    apellidoPaterno: document.getElementById('apellidoPaterno').value,
+                    apellidoMaterno: document.getElementById('apellidoMaterno').value,
+                    telefono: document.getElementById('telefono').value,
+                    direccion: document.getElementById('direccion').value,
+                };
+            
+                fetch('/nuevo_cliente', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(cliente),
+                })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Cliente agregado con éxito');
+                        window.location.href = 'Clientes_Registrados.html'; // Redirige a la página de clientes registrados
+                    } else {
+                        alert('Error al agregar el cliente');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error al conectar con el servidor');
+                });
+            }
+            
+                // Verificar si la sesión está activa
+                fetch('/isAuthenticated', { method: 'GET' })
+                    .then(response => {
+                        if (!response.ok) {
+                            // Si no está autenticado, redirigir al inicio de sesión
+                            window.location.href = '/';
+                        }
+                    });
+                    document.addEventListener('DOMContentLoaded', () => {
+                    fetch('/verificar_sesion', { method: 'GET', credentials: 'same-origin' })
+                        .then(response => {
+                            if (!response.ok) {
+                                window.location.href = '/'; // Redirige al inicio si no hay sesión
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error verificando la sesión:', error);
+                            window.location.href = '/'; // Redirige al inicio en caso de error
+                        });
+                });
+            </script>
+</body>
+</html>
