@@ -31,11 +31,11 @@ body {
 /* Encabezado */
 header {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     background-color: #007BFF;
     color: white;
-    padding: 20px 30px;
+    padding: 10px 20px;
     width: 100%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -74,8 +74,9 @@ header button:hover {
 .logo-title {
     display: flex;
     align-items: center;
+    margin-right: auto;
     flex-grow: 1;
-    margin-left: 30px; 
+    margin-left: 30px;  
 }
 
 .logo {
@@ -86,9 +87,12 @@ header button:hover {
 
 /* Menú de navegación */
 nav {
-    background-color: #1b70cc;
+
     padding: 10px 0;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 nav ul {
