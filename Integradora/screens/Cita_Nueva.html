@@ -4,28 +4,102 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nueva Cita</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="..//css/stylesnueva.css">
+    <script src="../scripts/script.js"></script>
 </head>
 <body>
-    <h1>Registrar Nueva Cita</h1>
+        <!-- Pantalla de carga -->
+        <div id="loading-screen">
+            <div class="spinner"></div>
+            <p>Cargando...</p>
+        </div>
+    <!-- Encabezado -->
+    <header>
+        <div class="logo-title">
+            <a href="main.html">
+                <img src="../img/logo.jpg" alt="Logo Agenda Dental" class="logo">
+                <span class="inicio-text">Inicio</span>
+            </a>
+            <div class="welcome-message">
+              <!-- Menú horizontal con accesos desplegables -->
+    <nav id="menu-gestores">
+        <ul>
+            <li><a href="#">Gestión de Citas</a>
+                <ul>
+                    <li><a href="../screens/Cita_Nueva.html">Agregar Cita</a></li>
+                    <li><a href="../screens/Citas_Registradas.html">Ver Citas Registradas</a></li>
+                   
+                </ul>
+            </li>
+            <li><a href="#">Gestión de Clientes</a>
+                <ul>
+                    <li><a href="Cliente_Nuevo.html">Agregar Cliente</a></li>
+                    <li><a href="Clientes_Registrados.html">Ver Clientes Registrados</a></li>
+                   
+                </ul>
+            </li>
+            <li><a href="#">Gestión de Servicios</a>
+                <ul>
+                    <li><a href="Servicio_Nuevo.html">Agregar Servicio</a></li>
+                    <li><a href="Servicios_Registrados.html">Ver Servicios</a></li>
+                   
+                </ul>
+            </li>
+            <li><a href="#">Gestión de Empleados</a>
+                <ul>
+                    <li><a href="Empleado_Nuevo.html">Agregar Empleado</a></li>
+                    <li><a href="Empleados_Registrados.html">Ver Empleados Registrados</a></li>
+                
+                </ul>
+            </li>
+        </ul>
+    </nav>   
+            </div>
+        </div>
+        <button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
+    </header>
+    
+
+
+    <h2>Registrar Nueva Cita</h2>
     <form id="nuevaCitaForm">
-        <label for="clienteSelect">Seleccionar Cliente:</label>
-        <select id="clienteSelect" required></select>
-        
-        <label for="empleadoSelect">Seleccionar Empleado:</label>
-        <select id="empleadoSelect" required></select>
-        
-        <label for="servicioSelect">Seleccionar Servicio:</label>
-        <select id="servicioSelect" required></select>
-        
-        <label for="fecha">Fecha:</label>
-        <input type="date" id="fecha" required>
-        
-        <label for="hora">Hora:</label>
-        <input type="time" id="hora" required>
-        
-        <button type="submit">Agregar Cita</button>
+        <div class="campo">
+            <label for="clienteSelect">Seleccionar Cliente:</label>
+            <select id="clienteSelect" required></select>
+        </div>
+        <div class="campo">
+            <label for="empleadoSelect">Seleccionar Empleado:</label>
+            <select id="empleadoSelect" required></select>
+        </div>
+        <div class="campo">
+            <label for="servicioSelect">Seleccionar Servicio:</label>
+            <select id="servicioSelect" required></select>
+        </div>
+        <div class="campo">
+            <label for="fecha">Fecha:</label>
+            <input type="date" id="fecha" required>
+        </div>
+        <div class="campo">
+            <label for="hora">Hora:</label>
+            <input type="time" id="hora" required>
+        </div>
+        <div class="botones">
+            <button type="submit" class="guardar-cita">Agregar Cita
+                <img src="../img/guardar.png" alt="guardar" width="40" height="40">
+            </button>
+            <button type="button" class="regresar" onclick="window.location.href='Citas_Registradas.html'">Regresar
+                <img src="../img/regresar.png" alt="guardar" width="40" height="40">
+            </button>
+        </div>
     </form>
+    <script>
+        // Ocultar la pantalla de carga después de un mínimo de 1 segundo
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.display = 'none';
+            }, 500); // 1000 ms = 1 segundo
+        });
+    </script>
     
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
