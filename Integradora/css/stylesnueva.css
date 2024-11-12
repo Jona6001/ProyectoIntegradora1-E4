@@ -1,19 +1,45 @@
 /* Fuentes personalizadas */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
+
+/* Pantalla de carga */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* Asegura que esté por encima de otros elementos */
+}
+/* Spinner de carga */
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 6px solid #ccc;
+    border-top-color: #007BFF;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
 /* Estilo general del cuerpo */
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(to right, #e6f2ff, #cce7ff); /* Fondo degradado azul claro */
+    background: linear-gradient(to right, #e6f2ff, #cce7ff);
     color: #333;
     display: flex;
     flex-direction: column;
     align-items: center;
     min-height: 100vh;
 }
-
 
 /* Encabezado */
 header {
@@ -22,30 +48,35 @@ header {
     align-items: center;
     background-color: #007BFF;
     color: white;
-    padding: 20px;
+    padding: 10px 20px;
     width: 100%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 header h1 {
-    font-size: 24px;
+    font-size: 1.8em;
     margin: 0;
+    flex-grow: 1;
 }
 
 header p {
-    font-size: 18px;
-    margin: 0;
+    font-size: 1em;
+    color: #e0e0e0;
+    margin-right: 20px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    font-style: italic;
 }
 
 header button {
-    background-color: #28a745; /* Verde */
+    background-color: #28a745;
     color: white;
-    border: none;
     padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
     border-radius: 5px;
+    cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-right: 80px;
+    margin-left: 20px;
 }
 
 header button:hover {
@@ -53,17 +84,127 @@ header button:hover {
     transform: scale(1.05);
 }
 
+.logo-title {
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+    flex-grow: 1;
+    margin-left: 30px;  
+}
+
+.logo-link {
+    text-align: center;
+    text-decoration: none;
+    color: white;
+}
+
+.logo {
+    display: block;
+    width: 60px;
+    margin: 0 auto;
+    border-radius: 50%;
+}
+
+.inicio-text {
+    display: block;
+    text-align: center;
+    font-size: 0.9em;
+    margin-top: 5px;
+    font-weight: bold;
+    color: white;
+}
+
+/* Menú de navegación */
+nav {
+
+    padding: 10px 0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+nav ul li {
+    position: relative;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: #ffffff;
+    padding: 10px 15px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+nav ul li a:hover {
+    color: #000000;
+}
+
+nav ul li ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #2ba5e7;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+nav ul li:hover ul {
+    display: block;
+}
+
+nav ul li ul li {
+    margin: 0;
+}
+
+nav ul li ul li a {
+    display: block;
+    padding: 10px 15px;
+    white-space: nowrap;
+}
+
+nav ul li ul li a:hover {
+    background-color: #e2e6ea;
+}
+
 /* Contenedor del formulario */
-#formulario-cita {
-    background-color: white;
+.form-container {
+    background-color: white; /* Fondo blanco */
     padding: 30px;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border: 3px solid #007BFF; /* Borde más grueso para mayor contraste */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Sombra más prominente */
     max-width: 500px;
     width: 90%;
     margin-top: 20px;
-    text-align: left; 
-    animation: fadeIn 0.5s ease; /* Animación de aparición */
+    text-align: left;
+    animation: fadeIn 0.5s ease;
+}
+
+/* Estilos para selectores comunes en formularios */
+select, input[type="date"], input[type="time"], input[type="text"], input[type="email"], input[type="number"], input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+/* Estilos cuando los campos de entrada están enfocados */
+input:focus, select:focus {
+    border-color: #007BFF; /* Borde azul cuando está enfocado */
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3); /* Resplandor azul */
+    outline: none; /* Eliminar contorno predeterminado */
 }
 
 /* Animación de aparición */
@@ -77,103 +218,99 @@ header button:hover {
         transform: translateY(0);
     }
 }
+/* Formulario */
+form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
 
-/* Estilos para cada campo del formulario */
 .campo {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .campo label {
     display: block;
-    font-size: 16px;
+    font-weight: bold;
     margin-bottom: 5px;
-    color: #333;
 }
 
-.campo input {
+.campo input, .campo select {
     width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
 
-.campo input:focus {
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
-    outline: none;
-}
-
-/* Botón de guardar cita */
-.guardar-cita {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    font-size: 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.guardar-cita img {
-    margin-left: 10px;
-    width: 24px;
-    height: 24px;
-}
-
-.guardar-cita:hover {
-    background-color: #218838;
-    transform: scale(1.05);
-}
-
-/* Estilos para los botones */
 .botones {
     display: flex;
-    justify-content: space-between; /* Espacio entre botones */
-    margin-top: 20px;
+    justify-content: space-between;
 }
 
-.guardar-cita, .regresar {
-    background-color: #28a745; /* Color de fondo para ambos botones */
-    color: white;
+.guardar-cliente, .regresar {
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #3498db;
     border: none;
-    padding: 12px 20px;
-    font-size: 18px;
-    border-radius: 8px;
+    border-radius: 25px;
     cursor: pointer;
+}
+
+.guardar-cliente:hover, .regresar:hover {
+    background-color: #2980b9;
+}
+
+/* Estilo general para los botones */
+button {
+    background-color: #3498db;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    flex: 1; /* Permite que ambos botones ocupen el mismo espacio */
-    margin-right: 10px; /* Espaciado entre botones */
 }
 
-.regresar {
-    background-color: #007BFF; /* Color diferente para el botón de regresar */
+button:active {
+    transform: scale(0.98);
 }
 
-.guardar-cita:hover {
-    background-color: #218838;
-    transform: scale(1.05);
+button:hover {
+    background-color: #2980b9;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.regresar:hover {
-    background-color: #0056b3;
+button img {
+    margin-left: 10px;
+    vertical-align: middle;
 }
 
-.guardar-cita i, .regresar i {
-    margin-right: 8px; /* Espacio entre el icono y el texto */
+button.secondary {
+    background-color: #29c94e;
 }
 
-/* Para evitar que el botón de regresar se desplace al final */
-.regresar:last-child {
-    margin-right: 0; /* Sin margen derecho en el último botón */
+button.secondary:hover {
+    background-color: #28a745;
+}
+#regresar{
+    border-radius: 25%;
+}
+
+/* Acomodar los botones a la izquierda y derecha */
+.form-container .button-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-container .button-container button {
+    width: 48%;
 }
 
 /* Estilos Responsivos */
@@ -186,12 +323,12 @@ header button:hover {
         font-size: 16px;
     }
 
-    #formulario-cita {
+    .form-container {
         max-width: 90%;
         padding: 20px;
     }
 
-    .guardar-cita {
+    button.action {
         width: 100%;
     }
 }
