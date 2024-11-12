@@ -14,6 +14,19 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    z-index: 9999; /* Asegura que esté por encima de otros elementos */
+}
+/* Spinner de carga */
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 6px solid #ccc;
+    border-top-color: #007BFF;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 /* Estilo general del cuerpo */
 body {
@@ -189,22 +202,49 @@ input:focus, select:focus {
         transform: translateY(0);
     }
 }
+/* Formulario */
+form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
 
-/* Estilos para cada campo del formulario */
 .campo {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .campo label {
     display: block;
-    font-size: 16px;
+    font-weight: bold;
     margin-bottom: 5px;
-    color: #333;
 }
 
-.campo input:focus, select:focus {
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
-    outline: none;
+.campo input, .campo select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.botones {
+    display: flex;
+    justify-content: space-between;
+}
+
+.guardar-cliente, .regresar {
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #3498db;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.guardar-cliente:hover, .regresar:hover {
+    background-color: #2980b9;
 }
 
 /* Estilo general para los botones */
@@ -242,6 +282,9 @@ button.secondary {
 
 button.secondary:hover {
     background-color: #28a745;
+}
+#regresar{
+    border-radius: 25%;
 }
 
 /* Acomodar los botones a la izquierda y derecha */

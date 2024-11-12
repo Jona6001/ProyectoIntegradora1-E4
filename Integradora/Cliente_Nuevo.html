@@ -3,10 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar Cliente</title>
+    <title>Cliente Nuevo</title>
     <link rel="stylesheet" href="../css/stylesnueva.css">
     <script src="../scripts/script.js"></script>
 </head>
+<body>
+        <!-- Pantalla de carga -->
+        <div id="loading-screen">
+            <div class="spinner"></div>
+            <p>Cargando...</p>
+        </div>
     <!-- Encabezado -->
     <header>
         <div class="logo-title">
@@ -51,41 +57,48 @@
         </div>
         <button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
     </header>
-        <div id="formulario-cita">
-            <h2>Agregar Cliente</h2>
-            
-            <div class="campo">
-                <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" required placeholder="Ingrese su nombre">
-            </div>
-            
-            <div class="campo">
-                <label for="apellidoPaterno">Apellido Paterno:</label>
-                <input type="text" id="apellidoPaterno" required placeholder="Ingrese su apellido paterno">
-            </div>
-        
-            <div class="campo">
-                <label for="apellidoMaterno">Apellido Materno:</label>
-                <input type="text" id="apellidoMaterno" required placeholder="Ingrese su apellido materno">
-            </div>
-        
-            <div class="campo">
-                <label for="telefono">Teléfono:</label>
-                <input type="number" id="telefono" required placeholder="Ingrese el teléfono">
-            </div>
-        
-            <div class="campo">
-                <label for="direccion">Dirección:</label>
-                <input type="text" id="direccion" required placeholder="Ingrese la dirección">
-            </div>
-            
-            <button type="button" class="guardar-cliente" onclick="guardarCliente()">
+        <!-- Formulario para agregar cliente -->
+    <h2>Agregar Cliente</h2>
+    <form id="agregarClienteForm">
+        <div class="campo">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" required placeholder="Ingrese su nombre">
+        </div>
+        <div class="campo">
+            <label for="apellidoPaterno">Apellido Paterno:</label>
+            <input type="text" id="apellidoPaterno" required placeholder="Ingrese su apellido paterno">
+        </div>
+        <div class="campo">
+            <label for="apellidoMaterno">Apellido Materno:</label>
+            <input type="text" id="apellidoMaterno" required placeholder="Ingrese su apellido materno">
+        </div>
+        <div class="campo">
+            <label for="telefono">Teléfono:</label>
+            <input type="number" id="telefono" required placeholder="Ingrese el teléfono">
+        </div>
+        <div class="campo">
+            <label for="direccion">Dirección:</label>
+            <input type="text" id="direccion" required placeholder="Ingrese la dirección">
+        </div>
+        <div class="botones">
+            <button type="submit" class="guardar-cliente" onclick="guardarCliente()">
                 Guardar Cliente 
                 <img src="../img/guardar.png" alt="guardar" width="40" height="40">
             </button>
-    <br>
-            <a href="Clientes_Registrados.html"><button type="button">Regresar</button></a>
+            <button type="button" class="regresar" onclick="window.location.href='Clientes_Registrados.html'">Regresar
+                <img src="../img/regresar.png" alt="guardar" width="40" height="40">
+            </button>
         </div>
+    </form>
+
+    <script>
+        // Ocultar la pantalla de carga después de un mínimo de 1 segundo
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.display = 'none';
+            }, 500); // 1000 ms = 1 segundo
+        });
+    </script>
         <script> 
             function guardarCliente() {
                 const cliente = {

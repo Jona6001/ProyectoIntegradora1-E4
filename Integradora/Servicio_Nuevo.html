@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="../css/stylesnueva.css">
     <script src="../scripts/script.js"></script>
 </head>
+<body>
+        <!-- Pantalla de carga -->
+        <div id="loading-screen">
+            <div class="spinner"></div>
+            <p>Cargando...</p>
+        </div>
     <!-- Encabezado -->
     <header>
         <div class="logo-title">
@@ -51,8 +57,9 @@
         </div>
         <button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
     </header>
-    <div id="formulario-cita">
-        <h2>Agregar Servicio</h2>
+    <h2>Agregar Servicio</h2>
+    <form id="agregarClienteForm">
+        
         
         <div class="campo">
             <label for="nombre">Nombre:</label>
@@ -68,16 +75,26 @@
             <label for="costo">Costo:</label> 
             <input type="number" id="costo" required placeholder="Ingrese el costo del servicio">
         </div>
-
-    
-        
+        <div class="botones" >
         <button type="button" class="guardar-servicio" onclick="guardarServicio()">
             Guardar Servicio 
             <img src="../img/guardar.png" alt="guardar" width="40" height="40">
         </button>
-<br>
-        <a href="Servicios_Registrados.html"><button type="button">Regresar</button></a>
+        <a href="Servicios_Registrados.html"><button class="regresar" type="button">Regresar
+            <img src="../img/regresar.png" alt="guardar" width="40" height="40">
+        </button></a>
     </div>
+    </form>
+    <script>
+        // Ocultar la pantalla de carga después de un mínimo de 1 segundo
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.display = 'none';
+            }, 500); // 1000 ms = 1 segundo
+        });
+    </script>
+        
+
     <script>// script.js
 
         function guardarServicio() {

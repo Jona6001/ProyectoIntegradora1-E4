@@ -8,6 +8,11 @@
     <script src="../scripts/script.js"></script>
 </head>
 <body>
+        <!-- Pantalla de carga -->
+        <div id="loading-screen">
+            <div class="spinner"></div>
+            <p>Cargando...</p>
+        </div>
     <!-- Encabezado -->
     <header>
         <div class="logo-title">
@@ -78,10 +83,22 @@
             <input type="time" id="hora" required>
         </div>
         <div class="botones">
-            <button type="submit" class="guardar-cita">Agregar Cita</button>
-            <button type="button" class="regresar" onclick="window.location.href='Citas_Registradas.html'">Regresar</button>
+            <button type="submit" class="guardar-cita">Agregar Cita
+                <img src="../img/guardar.png" alt="guardar" width="40" height="40">
+            </button>
+            <button type="button" class="regresar" onclick="window.location.href='Citas_Registradas.html'">Regresar
+                <img src="../img/regresar.png" alt="guardar" width="40" height="40">
+            </button>
         </div>
     </form>
+    <script>
+        // Ocultar la pantalla de carga después de un mínimo de 1 segundo
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.display = 'none';
+            }, 500); // 1000 ms = 1 segundo
+        });
+    </script>
     
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
