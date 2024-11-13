@@ -1,0 +1,272 @@
+/* Fuentes personalizadas */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+/* Estilo general del cuerpo */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, #e6f2ff, #cce7ff); /* Fondo degradado azul claro */
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+header {
+    display: flex;
+    justify-content: space-between; /* Espacia los elementos en el header */
+    align-items: center;
+    background-color: #007BFF;
+    color: white;
+    padding: 20px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+header h2 {
+    font-size: 24px;
+    margin: 0;
+}
+
+header p {
+    font-size: 18px;
+    margin: 0;
+}
+
+header button {
+    text-align: right;
+    background-color: #28a745; /* Verde */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+header button:hover {
+    background-color: #ff4d4d;
+    transform: scale(1.05);
+}
+
+/* Título */
+h1 {
+    font-size: 28px;
+    margin-top: 20px;
+    color: #007BFF;
+}
+
+/* Contenedor del formulario */
+#modificarCitaForm {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    width: 90%;
+    margin-top: 20px;
+    text-align: left; 
+    animation: fadeIn 0.5s ease; /* Animación de aparición */
+}
+
+/* Animación de aparición */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Estilos para cada campo del formulario */
+label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+select,
+input[type="date"],
+input[type="time"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    margin-bottom: 20px;
+}
+
+select:focus,
+input[type="date"]:focus,
+input[type="time"]:focus {
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+    outline: none;
+}
+
+/* Botón de guardar cita */
+.guardar-cita {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.guardar-cita img {
+    margin-left: 10px;
+    width: 24px;
+    height: 24px;
+}
+
+.guardar-cita:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+/* Estilos Responsivos */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 24px;
+    }
+
+    #modificarCitaForm {
+        max-width: 90%;
+        padding: 20px;
+    }
+}
+
+#formulario-cita {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    width: 90%;
+    margin-top: 20px;
+    text-align: left;
+}
+
+.campo {
+    margin-bottom: 20px;
+}
+
+.campo label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.campo input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.campo input:focus {
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+    outline: none;
+}
+
+/* Botón de guardar cliente */
+.guardarCliente {
+    background-color: #28a745; /* Verde */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.guardarCliente img {
+    margin-left: 10px;
+    width: 24px;
+    height: 24px;
+}
+
+.guardarCliente:hover {
+    background-color: #218838; /* Verde más oscuro */
+    transform: scale(1.05);
+}
+
+a button {
+    background-color: #007BFF; /* Azul */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+a button:hover {
+    background-color: #0056b3; /* Azul oscuro */
+}
+
+.guardarServicio {
+    background-color: #28a745; /* Verde */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.guardarServicio img {
+    margin-left: 10px;
+    width: 24px;
+    height: 24px;
+}
+
+.guardarServicio:hover {
+    background-color: #218838; /* Verde más oscuro */
+    transform: scale(1.05);
+}
+
+/* Estilos para el botón de regresar */
+a button {
+    background-color: #007BFF; /* Azul */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+a button:hover {
+    background-color: #0056b3; /* Azul oscuro */
+}

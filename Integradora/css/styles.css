@@ -9,6 +9,7 @@
   max-width: 150px;  /* Ajusta el tamaño máximo del logo */
   height: auto;      /* Mantiene la proporción del logo */
   margin-bottom: 20px; /* Añade un margen para separarlo del título */
+  border-radius: 100px;
 }
 body {
   background: #f0f4f8;
