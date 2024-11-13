@@ -22,31 +22,35 @@ window.onload = function() {
     mostrarClientes('clientesBody'); 
 };
 
-
-    // Función para cerrar sesión
-    function cerrarSesion() {
-        try {
-            // Realizar una solicitud para cerrar la sesión en el servidor
-            fetch('/logout', {
-                method: 'POST',
-            })
-            .then(response => {
-                if (response.ok) {
-                    // Redirigir al usuario a la página de inicio de sesión
-                    window.location.href = "/index.html";
-                } else {
-                    throw new Error('Error al cerrar sesión');
-                }
-            })
-            .catch(error => {
-                console.error('Error al cerrar sesión:', error);
-                alert('Ha ocurrido un error al cerrar sesión.');
-            });
-        } catch (error) {
-            console.error('Error inesperado al cerrar sesión:', error);
-            alert('Ha ocurrido un error al cerrar sesión.');
+// Función para cerrar sesión con confirmación
+function cerrarSesion() {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¿Deseas cerrar sesión?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, cerrar sesión',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Si el usuario confirma, envía la solicitud para cerrar sesión
+            fetch('/logout', { method: 'POST' })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = "/index.html";
+                    } else {
+                        throw new Error('Error al cerrar sesión');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al cerrar sesión:', error);
+                    Swal.fire('Error', 'Ha ocurrido un error al cerrar sesión.', 'error');
+                });
         }
-    }
+    });
+}
     
 
 
@@ -56,20 +60,21 @@ window.onload = function() {
 async function buscarCitasPorFecha() {
     const fechaSeleccionada = document.getElementById('fechaFiltro').value;
     if (!fechaSeleccionada) {
-        alert('Por favor, selecciona una fecha.');
+        Swal.fire('Información', 'Por favor, selecciona una fecha.', 'info');
         return;
     }
 
     try {
         const response = await fetch(`/citas_recientes?fecha=${encodeURIComponent(fechaSeleccionada)}`);
-        citas = await response.json(); // Guardar las citas en la variable global
-        currentPage = 1; // Reiniciar la página a 1
+        citas = await response.json();
+        currentPage = 1;
         mostrarResultadosCitas(citas, 'citasBody', true);
     } catch (error) {
         console.error('Error al buscar citas:', error);
-        alert('No hay citas para la fecha seleccionada.');
+        Swal.fire('Error', 'No hay citas para la fecha seleccionada.', 'error');
     }
 }
+
 
 // Función para mostrar citas en la tabla
 async function mostrarCitasRecientes(idTablaCitas, conBotones = false) {
@@ -102,7 +107,7 @@ async function mostrarCitasProximas() {
     } catch (error) {
         console.error('Error al cargar citas próximas:', error);
         const citasBody = document.getElementById('citasBody');
-        citasBody.innerHTML = '<tr><td colspan="6"><center>Error al cargar citas próximas.</center></td></tr>';
+        citasBody.innerHTML = '<tr><td colspan="6"><center>No se han encontrado citas procimas.</center></td></tr>';
     }
 }
 
@@ -130,8 +135,9 @@ function mostrarResultadosCitasProximas(citasArray, idTablaCitas, conBotones) {
             <td>${cita.Hora}</td>
             <td>${cita.Servicio}</td>
             <td>${cita.Estado}</td>
-            ${conBotones ? `<td><button onclick="editarCita(${cita.Cita_ID})">Editar</button>
-            <button onclick="eliminarCita(${cita.Cita_ID})">Eliminar</button></td>` : '' }
+            ${conBotones ? `<td>
+                <button class="accion-btn editar" onclick="editarCita(${cita.Cita_ID})" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px;">Editar</button>
+                <button class="accion-btn eliminar" onclick="eliminarCita(${cita.Cita_ID})" style="background-color: #f44336; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 14px;">Eliminar</button></td>` : '' }
         </tr>`;
         citasBody.innerHTML += row;
     }
@@ -185,8 +191,14 @@ function mostrarResultadosCitas(citasArray, idTablaCitas, conBotones) {
             <td>${cita.Servicio}</td>
             <td>${cita.Estado}</td>
 
-            ${conBotones ? `<td><button onclick="editarCita(${cita.Cita_ID})">Editar</button>
-            <button onclick="eliminarCita(${cita.Cita_ID})">Eliminar</button></td>` : '' }
+            ${conBotones ? `<td> <button onclick="editarCita(${cita.Cita_ID})" 
+                style="background-color: #4CAF50; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                Editar
+            </button>
+            <button onclick="eliminarCita(${cita.Cita_ID})" 
+                style="background-color: #f44336; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                Eliminar
+            </button></td>` : '' }
         </tr>`;
         citasBody.innerHTML += row;
     }
@@ -219,20 +231,34 @@ function editarCita(citaID) {
 
 // Función para eliminar una cita con el botón
 function eliminarCita(citaID) {
-    if (confirm('¿Estás seguro de que deseas eliminar esta cita?')) {
-        fetch(`/eliminarCita/${citaID}`, {
-            method: 'DELETE',
-        })
-        .then(response => {
-            if (response.ok) {
-                alert('Cita eliminada con éxito');
-                mostrarCitasRecientes('citasBody', true); // Recargar la tabla de citas en el gestor
-            } else {
-                alert('Error al eliminar la cita');
-            }
-        })
-        .catch(error => console.error('Error al eliminar cita:', error));
-    }
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¡No podrás revertir esta acción!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/eliminarCita/${citaID}`, {
+                method: 'DELETE',
+            })
+            .then(response => {
+                if (response.ok) {
+                    Swal.fire('Eliminado', 'La cita ha sido eliminada con éxito.', 'success');
+                    mostrarCitasRecientes('citasBody', true); // Recargar la tabla de citas en el gestor
+                } else {
+                    Swal.fire('Error', 'Error al eliminar la cita.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error al eliminar cita:', error);
+                Swal.fire('Error', 'No se pudo eliminar la cita.', 'error');
+            });
+        }
+    });
 }
 
 // Función para mostrar clientes con paginación
@@ -274,8 +300,14 @@ function mostrarResultadosClientes(clientesArray, clientesBody) {
             <td>${cliente.Tel}</td>
             <td>${cliente.Direccion}</td>
             <td>
-                <button onclick="editarCliente(${cliente.Cliente_ID})">Editar</button>
-                <button onclick="eliminarCliente(${cliente.Cliente_ID})">Eliminar</button>
+                 <button onclick="editarCita(${cliente.Cliente_ID})" 
+                style="background-color: #4CAF50; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                Editar
+            </button>
+            <button onclick="eliminarCita(${cliente.Cliente_ID})" 
+                style="background-color: #f44336; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                Eliminar
+            </button>
             </td>
         </tr>`;
         clientesBody.innerHTML += row;
@@ -350,9 +382,14 @@ function mostrarResultadosServicios(serviciosArray, serviciosBody) {
             <td>${servicio.Descripcion}</td>
             <td>${servicio.Costo} $</td>
           
-            <td>
-                <button onclick="editarServicio(${servicio.Servicio_ID})">Editar</button>
-                <button onclick="eliminarServicio(${servicio.Servicio_ID})">Eliminar</button>
+            <td> <button onclick="editarCita(${servicio.Servicio_ID})" 
+                style="background-color: #4CAF50; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                Editar
+            </button>
+            <button onclick="eliminarCita(${servicio.Servicio_ID})" 
+                style="background-color: #f44336; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                Eliminar
+            </button>
             </td>
         </tr>`;
         serviciosBody.innerHTML += row;
@@ -462,9 +499,14 @@ function mostrarResultadosEmpleados(empleadosArray, empleadosBody) {
         <tr>
             <td>${empleado.Username}</td>
             <td>${empleado.Rol}</td>
-            <td>
-                <button onclick="editarEmpleado(${empleado.Empleados_ID})">Editar</button>
-                <button onclick="eliminarEmpleado(${empleado.Empleados_ID})">Eliminar</button>
+            <td> <button onclick="editarCita(${empleados.Empleados_ID})" 
+                style="background-color: #4CAF50; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                Editar
+            </button>
+            <button onclick="eliminarCita(${empleados.Empleados_ID})" 
+                style="background-color: #f44336; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                Eliminar
+            </button>
             </td>
         </tr>`;
         empleadosBody.innerHTML += row;
