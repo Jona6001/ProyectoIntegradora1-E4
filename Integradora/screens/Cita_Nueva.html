@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nueva Cita</title>
     <link rel="stylesheet" href="..//css/stylesnueva.css">
+        <!-- SweetAlert2 CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        <!-- SweetAlert2 JS -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../scripts/script.js"></script>
 </head>
 <body>
@@ -107,7 +111,7 @@
             await cargarEmpleados();
             await cargarServicios();
         });
-
+    
         async function cargarClientes() {
             const response = await fetch('/clientes');
             const clientes = await response.json();
@@ -119,7 +123,7 @@
                 clienteSelect.appendChild(option);
             });
         }
-
+    
         async function cargarEmpleados() {
             const response = await fetch('/empleados');
             const empleados = await response.json();
@@ -131,7 +135,7 @@
                 empleadoSelect.appendChild(option);
             });
         }
-
+    
         async function cargarServicios() {
             const response = await fetch('/obtenerServicios');
             const servicios = await response.json();
@@ -143,7 +147,7 @@
                 servicioSelect.appendChild(option);
             });
         }
-
+    
         document.getElementById('nuevaCitaForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const clienteId = document.getElementById('clienteSelect').value;
@@ -151,18 +155,31 @@
             const servicioId = document.getElementById('servicioSelect').value;
             const fecha = document.getElementById('fecha').value;
             const hora = document.getElementById('hora').value;
-
+    
             const response = await fetch('/nueva_cita', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ clienteId, empleadoId, servicioId, fecha, hora }),
             });
-
+    
             if (response.ok) {
-                alert('Cita agregada con éxito');
-                window.location.href = 'Citas_Registradas.html'; // Redirige a la página de citas registradas
+                // Alerta de éxito usando SweetAlert
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Cita agregada con éxito!',
+                    text: 'La cita se ha registrado correctamente.',
+                    confirmButtonText: 'Aceptar',
+                }).then(() => {
+                    window.location.href = 'Citas_Registradas.html'; // Redirige a la página de citas registradas
+                });
             } else {
-                alert('Error al agregar la cita');
+                // Alerta de error usando SweetAlert
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al agregar la cita',
+                    text: 'Hubo un problema al intentar agregar la cita. Por favor, inténtalo nuevamente.',
+                    confirmButtonText: 'Aceptar',
+                });
             }
         });
     </script>

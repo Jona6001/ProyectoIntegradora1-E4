@@ -5,52 +5,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestor de citas</title>
     <script src="../scripts/script.js" defer></script>
+    <link rel="stylesheet" href="../css/stylesregistrada.css" >
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>window.onload = function() { mostrarCitasRecientes('citasBody', true); }; </script>
-
+ 
 </head>
 <body>
+    <header>
+        <div class="logo-title">
+            <a href="main.html" class="logo-link">
+                <img src="../img/logo.jpg" alt="Logo Agenda Dental" class="logo">
+                <span class="inicio-text">Inicio</span>
+            </a>
+        </div>
+        <!-- Menú horizontal con accesos desplegables -->
+        <nav id="menu-gestores">
+            <ul>
+                <li><a href="#">Gestión de Citas</a>
+                    <ul>
+                        <li><a href="../screens/Cita_Nueva.html">Agregar Cita</a></li>
+                        <li><a href="../screens/Citas_Registradas.html">Ver Citas Registradas</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Gestión de Clientes</a>
+                    <ul>
+                        <li><a href="Cliente_Nuevo.html">Agregar Cliente</a></li>
+                        <li><a href="Clientes_Registrados.html">Ver Clientes Registrados</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Gestión de Servicios</a>
+                    <ul>
+                        <li><a href="Servicio_Nuevo.html">Agregar Servicio</a></li>
+                        <li><a href="Servicios_Registrados.html">Ver Servicios</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Gestión de Empleados</a>
+                    <ul>
+                        <li><a href="Empleado_Nuevo.html">Agregar Empleado</a></li>
+                        <li><a href="Empleados_Registrados.html">Ver Empleados Registrados</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>   
+        <button id="logoutButton" class="btn-animated" onclick="cerrarSesion()">Cerrar Sesión</button>
+    </header>
+    
+    <div class="tabla-container">
+        <center><h1>Gestor de Citas</h1></center>
+        <center><h2>Citas Registradas</h2></center>
+    
+        <div class="busqueda-container">
+            <label for="fechaFiltro">Mostrar citas desde:</label>
+            <input type="date" id="fechaFiltro">
+            <button type="button" onclick="buscarCitasPorFecha()">Buscar Citas</button>
+            <button type="button" onclick="mostrarCitasRecientes('citasBody', true)">Mostrar Citas para Hoy</button>
+            <button type="button" onclick="mostrarCitasProximas()" id="citasProximasBtn">Mostrar Citas Próximas</button>
+        </div>
+    
+        <table id="tablaCitas">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Servicio</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="citasBody"></tbody>
+        </table>
+    </div>
+    
+    <div id="pagination" style="text-align: center; margin-top: 10px;"></div>
+    
+    <div class="botones-footer">
+        <a href="Cita_Nueva.html"><button type="button" id="NuevaCita">Nueva Cita</button></a>
+        <a href="main.html"><button type="button" id="Salir">Salir</button></a>
+    </div>
+    
 
-<center><h1>Gestor de citas</h1></center>
-<button id="logoutButton" class="btn-animated" onclick="cerrarSesion()">Cerrar Sesión</button>
-<center><h2>Citas Registradas</h2></center>
-
-<center>
-    <label for="fechaFiltro">Mostrar citas desde:</label>
-    <input type="date" id="fechaFiltro">
-    <button type="button" onclick="buscarCitasPorFecha()">Buscar Citas</button>
-    <button type="button" onclick="mostrarCitasRecientes('citasBody', true)">Mostrar Citas para Hoy</button>
-    <button type="button" onclick="mostrarCitasProximas()" id="citasProximasBtn">Mostrar Citas Próximas</button>
-</center>
-
-<br>
-
-<center>
-    <table border="1" id="tablaCitas">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Fecha</th>
-                <th>Hora</th>
-                <th>Servicio</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody id="citasBody"></tbody>
-    </table>
-</center>
-
-<div id="pagination" style="text-align: center; margin-top: 10px;"></div>
-
-<br>
-
-<center>
-    <a href="Cita_Nueva.html"><button type="button" id="NuevaCita">Nueva Cita</button></a>
-</center>
-
-<center>
-    <a href="main.html"><button type="button" id="Salir">Salir</button></a>
-</center>
 <script>
     // Verificar si la sesión está activa
     fetch('/isAuthenticated', { method: 'GET' })

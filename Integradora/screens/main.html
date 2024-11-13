@@ -6,21 +6,67 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menú principal</title>
     <link rel="stylesheet" href="../css/stylesmain.css">
+        <!-- SweetAlert2 CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        <!-- SweetAlert2 JS -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../scripts/script.js" defer></script>
     <script src="../scripts/index.js"></script>
 </head>
 <body>
-    <header>
-        <h1 id="bienvenido">Bienvenido</h1>
-        <p id="fecha"></p>
-
-        <button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
-    </header>
-
+            <!-- Pantalla de carga -->
+            <div id="loading-screen">
+                <div class="spinner"></div>
+                <p>Cargando...</p>
+            </div>
+<header>
     <div class="logo-title">
         <img src="../img/logo.jpg" alt="Logo Agenda Dental" class="logo">
-        <h1>Consultorio Dental</h1>
+        <div class="welcome-message">
+            <h1>Bienvenido a tu Consultorio Dental</h1>
+            <p id="bienvenido"></p>
+            <p id="fecha"></p>
+        </div>
     </div>
+    <button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
+</header>
+
+
+
+        <!-- Menú horizontal con accesos desplegables -->
+        <nav id="menu-gestores">
+            <ul>
+                <li><a href="#">Gestión de Citas</a>
+                    <ul>
+                        <li><a href="../screens/Cita_Nueva.html">Agregar Cita</a></li>
+                        <li><a href="../screens/Citas_Registradas.html">Ver Citas Registradas</a></li>
+
+                    </ul>
+                </li>
+                <li><a href="#">Gestión de Clientes</a>
+                    <ul>
+                        <li><a href="Cliente_Nuevo.html">Agregar Cliente</a></li>
+                        <li><a href="Clientes_Registrados.html">Ver Clientes Registrados</a></li>
+                
+                    </ul>
+                </li>
+                <li><a href="#">Gestión de Servicios</a>
+                    <ul>
+                        <li><a href="Servicio_Nuevo.html">Agregar Servicio</a></li>
+                        <li><a href="Servicios_Registrados.html">Ver Servicios</a></li>
+
+                    </ul>
+                </li>
+                
+                <li id="menu-gestion-empleados"><a href="#">Gestión de Empleados</a>
+                    <ul>
+                        <li><a href="Empleado_Nuevo.html">Agregar Empleado</a></li>
+                        <li><a href="Empleados_Registrados.html">Ver Emplaedos Registrados</a></li>
+
+                    </ul>
+                </li>
+            </ul>
+        </nav>
 
     <table border="1" id="tablaCitas"> <h1 id="titulotabla">Citas para el día de hoy:</h1>
         <thead>
@@ -36,40 +82,7 @@
     </table>
     <div id="paginationMain"></div>
     
-    <!-- Menú horizontal con accesos desplegables -->
-    <nav id="menu-gestores">
-        <ul>
-            <li><a href="#">Gestión de Citas</a>
-                <ul>
-                    <li><a href="../screens/Cita_Nueva.html">Agregar Cita</a></li>
-                    <li><a href="../screens/Citas_Registradas.html">Ver Citas Registradas</a></li>
-                    <li><a href="../screens/Cita_Modificar.html">Modificar Citas </a></li>
-                </ul>
-            </li>
-            <li><a href="#">Gestión de Clientes</a>
-                <ul>
-                    <li><a href="Cliente_Nuevo.html">Agregar Cliente</a></li>
-                    <li><a href="Clientes_Registrados.html">Ver Clientes Registrados</a></li>
-                    <li><a href="Cliente_Modificar.html">Modificar Clientes</a></li>
-                </ul>
-            </li>
-            <li><a href="#">Gestión de Servicios</a>
-                <ul>
-                    <li><a href="Servicio_Nuevo.html">Agregar Servicio</a></li>
-                    <li><a href="Servicios_Registrados.html">Ver Servicios</a></li>
-                    <li><a href="Servicio_Modificar.html">Modificar Servicios</a></li>
-                </ul>
-            </li>
-            
-            <li><a href="#">Gestión de Empleados</a>
-                <ul>
-                    <li><a href="Empleado_Nuevo.html">Agregar Empleado</a></li>
-                    <li><a href="Empleados_Registrados.html">Ver Emplaedos Registrados</a></li>
-                    <li><a href="Empleado_Modificar.html">Ver Empleado</a></li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
+
 
     <div class="container">
         <section id="gestor-citas">
@@ -110,6 +123,15 @@
         </section>
     </div>
     <script>
+        // Ocultar la pantalla de carga después de un mínimo de 1 segundo
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.display = 'none';
+            }, 500); // 1000 ms = 1 segundo
+        });
+    </script>
+
+    <script>
         // Verificar si la sesión está activa
         fetch('/isAuthenticated', { method: 'GET' })
             .then(response => {
@@ -141,8 +163,10 @@
                 // Mostrar "gestor-empleado" solo si el rol es "admin"
                 if (data.rol === 'admin') {
                     document.getElementById('gestor-empleado').style.display = 'block';
+                    document.getElementById('menu-gestion-empleados').style.display = 'list-item';
                 } else {
                     document.getElementById('gestor-empleado').style.display = 'none';
+                    document.getElementById('menu-gestion-empleados').style.display = 'none';
                 }
             }
         })

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de citas</title>
+    <link rel="stylesheet" href="../css/stylesregistrada.css">
+        <!-- SweetAlert2 CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        <!-- SweetAlert2 JS -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../scripts/script.js" defer></script>
+    <link rel="shortcut icon" href="../img/logo.jpg" type="image/x-icon">
+    <script>window.onload = function() { mostrarEmpleados('empleadosBody'); }; </script>
+
+</head>
+<body>
+
+    <header>
+        <div class="logo-title">
+            <a href="main.html" class="logo-link">
+                <img src="../img/logo.jpg" alt="Logo Agenda Dental" class="logo">
+                <span class="inicio-text">Inicio</span>
+            </a>
+        </div>
+        <!-- Menú horizontal con accesos desplegables -->
+        <nav id="menu-gestores">
+            <ul>
+                <li><a href="#">Gestión de Citas</a>
+                    <ul>
+                        <li><a href="../screens/Cita_Nueva.html">Agregar Cita</a></li>
+                        <li><a href="../screens/Citas_Registradas.html">Ver Citas Registradas</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Gestión de Clientes</a>
+                    <ul>
+                        <li><a href="Cliente_Nuevo.html">Agregar Cliente</a></li>
+                        <li><a href="Clientes_Registrados.html">Ver Clientes Registrados</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Gestión de Servicios</a>
+                    <ul>
+                        <li><a href="Servicio_Nuevo.html">Agregar Servicio</a></li>
+                        <li><a href="Servicios_Registrados.html">Ver Servicios</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Gestión de Empleados</a>
+                    <ul>
+                        <li><a href="Empleado_Nuevo.html">Agregar Empleado</a></li>
+                        <li><a href="Empleados_Registrados.html">Ver Empleados Registrados</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>   
+        <button id="logoutButton" class="btn-animated" onclick="cerrarSesion()">Cerrar Sesión</button>
+    </header>
+
+    <!-- Contenedor principal -->
+    <div class="tabla-container">
+        <h1>Gestionar Empleados</h1>
+        <h2>Empleados Registrados</h2>
+
+        <!-- Filtros de citas -->
+        <div class="busqueda-container">
+            <label for="fechaFiltro">Mostrar Empleados</label>
+        </div>
+
+        <!-- Tabla de empleados -->
+        <div class="tabla-container">
+            <table id="tablaEmpleados" border="1">
+                <thead>
+                    <tr>
+                    <th>Nombre</th>
+                    <th>Rol</th>
+                    <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="empleadosBody"></tbody>
+            </table>
+        </div>
+
+    <!-- Contenedor de paginación -->
+        <div id="paginationServicios"></div>
+
+    <!-- Botones de navegación -->
+    <div class="botones-footer">
+        <a href="Empleado_Nuevo.html"><button type="button" id="Nuevo">Nuevo Empleado</button></a>
+        <a href="main.html"><button type="button" id="Salir">Salir</button></a>
+    </div>
+</div>
+
+    <script>// Suponiendo que el ID del empleado se pasa en la URL como parámetro
+        const urlParams = new URLSearchParams(window.location.search);
+        const empleadoId = urlParams.get('id');
+        
+        // Función para cargar datos del empleado y roles
+        document.addEventListener('DOMContentLoaded', async () => {
+            await cargarEmpleado();
+            await cargarRoles();
+        });
+        
+        // Función para cargar los datos del empleado en el formulario
+        async function cargarEmpleado() {
+            try {
+                const response = await fetch(`/empleados/${empleadoId}`);
+                if (response.ok) {
+                    const empleado = await response.json();
+                    console.log('Datos del empleado:', empleado); // Verificar datos
+                    document.getElementById('nombre_empleado').value = empleado.Nombre;
+                    document.getElementById('rolSelect').value = empleado.Rol; // Selecciona el rol actual
+                } else {
+                }
+            } catch (error) {
+                console.error('Error al cargar empleado:', error);
+            }
+        }
+        
+        // Función para cargar los roles en el select
+        async function cargarRoles() {
+            try {
+                const response = await fetch('/roles'); // Ruta para obtener roles
+                const roles = await response.json();
+                const rolSelect = document.getElementById('rolSelect');
+                roles.forEach(rol => {
+                    const option = document.createElement('option');
+                    option.value = rol;
+                    option.textContent = rol;
+                    rolSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error al cargar roles:', error);
+            }
+        }
+
+         // Verificar si la sesión está activa
+         fetch('/isAuthenticated', { method: 'GET' })
+            .then(response => {
+                if (!response.ok) {
+                    // Si no está autenticado, redirigir al inicio de sesión
+                    window.location.href = '/';
+                }
+            });
+            document.addEventListener('DOMContentLoaded', () => {
+            fetch('/verificar_sesion', { method: 'GET', credentials: 'same-origin' })
+                .then(response => {
+                    if (!response.ok) {
+                        window.location.href = '/'; // Redirige al inicio si no hay sesión
+                    }
+                })
+                .catch(error => {
+                    console.error('Error verificando la sesión:', error);
+                    window.location.href = '/'; // Redirige al inicio en caso de error
+                });
+        });
+    </script>
+</body>
+</html>

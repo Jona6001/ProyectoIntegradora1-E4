@@ -1,0 +1,199 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/D/DOCS USUARIO/Escritorio/Carpeta/index.html",
+		"/D/DOCS USUARIO/Escritorio/Carpeta/script.js",
+		"/D/DOCS USUARIO/Escritorio/Carpeta/style.css",
+		"/C/xamp/htdocs/practicas axel sandoval/practicasaxelsandoval/MOUSIK/top.html",
+		"/C/xamp/htdocs/practicas axel sandoval/practicasaxelsandoval/MOUSIK/rock.html",
+		"/C/xamp/htdocs/practicas axel sandoval/practicasaxelsandoval/MOUSIK/pop.html",
+		"/C/xamp/htdocs/practicas axel sandoval/practicasaxelsandoval/MOUSIK/reggaeton.html",
+		"/C/xamp/htdocs/practicas axel sandoval/practicasaxelsandoval/MOUSIK/info.html",
+		"/C/xamp/htdocs/practicas axel sandoval/practicasaxelsandoval/MOUSIK/hola.py",
+		"/C/xamp/htdocs/practicas axel sandoval/practicasaxelsandoval/MOUSIK/base.html",
+		"/C/xamp/htdocs/practicas axel sandoval/practicasaxelsandoval/MOUSIK/login1.html",
+		"/C/xamp/htdocs/practicas axel sandoval/practicasaxelsandoval/MOUSIK/index.html",
+		"/C/xamp/htdocs/practicas axel sandoval/practicasaxelsandoval/MOUSIK/error.html",
+		"/C/xamp/htdocs/practicas axel sandoval/practicasjesus/formulario.php",
+		"/C/xamp/htdocs/practicas axel sandoval/practicasjesus/formulario2.php",
+		"/C/xamp/htdocs/practicas axel sandoval/practicasjesus/Hola_mundo.php",
+		"/C/xamp/htdocs/practicas axel sandoval/practicasjesus/bajas1.php",
+		"/D/DOCS USUARIO/Documentos/reto8b.html",
+		"/D/DOCS USUARIO/Descargas/reto 6a.html",
+		"/D/DOCS USUARIO/Descargas/reto6c.html",
+		"/D/DOCS USUARIO/Escritorio/MOUSIKjavier-20220414T193548Z-001/MOUSIK/assets/css/estilosrock.css",
+		"/D/DOCS USUARIO/Escritorio/MOUSIKjavier-20220414T193548Z-001/MOUSIK/reggaeton.html",
+		"/D/DOCS USUARIO/Escritorio/MOUSIKjavier-20220414T193548Z-001/MOUSIK/assets/css/estilos.css",
+		"/D/DOCS USUARIO/Escritorio/MOUSIKjavier-20220414T193548Z-001/MOUSIK/popAxel/apppop.js",
+		"/D/DOCS USUARIO/Escritorio/MOUSIKjavier-20220414T193548Z-001/MOUSIK/popAxel/pop.html",
+		"/D/DOCS USUARIO/Escritorio/MOUSIKjavier-20220414T193548Z-001/MOUSIK/rock.html",
+		"/D/DOCS USUARIO/Escritorio/MOUSIKjavier-20220414T193548Z-001/MOUSIK/pop.html",
+		"/D/DOCS USUARIO/Escritorio/MOUSIKjavier-20220414T193548Z-001/MOUSIK/apppop.js",
+		"/D/DOCS USUARIO/Escritorio/MOUSIKjavier-20220414T193548Z-001/MOUSIK/assets/js/app.js",
+		"/D/DOCS USUARIO/Escritorio/MOUSIKjavier-20220414T193548Z-001/MOUSIK/MUSICA/Pop/Los Retros (Retrospect) - Friends (Subtítulos en español) Lyrics.mp3",
+		"/D/DOCS USUARIO/Escritorio/MOUSIKjavier-20220414T193548Z-001/MOUSIK/assets/musicJSON/deporte.json",
+		"/D/DOCS USUARIO/Documentos/MOUSIK/Copia de index.html",
+		"/D/DOCS USUARIO/Documentos/MOUSIK/BOCETO(1).html",
+		"/D/DOCS USUARIO/Documentos/MOUSIK/boceto.html",
+		"/D/DOCS USUARIO/Documentos/MOUSIK/assets/mk2.png"
+	],
+	"find":
+	{
+		"height": 0.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "main.sublime-project",
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
