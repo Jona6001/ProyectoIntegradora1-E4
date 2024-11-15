@@ -1,0 +1,325 @@
+/* Estilo general del cuerpo */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #e6f2ff;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Encabezado */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+header h1 {
+    font-size: 1.8em;
+    margin: 0;
+    flex-grow: 1;
+}
+
+header p {
+    font-size: 1em;
+    color: #e0e0e0;
+    margin-right: 20px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    font-style: italic;
+}
+
+header button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-right: 80px;
+    margin-left: 20px;
+}
+
+header button:hover {
+    background-color: #ff4d4d;
+    transform: scale(1.05);
+}
+
+.logo-title {
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+    flex-grow: 1;
+    margin-left: 30px;  
+}
+
+.logo-link {
+    text-align: center;
+    text-decoration: none;
+    color: white;
+}
+
+.logo {
+    width: 60px;
+    margin: 0 auto;
+    border-radius: 50%;
+}
+
+.inicio-text {
+    display: block;
+    text-align: center;
+    font-size: 0.9em;
+    margin-top: 5px;
+    font-weight: bold;
+    color: white;
+}
+
+/* Menú de navegación */
+nav {
+
+    padding: 10px 0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+nav ul li {
+    position: relative;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: #ffffff;
+    padding: 10px 15px;
+    text-decoration: none;
+    transition: color 0.3s, background-color 0.3s;
+}
+
+nav ul li a:hover {
+    color: #000000;
+}
+
+nav ul li ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #2ba5e7;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+nav ul li:hover ul {
+    display: block;
+}
+
+nav ul li ul li {
+    margin: 0;
+}
+
+nav ul li ul li a {
+    display: block;
+    padding: 10px 15px;
+    white-space: nowrap;
+}
+
+nav ul li ul li a:hover {
+    background-color: #e2e6ea;
+}
+/* Estilo del título principal */
+h1 {
+    font-size: 2.5em;
+    color: #007BFF;
+    margin-top: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+h2 {
+    font-size: 2em;
+    color: #333;
+    margin-top: 10px;
+    text-align: center;
+    font-weight: normal;
+}
+
+/* Estilo del contenedor de búsqueda */
+.busqueda-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.busqueda-container label {
+    font-size: 1.1em;
+    color: #333;
+}
+
+#fechaFiltro {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1em;
+}
+
+.busqueda-container button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.busqueda-container button:hover {
+    background-color: #218838;
+}
+
+/* Estilo de la tabla de citas */
+.tabla-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Tabla general */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #007BFF;
+    color: white;
+    font-weight: bold;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Estilos para los botones de acciones */
+.accion-btn {
+    background-color: #007BFF;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9em;
+    margin: 0 5px;
+    transition: background-color 0.3s ease;
+}
+
+.accion-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Estilo del contenedor de paginación */
+#pagination {
+    font-size: 1em;
+    color: #333;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Estilo para los botones en el pie de página */
+.botones-footer {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.botones-footer button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.botones-footer button#Salir {
+    background-color: #007BFF;
+}
+
+.botones-footer button:hover {
+    background-color: #0056b3;
+}
+
+.botones-footer button#Salir:hover {
+    background-color: #0056b3;
+}
+/* Estilos de botones en la columna Acciones */
+.accion-btn {
+    background-color: #007BFF;
+    color: #ffffff;
+    padding: 8px 12px;
+    font-size: 0.9em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 0 5px;
+}
+
+
+/* Estilo responsivo para pantallas más pequeñas */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2em;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+
+    .busqueda-container {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .tabla-container {
+        padding: 15px;
+    }
+
+    .botones-footer {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
