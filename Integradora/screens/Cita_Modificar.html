@@ -5,33 +5,95 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar Cita</title>
     <link rel="stylesheet" href="../css/stylesmodificar.css">
+            <!-- SweetAlert2 CSS -->
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+            <!-- SweetAlert2 JS -->
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<body>
-    <h1>Modificar Cita</h1>
-    <form id="modificarCitaForm">
-        <label for="clienteSelect">Seleccionar Cliente:</label>
-        <select id="clienteSelect" required></select>
-    
-        <label for="servicioSelect">Seleccionar Servicio:</label>
-        <select id="servicioSelect" required></select>
-        
-        <label for="fecha">Fecha:</label>
-        <input type="date" id="fecha" required>
-        
-        <label for="hora">Hora:</label>
-        <input type="time" id="hora" required>
+<body> 
 
-        <label for="estadoSelect">Selecciona el estado de la cita:</label>
-        <select id="estadoSelect" required>
-            <option value="pendiente">pendiente</option>
-            <option value="realizada">realizada</option>
-        </select>
+<!-- Encabezado -->
+<header>
+    <div class="logo-title">
+        <a href="main.html" class="logo-link">
+            <img src="../img/logo.jpg" alt="Logo Agenda Dental" class="logo">
+            <span class="inicio-text">Inicio</span>
+        </a>
+    </div>
+    <nav id="menu-gestores">
+        <ul>
+            <li><a href="#">Gestión de Citas</a>
+                <ul>
+                    <li><a href="../screens/Cita_Nueva.html">Agregar Cita</a></li>
+                    <li><a href="../screens/Citas_Registradas.html">Ver Citas Registradas</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Gestión de Clientes</a>
+                <ul>
+                    <li><a href="Cliente_Nuevo.html">Agregar Cliente</a></li>
+                    <li><a href="Clientes_Registrados.html">Ver Clientes Registrados</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Gestión de Servicios</a>
+                <ul>
+                    <li><a href="Servicio_Nuevo.html">Agregar Servicio</a></li>
+                    <li><a href="Servicios_Registrados.html">Ver Servicios</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Gestión de Empleados</a>
+                <ul>
+                    <li><a href="Empleado_Nuevo.html">Agregar Empleado</a></li>
+                    <li><a href="Empleados_Registrados.html">Ver Empleados Registrados</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>   
+    <button type="button" class="btn btn-secondary" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
+</header>
 
-        <button type="button" class="guardar-cita" onclick="actualizarCita()">
-            Guardar Cita 
-            <img src="imagenes/guardar.png" alt="guardar" width="40" height="40">
-        </button>
-    </form>
+<main>
+    <section class="form-container">
+        <h2 class="form-title">Modificar Cita</h2>
+        <form id="modificarCitaForm">
+            <div class="campo">
+                <label for="clienteSelect">Seleccionar Cliente:</label>
+                <select id="clienteSelect" required></select>
+            </div>
+        
+            <div class="campo">
+                <label for="servicioSelect">Seleccionar Servicio:</label>
+                <select id="servicioSelect" required></select>
+            </div>
+            
+            <div class="campo">
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" required>
+            </div>
+            
+            <div class="campo">
+                <label for="hora">Hora:</label>
+                <input type="time" id="hora" required>
+            </div>
+
+            <div class="campo">
+                <label for="estadoSelect">Selecciona el estado de la cita:</label>
+                <select id="estadoSelect" required>
+                    <option value="pendiente">pendiente</option>
+                    <option value="realizada">realizada</option>
+                </select>
+            </div>
+
+            <div class="botones-footer">
+                <button type="button" class="btn btn-primary" onclick="actualizarCita()">Guardar Cita
+                    <img src="../img/guardar.png" alt="guardar" width="40" height="40">
+                </button>
+                <button type="button" class="regresar" onclick="window.location.href='Citas_Registradas.html'">Regresar
+                    <img src="../img/regresar.png" alt="guardar" width="40" height="40">
+                </button>
+            </div>
+        </form>
+    </section>
+</main>
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);

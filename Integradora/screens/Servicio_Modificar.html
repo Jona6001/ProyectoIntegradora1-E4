@@ -5,37 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar Servicio</title>
     <link rel="stylesheet" href="../css/stylesmodificar.css">
+            <!-- SweetAlert2 CSS -->
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+            <!-- SweetAlert2 JS -->
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../scripts/script.js" defer></script>
 </head>
-<body>
-    <img src="" alt="Diente">
-    <center><h1>Gestor de citas</h1></center>
-    <button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
-    <center><h2>Modificar Servicio</h2></center>
-    <br>
-    <div id="formulario-cita">
-        <div class="campo">
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombreServicio" required placeholder="Ingrese el nombre del servicio">
-        </div>
 
-        <div class="campo">
-            <label for="descripcion">Descripción:</label> 
-            <input type="text" id="descripcion" required placeholder="Ingrese una descripción del servicio"> 
-        </div>
-
-        <div class="campo">
-            <label for="costo">Costo:</label> 
-            <input type="number" id="costo" required placeholder="Ingrese el costo del servicio">
-        </div>
-        
-        <button type="button" class="guardarServicio" onclick="guardarServicio()">
-            Guardar Servicio
-            <img src="imagenes/guardar.png" alt="guardar" width="40" height="40">
-        </button>
-        <br>
-        <a href="Servicios_Registrados.html"><button type="button">Regresar</button></a>
+<header>
+    <div class="logo-title">
+        <a href="main.html" class="logo-link">
+            <img src="../img/logo.jpg" alt="Logo Agenda Dental" class="logo">
+            <span class="inicio-text">Inicio</span>
+        </a>
     </div>
+    <nav>
+        <ul>
+            <li><a href="#">Gestión de Citas</a>
+                <ul>
+                    <li><a href="../screens/Cita_Nueva.html">Agregar Cita</a></li>
+                    <li><a href="../screens/Citas_Registradas.html">Ver Citas Registradas</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Gestión de Clientes</a>
+                <ul>
+                    <li><a href="Cliente_Nuevo.html">Agregar Cliente</a></li>
+                    <li><a href="Clientes_Registrados.html">Ver Clientes Registrados</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Gestión de Servicios</a>
+                <ul>
+                    <li><a href="Servicio_Nuevo.html">Agregar Servicio</a></li>
+                    <li><a href="Servicios_Registrados.html">Ver Servicios</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Gestión de Empleados</a>
+                <ul>
+                    <li><a href="Empleado_Nuevo.html">Agregar Empleado</a></li>
+                    <li><a href="Empleados_Registrados.html">Ver Empleados Registrados</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <button type="button" class="btn btn-secondary" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
+</header>
+
+<main>
+    <section class="form-container">
+        <h2 class="form-title">Modificar Servicio</h2>
+        <form id="modificarServicioForm">
+            <div class="campo">
+                <label for="nombreServicio">Nombre:</label>
+                <input type="text" id="nombreServicio" required placeholder="Ingrese el nombre del servicio">
+            </div>
+
+            <div class="campo">
+                <label for="descripcion">Descripción:</label>
+                <input type="text" id="descripcion" required placeholder="Ingrese una descripción del servicio">
+            </div>
+
+            <div class="campo">
+                <label for="costo">Costo:</label>
+                <input type="number" id="costo" required placeholder="Ingrese el costo del servicio">
+            </div>
+
+            <div class="botones-footer">
+                <button type="button" class="guardar-empleado" onclick="guardarServicio()">Guardar Servicio
+                    <img src="../img/guardar.png" alt="guardar" width="40" height="40">
+                </button>
+                <button type="button" class="regresar" onclick="window.location.href='Servicios_Registrados.html'">Regresar
+                    <img src="../img/regresar.png" alt="guardar" width="40" height="40">
+                </button>
+            </div>
+        </form>
+    </section>
+</main>
 
     <script>
         window.onload = function() {
