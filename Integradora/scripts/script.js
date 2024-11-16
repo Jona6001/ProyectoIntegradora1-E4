@@ -13,8 +13,6 @@ function mostrarUsuNomb() {
 }
 mostrarUsuNomb();
 
-
-
 // Llamar la función de mostrar fecha al cargar la página
 window.onload = function() {
     mostrarFecha();
@@ -54,26 +52,53 @@ function cerrarSesion() {
     
 
 
-
-
 // Función para buscar citas por fecha
 async function buscarCitasPorFecha() {
     const fechaSeleccionada = document.getElementById('fechaFiltro').value;
+
+    // Validar que se haya seleccionado una fecha
     if (!fechaSeleccionada) {
         Swal.fire('Información', 'Por favor, selecciona una fecha.', 'info');
         return;
     }
 
     try {
+        // Hacer la solicitud al servidor para obtener citas por fecha
         const response = await fetch(`/citas_recientes?fecha=${encodeURIComponent(fechaSeleccionada)}`);
-        citas = await response.json();
+
+        // Si la respuesta no es exitosa, considerar que no hay citas
+        if (!response.ok) {
+            document.getElementById('citasBody').innerHTML = `
+                <tr>
+                    <td colspan="6"><center>No hay citas para la fecha seleccionada.</center></td>
+                </tr>`;
+            return;
+        }
+
+        const citas = await response.json();
+
+        // Verificar si hay citas para la fecha seleccionada
+        if (citas.length === 0) {
+            document.getElementById('citasBody').innerHTML = `
+                <tr>
+                    <td colspan="6"><center>No hay citas para la fecha seleccionada.</center></td>
+                </tr>`;
+            return;
+        }
+
+        // Mostrar los resultados en la tabla
         currentPage = 1;
         mostrarResultadosCitas(citas, 'citasBody', true);
-    } catch (error) {
-        console.error('Error al buscar citas:', error);
-        Swal.fire('Error', 'No hay citas para la fecha seleccionada.', 'error');
+    } catch {
+        // Si ocurre un error, mostrar el mensaje de "No hay citas"
+        document.getElementById('citasBody').innerHTML = `
+            <tr>
+                <td colspan="6"><center>No hay citas para la fecha seleccionada.</center></td>
+            </tr>`;
     }
 }
+
+
 
 
 // Función para mostrar citas en la tabla
@@ -107,7 +132,7 @@ async function mostrarCitasProximas() {
     } catch (error) {
         console.error('Error al cargar citas próximas:', error);
         const citasBody = document.getElementById('citasBody');
-        citasBody.innerHTML = '<tr><td colspan="6"><center>No se han encontrado citas procimas.</center></td></tr>';
+        citasBody.innerHTML = '<tr><td colspan="6"><center>No se han encontrado citas próximas.</center></td></tr>';
     }
 }
 
@@ -300,11 +325,11 @@ function mostrarResultadosClientes(clientesArray, clientesBody) {
             <td>${cliente.Tel}</td>
             <td>${cliente.Direccion}</td>
             <td>
-                 <button onclick="editarCita(${cliente.Cliente_ID})" 
+                 <button onclick="editarCliente(${cliente.Cliente_ID})" 
                 style="background-color: #4CAF50; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
                 Editar
             </button>
-            <button onclick="eliminarCita(${cliente.Cliente_ID})" 
+            <button onclick="eliminarCliente(${cliente.Cliente_ID})" 
                 style="background-color: #f44336; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
                 Eliminar
             </button>
@@ -382,11 +407,11 @@ function mostrarResultadosServicios(serviciosArray, serviciosBody) {
             <td>${servicio.Descripcion}</td>
             <td>${servicio.Costo} $</td>
           
-            <td> <button onclick="editarCita(${servicio.Servicio_ID})" 
+            <td> <button onclick="editarServicio(${servicio.Servicio_ID})" 
                 style="background-color: #4CAF50; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
                 Editar
             </button>
-            <button onclick="eliminarCita(${servicio.Servicio_ID})" 
+            <button onclick="eliminarServicio(${servicio.Servicio_ID})" 
                 style="background-color: #f44336; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
                 Eliminar
             </button>
@@ -499,11 +524,11 @@ function mostrarResultadosEmpleados(empleadosArray, empleadosBody) {
         <tr>
             <td>${empleado.Username}</td>
             <td>${empleado.Rol}</td>
-            <td> <button onclick="editarCita(${empleados.Empleados_ID})" 
+            <td> <button onclick="editarEmpleado(${empleado.Empleados_ID})" 
                 style="background-color: #4CAF50; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
                 Editar
             </button>
-            <button onclick="eliminarCita(${empleados.Empleados_ID})" 
+            <button onclick="eliminarEmpleado(${empleado.Empleados_ID})" 
                 style="background-color: #f44336; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
                 Eliminar
             </button>

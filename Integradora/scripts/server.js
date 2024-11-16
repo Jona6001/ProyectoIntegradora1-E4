@@ -236,19 +236,18 @@ app.get('/estados', (req, res) => {
 
 
 // Ruta para obtener una cita por ID
-app.get('/cita/:id', async (req, res) => {
-    try {
-        const { id } = req.params;
-        const cita = await consultas.obtenerCitaPorId(id); // Verifica que esta función esté definida correctamente
-        if (cita) {
+app.get('/cita/:id', (req, res) => {
+    const { id } = req.params;
+    consultas.obtenerCitaPorId(id, (err, cita) => {
+        if (err) {
+            console.error('Error al obtener la cita:', err);
+            res.status(500).send('Error del servidor');
+        } else if (cita) {
             res.json(cita);
         } else {
             res.status(404).send('Cita no encontrada');
         }
-    } catch (error) {
-        console.error('Error al obtener la cita:', error);
-        res.status(500).send('Error del servidor');
-    }
+    });
 });
 
 
@@ -439,6 +438,8 @@ app.get('/empleados/:id', (req, res) => {
             res.status(500).json({ error: 'Error al obtener el empleado' });
         });
 });
+
+
 
 // Ruta para actualizar un empleado
 app.put('/empleados/:empleadoID', (req, res) => {

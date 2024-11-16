@@ -5,51 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar Cita</title>
     <link rel="stylesheet" href="../css/stylesmodificar.css">
-            <!-- SweetAlert2 CSS -->
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-            <!-- SweetAlert2 JS -->
-            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../scripts/script.js"></script>
 </head>
 <body> 
 
-<!-- Encabezado -->
-<header>
-    <div class="logo-title">
-        <a href="main.html" class="logo-link">
-            <img src="../img/logo.jpg" alt="Logo Agenda Dental" class="logo">
-            <span class="inicio-text">Inicio</span>
-        </a>
-    </div>
-    <nav id="menu-gestores">
-        <ul>
-            <li><a href="#">Gestión de Citas</a>
-                <ul>
-                    <li><a href="../screens/Cita_Nueva.html">Agregar Cita</a></li>
-                    <li><a href="../screens/Citas_Registradas.html">Ver Citas Registradas</a></li>
-                </ul>
-            </li>
-            <li><a href="#">Gestión de Clientes</a>
-                <ul>
-                    <li><a href="Cliente_Nuevo.html">Agregar Cliente</a></li>
-                    <li><a href="Clientes_Registrados.html">Ver Clientes Registrados</a></li>
-                </ul>
-            </li>
-            <li><a href="#">Gestión de Servicios</a>
-                <ul>
-                    <li><a href="Servicio_Nuevo.html">Agregar Servicio</a></li>
-                    <li><a href="Servicios_Registrados.html">Ver Servicios</a></li>
-                </ul>
-            </li>
-            <li><a href="#">Gestión de Empleados</a>
-                <ul>
-                    <li><a href="Empleado_Nuevo.html">Agregar Empleado</a></li>
-                    <li><a href="Empleados_Registrados.html">Ver Empleados Registrados</a></li>
-                </ul>
-            </li>
-        </ul>
-    </nav>   
-    <button type="button" class="btn btn-secondary" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
-</header>
+    <header>
+        <div class="logo-title">
+            <a href="main.html" class="logo-link">
+                <img src="../img/logo.jpg" alt="Logo Agenda Dental" class="logo">
+                <span class="inicio-text">Inicio</span>
+            </a>
+        </div>
+        <!-- Menú horizontal con accesos desplegables -->
+         <nav id="menu-gestores"> 
+            <ul>
+                <li><a href="#">Gestión de Citas</a>
+                    <ul>
+                        <li><a href="../screens/Cita_Nueva.html">Agregar Cita</a></li>
+                        <li><a href="../screens/Citas_Registradas.html">Ver Citas Registradas</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Gestión de Clientes</a>
+                    <ul>
+                        <li><a href="Cliente_Nuevo.html">Agregar Cliente</a></li>
+                        <li><a href="Clientes_Registrados.html">Ver Clientes Registrados</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Gestión de Servicios</a>
+                    <ul>
+                        <li><a href="Servicio_Nuevo.html">Agregar Servicio</a></li>
+                        <li><a href="Servicios_Registrados.html">Ver Servicios</a></li>
+                    </ul>
+                </li>
+                
+                <li id="menu-gestion-empleados"><a href="#">Gestión de Empleados</a>
+                    <ul>
+                        <li><a href="Empleado_Nuevo.html">Agregar Empleado</a></li>
+                        <li><a href="Empleados_Registrados.html">Ver Empleados Registrados</a></li>
+                    </ul>
+                </li>
+            </ul>
+        
+        </nav>
+        <button id="logoutButton" class="btn-animated" onclick="cerrarSesion()">Cerrar Sesión</button>
+    </header>
+
 
 <main>
     <section class="form-container">
@@ -95,75 +99,115 @@
     </section>
 </main>
 
-    <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const citaID = urlParams.get('citaID');
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const citaID = urlParams.get('citaID');
 
-        document.addEventListener('DOMContentLoaded', async () => {
+    if (!citaID) {
+        Swal.fire({
+            icon: 'error',
+            title: 'ID de cita no proporcionado',
+            text: 'No se puede modificar una cita sin un ID válido.',
+        }).then(() => {
+            window.location.href = 'Citas_Registradas.html';
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
             await cargarClientes();
             await cargarServicios();
             await cargarCita();
+        } catch (error) {
+            console.error('Error al cargar datos:', error);
+        }
+    });
+
+    async function cargarClientes() {
+        const response = await fetch('/clientes');
+        const clientes = await response.json();
+        const clienteSelect = document.getElementById('clienteSelect');
+        clientes.forEach(cliente => {
+            const option = document.createElement('option');
+            option.value = cliente.Cliente_ID;
+            option.textContent = `${cliente.Nombre} ${cliente.Apellido_Paterno}`;
+            clienteSelect.appendChild(option);
         });
+    }
 
-        async function cargarClientes() {
-            const response = await fetch('/clientes');
-            const clientes = await response.json();
-            const clienteSelect = document.getElementById('clienteSelect');
-            clientes.forEach(cliente => {
-                const option = document.createElement('option');
-                option.value = cliente.Cliente_ID;
-                option.textContent = `${cliente.Nombre} ${cliente.Apellido_Paterno}`;
-                clienteSelect.appendChild(option);
-            });
-        }
+    async function cargarServicios() {
+        const response = await fetch('/obtenerServicios');
+        const servicios = await response.json();
+        const servicioSelect = document.getElementById('servicioSelect');
+        servicios.forEach(servicio => {
+            const option = document.createElement('option');
+            option.value = servicio.Servicio_ID;
+            option.textContent = servicio.Nombre;
+            servicioSelect.appendChild(option);
+        });
+    }
 
-        async function cargarServicios() {
-            const response = await fetch('/obtenerServicios');
-            const servicios = await response.json();
-            const servicioSelect = document.getElementById('servicioSelect');
-            servicios.forEach(servicio => {
-                const option = document.createElement('option');
-                option.value = servicio.Servicio_ID;
-                option.textContent = servicio.Nombre;
-                servicioSelect.appendChild(option);
-            });
-        }
-
-        async function cargarCita() {
-            const response = await fetch(`/cita/${citaID}`); // Agregar comillas aquí
+    async function cargarCita() {
+        try {
+            const response = await fetch(`/cita/${citaID}`);
+            if (!response.ok) {
+                throw new Error('No se pudo cargar la cita');
+            }
             const cita = await response.json();
+
             document.getElementById('clienteSelect').value = cita.Cliente_ID;
             document.getElementById('servicioSelect').value = cita.Servicio_ID;
             document.getElementById('fecha').value = cita.Fecha.split('T')[0]; 
             document.getElementById('hora').value = cita.Hora; 
             document.getElementById('estadoSelect').value = cita.Estado; 
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al cargar la cita',
+                text: 'No se pudieron cargar los datos de la cita.',
+            }).then(() => {
+                window.location.href = 'Citas_Registradas.html';
+            });
         }
+    }
 
-      
+    async function actualizarCita() {
+        const clienteId = document.getElementById('clienteSelect').value;
+        const servicioId = document.getElementById('servicioSelect').value;
+        const fecha = document.getElementById('fecha').value;
+        const hora = document.getElementById('hora').value;
+        const estado = document.getElementById('estadoSelect').value;
 
-        async function actualizarCita() {
-            const clienteId = document.getElementById('clienteSelect').value;
-            const servicioId = document.getElementById('servicioSelect').value;
-            const fecha = document.getElementById('fecha').value;
-            const hora = document.getElementById('hora').value;
-            const estado = document.getElementById('estadoSelect').value; // Obtiene el estado seleccionado
-
-            const response = await fetch(`/citas/${citaID}`, { // Agregar comillas aquí
+        try {
+            const response = await fetch(`/citas/${citaID}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ clienteId, servicioId, fecha, hora, estado }), // Incluye el estado en el cuerpo
+                body: JSON.stringify({ clienteId, servicioId, fecha, hora, estado }),
             });
 
             if (response.ok) {
-                alert('Cita actualizada con éxito');
-                window.location.href = 'Citas_Registradas.html'; // Redirige a la página de citas registradas
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Cita actualizada',
+                    text: 'La cita se actualizó con éxito.',
+                }).then(() => {
+                    window.location.href = 'Citas_Registradas.html';
+                });
             } else {
-                alert('Error al actualizar la cita');
+                throw new Error('Error al actualizar la cita');
             }
+        } catch (error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al actualizar la cita',
+                text: 'Hubo un problema al guardar los cambios.',
+            });
         }
-    </script>
-    <script>
-        // Verificar si la sesión está activa
+    }
+</script>
+
+<script>
+  // Verificar si la sesión está activa
         fetch('/isAuthenticated', { method: 'GET' })
             .then(response => {
                 if (!response.ok) {
@@ -171,6 +215,22 @@
                     window.location.href = '/';
                 }
             });
-    </script>
+               // Función que verifica el rol del usuario y oculta la opción de "Gestión de Empleados" si es empleado
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/api/session')
+                .then(response => response.json())
+                .then(data => {
+                    // Comprobar si el usuario es "empleado"
+                    if (data.loggedIn && data.rol === 'empleado') {
+                        // Ocultar la opción de "Gestión de Empleados" en la barra de navegación
+                        const menuGestionEmpleados = document.getElementById('menu-gestion-empleados');
+                        if (menuGestionEmpleados) {
+                            menuGestionEmpleados.style.display = 'none';
+                        }
+                    }
+                })
+                .catch(error => console.error('Error al obtener la sesión:', error));
+        });
+</script>
 </body>
 </html>

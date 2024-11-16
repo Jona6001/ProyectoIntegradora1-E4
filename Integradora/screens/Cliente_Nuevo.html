@@ -17,51 +17,47 @@
             <div class="spinner"></div>
             <p>Cargando...</p>
         </div>
-    <!-- Encabezado -->
-    <header>
-        <div class="logo-title">
-            <a href="main.html">
-                <img src="../img/logo.jpg" alt="Logo Agenda Dental" class="logo">
-                <span class="inicio-text">Inicio</span>
-            </a>
-            <div class="welcome-message">
-              <!-- Menú horizontal con accesos desplegables -->
-    <nav id="menu-gestores">
+   <!-- Encabezado -->
+ <header>
+    <div class="logo-title">
+        <a href="main.html" class="logo-link">
+            <img src="../img/logo.jpg" alt="Logo Agenda Dental" class="logo">
+            <span class="inicio-text">Inicio</span>
+        </a>
+    </div>
+    <!-- Menú horizontal con accesos desplegables -->
+     <nav id="menu-gestores"> 
         <ul>
             <li><a href="#">Gestión de Citas</a>
                 <ul>
                     <li><a href="../screens/Cita_Nueva.html">Agregar Cita</a></li>
                     <li><a href="../screens/Citas_Registradas.html">Ver Citas Registradas</a></li>
-                   
                 </ul>
             </li>
             <li><a href="#">Gestión de Clientes</a>
                 <ul>
                     <li><a href="Cliente_Nuevo.html">Agregar Cliente</a></li>
                     <li><a href="Clientes_Registrados.html">Ver Clientes Registrados</a></li>
-                   
                 </ul>
             </li>
             <li><a href="#">Gestión de Servicios</a>
                 <ul>
                     <li><a href="Servicio_Nuevo.html">Agregar Servicio</a></li>
                     <li><a href="Servicios_Registrados.html">Ver Servicios</a></li>
-                   
                 </ul>
             </li>
-            <li><a href="#">Gestión de Empleados</a>
+            
+            <li id="menu-gestion-empleados"><a href="#">Gestión de Empleados</a>
                 <ul>
                     <li><a href="Empleado_Nuevo.html">Agregar Empleado</a></li>
                     <li><a href="Empleados_Registrados.html">Ver Empleados Registrados</a></li>
-                
                 </ul>
             </li>
         </ul>
-    </nav>   
-            </div>
-        </div>
-        <button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
-    </header>
+    
+    </nav>
+    <button id="logoutButton" class="btn-animated" onclick="cerrarSesion()">Cerrar Sesión</button>
+</header>
         <!-- Formulario para agregar cliente -->
     <h2>Agregar Cliente</h2>
     <form id="agregarClienteForm">
@@ -153,6 +149,32 @@
                             window.location.href = '/'; // Redirige al inicio en caso de error
                         });
                 });
+
+
+                 // Verificar si la sesión está activa
+    fetch('/isAuthenticated', { method: 'GET' })
+        .then(response => {
+            if (!response.ok) {
+                // Si no está autenticado, redirigir al inicio de sesión
+                window.location.href = '/';
+            }
+        });
+           // Función que verifica el rol del usuario y oculta la opción de "Gestión de Empleados" si es empleado
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/api/session')
+            .then(response => response.json())
+            .then(data => {
+                // Comprobar si el usuario es "empleado"
+                if (data.loggedIn && data.rol === 'empleado') {
+                    // Ocultar la opción de "Gestión de Empleados" en la barra de navegación
+                    const menuGestionEmpleados = document.getElementById('menu-gestion-empleados');
+                    if (menuGestionEmpleados) {
+                        menuGestionEmpleados.style.display = 'none';
+                    }
+                }
+            })
+            .catch(error => console.error('Error al obtener la sesión:', error));
+    });
             </script>
 </body>
 </html>

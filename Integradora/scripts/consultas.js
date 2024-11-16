@@ -22,8 +22,6 @@ module.exports = (db) => {
 
 
 
-
-
     // Obtener citas recientes
     function obtenerCitasRecientes(callback) {
         const query = 'CALL mostrar_citas_dia()';
@@ -125,6 +123,7 @@ function eliminarCita(citaId, callback) {
         const query = 'SELECT * FROM citas WHERE Cita_ID = ?';
         db.query(query, [citaId], (err, results) => {
             if (err) return callback(err);
+            callback(null, results[0]); // Envía solo la primera cita encontrada
         });
     }
 
@@ -315,10 +314,6 @@ function agregarEmpleado(empleado, callback) {
     });
 }
 
-module.exports = {
-    verificarInicioSesion,
-    agregarEmpleado // Asegúrate de exportar la función
-};
 
 
 

@@ -11,7 +11,6 @@
     <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>window.onload = function() { mostrarCitasRecientes('citasBody', true); }; </script>
- 
 </head>
 <body>
     <header>
@@ -22,7 +21,7 @@
             </a>
         </div>
         <!-- Menú horizontal con accesos desplegables -->
-        <nav id="menu-gestores">
+         <nav id="menu-gestores"> 
             <ul>
                 <li><a href="#">Gestión de Citas</a>
                     <ul>
@@ -42,14 +41,16 @@
                         <li><a href="Servicios_Registrados.html">Ver Servicios</a></li>
                     </ul>
                 </li>
-                <li><a href="#">Gestión de Empleados</a>
+                
+                <li id="menu-gestion-empleados"><a href="#">Gestión de Empleados</a>
                     <ul>
                         <li><a href="Empleado_Nuevo.html">Agregar Empleado</a></li>
                         <li><a href="Empleados_Registrados.html">Ver Empleados Registrados</a></li>
                     </ul>
                 </li>
             </ul>
-        </nav>   
+        
+        </nav>
         <button id="logoutButton" class="btn-animated" onclick="cerrarSesion()">Cerrar Sesión</button>
     </header>
     
@@ -79,39 +80,40 @@
             <tbody id="citasBody"></tbody>
         </table>
 
+        <div id="pagination" style="text-align: center; margin-top: 10px;"></div>
     
-    <div id="pagination" style="text-align: center; margin-top: 10px;"></div>
-    
-    <div class="botones-footer">
-        <a href="Cita_Nueva.html"><button type="button" id="NuevaCita">Nueva Cita</button></a>
-        <a href="main.html"><button type="button" id="Salir">Salir</button></a>
+        <div class="botones-footer">
+            <a href="Cita_Nueva.html"><button type="button" id="NuevaCita">Nueva Cita</button></a>
+            <a href="main.html"><button type="button" id="Salir">Salir</button></a>
+        </div>
     </div>
-</div>
 
-<script>
-    // Verificar si la sesión está activa
-    fetch('/isAuthenticated', { method: 'GET' })
-        .then(response => {
-            if (!response.ok) {
-                // Si no está autenticado, redirigir al inicio de sesión
-                window.location.href = '/';
-            }
-        });
-</script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        fetch('/verificar_sesion', { method: 'GET', credentials: 'same-origin' })
+    <script>
+        // Verificar si la sesión está activa
+        fetch('/isAuthenticated', { method: 'GET' })
             .then(response => {
                 if (!response.ok) {
-                    window.location.href = '/'; // Redirige al inicio si no hay sesión
+                    // Si no está autenticado, redirigir al inicio de sesión
+                    window.location.href = '/';
                 }
-            })
-            .catch(error => {
-                console.error('Error verificando la sesión:', error);
-                window.location.href = '/'; // Redirige al inicio en caso de error
             });
-    });
+               // Función que verifica el rol del usuario y oculta la opción de "Gestión de Empleados" si es empleado
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/api/session')
+                .then(response => response.json())
+                .then(data => {
+                    // Comprobar si el usuario es "empleado"
+                    if (data.loggedIn && data.rol === 'empleado') {
+                        // Ocultar la opción de "Gestión de Empleados" en la barra de navegación
+                        const menuGestionEmpleados = document.getElementById('menu-gestion-empleados');
+                        if (menuGestionEmpleados) {
+                            menuGestionEmpleados.style.display = 'none';
+                        }
+                    }
+                })
+                .catch(error => console.error('Error al obtener la sesión:', error));
+        });
     </script>
+    
 </body>
 </html>

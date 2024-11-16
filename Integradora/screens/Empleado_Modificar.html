@@ -80,44 +80,52 @@
     // Función para cargar empleado y roles al inicio
     document.addEventListener('DOMContentLoaded', async () => {
         const params = new URLSearchParams(window.location.search);
-        const empleadoID = params.get('Empleados_ID');
+        const empleadoID = params.get('Empleados_ID'); // Obtén el ID del empleado desde la URL
 
         if (empleadoID) {
-            await cargarRoles();
-            await cargarEmpleado(empleadoID);
+            await cargarRoles(); // Carga los roles primero
+            await cargarEmpleado(empleadoID); // Luego carga el empleado
         } else {
             alert('ID de empleado no proporcionado.');
         }
     });
 
     async function cargarEmpleado(empleadoID) {
-        try {
-            const response = await fetch(`/empleados/${empleadoID}`);
-            const empleado = await response.json();
+try {
+    console.log(`Cargando empleado con ID: ${empleadoID}`);
+    const response = await fetch(`/empleados/${empleadoID}`);
+    const empleado = await response.json();
+    console.log('Empleado obtenido:', empleado); // Verifica la estructura del objeto
 
-            if (empleado) {
-                document.getElementById('nombre_empleado').value = empleado.Username;
-                document.getElementById('rolSelect').value = empleado.rol || empleado.Rol;
-            } else {
-                alert('Empleado no encontrado');
-            }
-        } catch (error) {
-            console.error('Error al cargar empleado:', error);
-            alert('No se pudo cargar el empleado.');
-        }
+    // Asegúrate de que las propiedades que usas existen
+    if (empleado) {
+        // Cambia "Nombre" a "nombre" si así se llama la propiedad
+        document.getElementById('nombre_empleado').value = empleado.Username;
+        document.getElementById('rolSelect').value = empleado.rol || empleado.Rol; // Ajusta según el nombre real de la propiedad
+    } else {
+        alert('Empleado no encontrado');
     }
+} catch (error) {
+    console.error('Error al cargar empleado:', error);
+    alert('No se pudo cargar el empleado.');
+}
+}
 
     async function cargarRoles() {
         try {
+            console.log('Cargando roles...');
             const response = await fetch('/roles');
+            if (!response.ok) throw new Error('Error en la respuesta al obtener los roles');
+
             const roles = await response.json();
+            console.log('Roles obtenidos:', roles);
             const rolSelect = document.getElementById('rolSelect');
-            rolSelect.innerHTML = '';
+            rolSelect.innerHTML = ''; // Limpiar las opciones previas
 
             roles.forEach(rol => {
                 const option = document.createElement('option');
-                option.value = rol.rol;
-                option.textContent = rol.rol;
+                option.value = rol.rol; // Asegúrate de usar el campo correcto para el rol
+                option.textContent = rol.rol; // Asegúrate de usar el campo correcto para mostrar
                 rolSelect.appendChild(option);
             });
         } catch (error) {
@@ -127,43 +135,38 @@
     }
 
     async function actualizarEmpleado() {
-        const empleadoID = new URLSearchParams(window.location.search).get('Empleados_ID');
-        const username = document.getElementById('nombre_empleado').value;
-        const rol = document.getElementById('rolSelect').value;
+const empleadoID = new URLSearchParams(window.location.search).get('Empleados_ID');
+const username = document.getElementById('nombre_empleado').value; // Cambiar nombre a username
+const rol = document.getElementById('rolSelect').value;
 
-        const response = await fetch(`/empleados/${empleadoID}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, rol })
-        });
+const response = await fetch(`/empleados/${empleadoID}`, {
+    method: 'PUT', // Cambia el método si es necesario
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ username, rol }) // Cambiar nombre a username
+});
 
-        if (response.ok) {
-            alert('Empleado actualizado con éxito');
-            window.location.href = 'Empleados_Registrados.html';
-        } else {
-            alert('Error al actualizar el empleado');
+if (response.ok) {
+    alert('Empleado actualizado con éxito');
+    window.location.href = 'Empleados_Registados.html'; // Redirige a la lista de empleados
+} else {
+    alert('Error al actualizar el empleado');
+}
+}
+
+// Verificar si la sesión está activa
+fetch('/isAuthenticated', { method: 'GET' })
+    .then(response => {
+        if (!response.ok) {
+            window.location.href = '/';
         }
-    }
-
-    // Verificar si la sesión está activa
-    fetch('/isAuthenticated', { method: 'GET' })
-        .then(response => {
-            if (!response.ok) {
-                window.location.href = '/';
-            }
-        });
-    document.addEventListener('DOMContentLoaded', () => {
-        fetch('/verificar_sesion', { method: 'GET', credentials: 'same-origin' })
-            .then(response => {
-                if (!response.ok) {
-                    window.location.href = '/';
-                }
-            })
-            .catch(error => {
-                console.error('Error verificando la sesión:', error);
-                window.location.href = '/';
-            });
+    })
+    .catch(error => {
+        console.error('Error verificando la sesión:', error);
+        window.location.href = '/';
     });
+
 </script>
 
 </body>
