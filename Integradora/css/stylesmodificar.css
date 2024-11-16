@@ -1,12 +1,38 @@
 /* Fuentes personalizadas */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
+/* Pantalla de carga */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* Asegura que esté por encima de otros elementos */
+}
+/* Spinner de carga */
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 6px solid #ccc;
+    border-top-color: #007BFF;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
 /* Estilo general del cuerpo */
 body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(to right, #e6f2ff, #cce7ff); /* Fondo degradado azul claro */
+    background: linear-gradient(to right, #e6f2ff, #cce7ff);
     color: #333;
     display: flex;
     flex-direction: column;
@@ -14,37 +40,41 @@ body {
     min-height: 100vh;
 }
 
+/* Encabezado */
 header {
     display: flex;
-    justify-content: space-between; /* Espacia los elementos en el header */
+    justify-content: space-between;
     align-items: center;
     background-color: #007BFF;
     color: white;
-    padding: 20px;
+    padding: 10px 20px;
     width: 100%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-
-header h2 {
-    font-size: 24px;
+header h1 {
+    font-size: 1.8em;
     margin: 0;
+    flex-grow: 1;
 }
 
 header p {
-    font-size: 18px;
-    margin: 0;
+    font-size: 1em;
+    color: #e0e0e0;
+    margin-right: 20px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    font-style: italic;
 }
 
 header button {
-    text-align: right;
-    background-color: #28a745; /* Verde */
+    background-color: #28a745;
     color: white;
-    border: none;
     padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
     border-radius: 5px;
+    cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-right: 80px;
+    margin-left: 20px;
 }
 
 header button:hover {
@@ -52,24 +82,158 @@ header button:hover {
     transform: scale(1.05);
 }
 
-/* Título */
-h1 {
-    font-size: 28px;
-    margin-top: 20px;
-    color: #007BFF;
+
+.logo-title {
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+    flex-grow: 1;
+    margin-left: 30px;  
+}
+
+.logo-link {
+    text-align: center;
+    text-decoration: none;
+    color: white;
+}
+
+.logo {
+    display: block;
+    width: 60px;
+    margin: 0 auto;
+    border-radius: 50%;
+}
+
+.inicio-text {
+    display: block;
+    text-align: center;
+    font-size: 0.9em;
+    margin-top: 5px;
+    font-weight: bold;
+    color: white;
+}
+
+/* Menú de navegación */
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin: 0 15px;
+    position: relative;
+}
+
+nav ul li a {
+    color: #ffffff;
+    padding: 10px 15px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+nav ul li a:hover {
+    color: #000000;
+}
+
+nav ul li ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #2ba5e7;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+nav ul li:hover ul {
+    display: block;
+}
+
+nav ul li ul li a {
+    display: block;
+    padding: 10px 15px;
+    white-space: nowrap;
+}
+
+nav ul li ul li a:hover {
+    background-color: #e2e6ea;
 }
 
 /* Contenedor del formulario */
-#modificarCitaForm {
+.form-container {
     background-color: white;
     padding: 30px;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    border: 3px solid #007BFF;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     max-width: 500px;
-    width: 90%;
-    margin-top: 20px;
-    text-align: left; 
-    animation: fadeIn 0.5s ease; /* Animación de aparición */
+    width: 100%;
+    margin-top: 100px; /* Espacio desde el encabezado fijo */
+    text-align: left;
+    animation: fadeIn 0.5s ease;
+}
+
+/* Títulos dentro del formulario */
+.form-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Campos de formulario */
+.campo label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.campo input, .campo select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    margin-bottom: 15px;
+}
+
+.campo input:focus, .campo select:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+    outline: none;
+}
+
+/* Estilo general para los botones */
+button {
+    background-color: #3498db;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+button:hover {
+    background-color: #2980b9;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+button img {
+    margin-left: 10px;
+    vertical-align: middle;
 }
 
 /* Animación de aparición */
@@ -84,189 +248,23 @@ h1 {
     }
 }
 
-/* Estilos para cada campo del formulario */
-label {
-    display: block;
-    font-size: 16px;
-    margin-bottom: 5px;
-    color: #333;
-}
-
-select,
-input[type="date"],
-input[type="time"] {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease;
-    margin-bottom: 20px;
-}
-
-select:focus,
-input[type="date"]:focus,
-input[type="time"]:focus {
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
-    outline: none;
-}
-
-/* Botón de guardar cita */
-.guardar-cita {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    font-size: 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.guardar-cita img {
-    margin-left: 10px;
-    width: 24px;
-    height: 24px;
-}
-
-.guardar-cita:hover {
-    background-color: #218838;
-    transform: scale(1.05);
-}
-
 /* Estilos Responsivos */
 @media (max-width: 768px) {
-    h1 {
-        font-size: 24px;
+    header h1 {
+        font-size: 20px;
     }
 
-    #modificarCitaForm {
+    .form-container {
         max-width: 90%;
         padding: 20px;
     }
-}
 
-#formulario-cita {
-    background-color: white;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    max-width: 500px;
-    width: 90%;
-    margin-top: 20px;
-    text-align: left;
-}
+    .actions {
+        flex-direction: column;
+    }
 
-.campo {
-    margin-bottom: 20px;
-}
-
-.campo label {
-    display: block;
-    font-size: 16px;
-    margin-bottom: 5px;
-    color: #333;
-}
-
-.campo input {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.3s ease;
-}
-
-.campo input:focus {
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
-    outline: none;
-}
-
-/* Botón de guardar cliente */
-.guardarCliente {
-    background-color: #28a745; /* Verde */
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    font-size: 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.guardarCliente img {
-    margin-left: 10px;
-    width: 24px;
-    height: 24px;
-}
-
-.guardarCliente:hover {
-    background-color: #218838; /* Verde más oscuro */
-    transform: scale(1.05);
-}
-
-a button {
-    background-color: #007BFF; /* Azul */
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    font-size: 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background-color 0.3s ease;
-}
-
-a button:hover {
-    background-color: #0056b3; /* Azul oscuro */
-}
-
-.guardarServicio {
-    background-color: #28a745; /* Verde */
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    font-size: 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.guardarServicio img {
-    margin-left: 10px;
-    width: 24px;
-    height: 24px;
-}
-
-.guardarServicio:hover {
-    background-color: #218838; /* Verde más oscuro */
-    transform: scale(1.05);
-}
-
-/* Estilos para el botón de regresar */
-a button {
-    background-color: #007BFF; /* Azul */
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    font-size: 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background-color 0.3s ease;
-}
-
-a button:hover {
-    background-color: #0056b3; /* Azul oscuro */
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
 }
