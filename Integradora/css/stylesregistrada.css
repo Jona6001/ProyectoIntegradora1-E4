@@ -1,3 +1,30 @@
+/* Pantalla de carga */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* Asegura que esté por encima de otros elementos */
+}
+/* Spinner de carga */
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 6px solid #ccc;
+    border-top-color: #007BFF;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
 /* Estilo general del cuerpo */
 body {
     font-family: 'Arial', sans-serif;
@@ -84,12 +111,12 @@ header button:hover {
 
 /* Menú de navegación */
 nav {
-
     padding: 10px 0;
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
 }
 
 nav ul {
@@ -109,7 +136,7 @@ nav ul li a {
     color: #ffffff;
     padding: 10px 15px;
     text-decoration: none;
-    transition: color 0.3s, background-color 0.3s;
+    transition: color 0.3s;
 }
 
 nav ul li a:hover {

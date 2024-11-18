@@ -114,15 +114,28 @@ header button:hover {
 }
 
 /* Menú de navegación */
+
+/* Menú de navegación */
+nav {
+    padding: 10px 0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
 nav ul {
     list-style: none;
     padding: 0;
     display: flex;
+    justify-content: center;
+    position: relative;
 }
 
 nav ul li {
-    margin: 0 15px;
     position: relative;
+    margin: 0 15px;
 }
 
 nav ul li a {
@@ -148,6 +161,10 @@ nav ul li ul {
 
 nav ul li:hover ul {
     display: block;
+}
+
+nav ul li ul li {
+    margin: 0;
 }
 
 nav ul li ul li a {

@@ -114,14 +114,15 @@ header button:hover {
     color: white;
 }
 
+
 /* Menú de navegación */
 nav {
-
     padding: 10px 0;
     text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
 }
 
 nav ul {
