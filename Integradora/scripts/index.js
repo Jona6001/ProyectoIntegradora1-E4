@@ -20,14 +20,30 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
 
         if (response.ok) {
             localStorage.setItem('usuario', username);
-            window.location.href = '/screens/main.html';
+            Swal.fire({
+                icon: 'success',
+                title: 'Inicio de sesión exitoso',
+                text: '¡Bienvenido de nuevo!',
+                confirmButtonText: 'Continuar',
+            }).then(() => {
+                window.location.href = '/screens/main.html';
+            });
         } else {
-            console.error(result.message);
-            alert(result.message); 
+            Swal.fire({
+                icon: 'error',
+                title: 'Error de inicio de sesión',
+                text: result.message,
+                confirmButtonText: 'Intentar de nuevo',
+            });
         }
     } catch (error) {
         console.error('Error en el inicio de sesión:', error);
-        alert('Ha ocurrido un error en la Base de Datos, estaremos trabajando en eso ;)');
+        Swal.fire({
+            icon: 'error',
+            title: 'Error en el servidor',
+            text: 'Ha ocurrido un error en la Base de Datos, estaremos trabajando en eso ;)',
+            confirmButtonText: 'Aceptar',
+        });
     }
 });
 

@@ -366,23 +366,34 @@ function editarCliente(clienteID) {
 }
 
 function eliminarCliente(clienteId) {
-    if (confirm('¿Estás seguro de que deseas eliminar el cliente?')) {
-    fetch(`/eliminarCliente/${clienteId}`, {
-        method: 'DELETE'
-    })
-    .then(response => {
-        if (response.ok) {
-            alert('Cliente eliminado con éxito');
-            mostrarClientes('clientesBody'); // Recargar la lista de clientes
-        } else {
-            alert('Error al eliminar el cliente');
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¡No podrás revertir esta acción!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/eliminarCliente/${clienteId}`, {
+                method: 'DELETE'
+            })
+            .then(response => {
+                if (response.ok) {
+                    Swal.fire('Eliminado', 'El cliente ha sido eliminado con éxito.', 'success');
+                    mostrarClientes('clientesBody'); // Recargar la lista de clientes
+                } else {
+                    Swal.fire('Error', 'Error al eliminar el cliente.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error al eliminar cliente:', error);
+                Swal.fire('Error', 'No se pudo eliminar el cliente.', 'error');
+            });
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error en la solicitud de eliminación');
     });
-}
 }
 
 // Función para mostrar servicios en la tabla con paginación
@@ -565,18 +576,30 @@ function editarEmpleado(Empleados_ID) {
 
 // Función para eliminar un empleado
 function eliminarEmpleado(Empleados_ID) {
-    if (confirm('¿Estás seguro de que deseas eliminar este empleado?')) {
-        fetch(`/eliminarEmpleado/${Empleados_ID}`, { method: 'DELETE' })
-            .then(response => {
-                if (response.ok) {
-                    alert('Empleado eliminado con éxito');
-                    mostrarEmpleados('empleadosBody'); // Recargar la lista después de eliminar
-                } else {
-                    alert('Error al eliminar el empleado');
-                }
-            })
-            .catch(error => {
-                console.error('Error al eliminar empleado:', error);
-            });
-    }
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¡No podrás revertir esta acción!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/eliminarEmpleado/${Empleados_ID}`, { method: 'DELETE' })
+                .then(response => {
+                    if (response.ok) {
+                        Swal.fire('Eliminado', 'El empleado ha sido eliminado con éxito.', 'success');
+                        mostrarEmpleados('empleadosBody'); // Recargar la lista después de eliminar
+                    } else {
+                        Swal.fire('Error', 'Error al eliminar el empleado.', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al eliminar empleado:', error);
+                    Swal.fire('Error', 'No se pudo eliminar el empleado.', 'error');
+                });
+        }
+    });
 }
