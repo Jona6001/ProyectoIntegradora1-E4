@@ -10,8 +10,12 @@
             <!-- SweetAlert2 JS -->
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-
 <body>
+            <!-- Pantalla de carga -->
+            <div id="loading-screen">
+                <div class="spinner"></div>
+                <p>Cargando...</p>
+            </div>
      <!-- Encabezado -->
      <header>
         <div class="logo-title">
@@ -90,6 +94,14 @@
             </form>
         </section>
     </main>
+    <script>
+        // Ocultar la pantalla de carga después de un mínimo de 1 segundo
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.display = 'none';
+            }, 500); // 1000 ms = 1 segundo
+        });
+    </script>
 
     <script>
         window.onload = function() {
@@ -121,35 +133,48 @@
         }
 
         async function actualizarCliente() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const clienteID = urlParams.get('clienteID');
+    const urlParams = new URLSearchParams(window.location.search);
+    const clienteID = urlParams.get('clienteID');
 
-            const clienteModificado = {
-                Nombre: document.getElementById('nombre').value,
-                Apellido_Paterno: document.getElementById('apellidoP').value,
-                Apellido_Materno: document.getElementById('apellidoM').value,
-                Tel: document.getElementById('telefono').value,
-                Direccion: document.getElementById('direccion').value
-            };
+    const clienteModificado = {
+        Nombre: document.getElementById('nombre').value,
+        Apellido_Paterno: document.getElementById('apellidoP').value,
+        Apellido_Materno: document.getElementById('apellidoM').value,
+        Tel: document.getElementById('telefono').value,
+        Direccion: document.getElementById('direccion').value,
+    };
 
-            try {
-                const response = await fetch(`/clientes/${clienteID}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(clienteModificado)
-                });
+    try {
+        const response = await fetch(`/clientes/${clienteID}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(clienteModificado),
+        });
 
-                if (response.ok) {
-                    alert('Cliente modificado con éxito');
-                    window.location.href = 'Clientes_Registrados.html';
-                } else {
-                    alert('Error al modificar el cliente');
-                }
-            } catch (error) {
-                console.error('Error al guardar el cliente:', error);
-                alert('Error al guardar el cliente.');
-            }
+        if (response.ok) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Cliente actualizado',
+                text: 'El cliente se actualizó con éxito.',
+            }).then(() => {
+                window.location.href = 'Clientes_Registrados.html';
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al actualizar el cliente',
+                text: 'No se pudo actualizar el cliente. Inténtalo de nuevo.',
+            });
         }
+    } catch (error) {
+        console.error('Error al guardar el cliente:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al actualizar el cliente',
+            text: 'Hubo un problema al guardar los cambios. Por favor, inténtalo de nuevo.',
+        });
+    }
+}
     </script>
     <script>
         // Verificar si la sesión está activa

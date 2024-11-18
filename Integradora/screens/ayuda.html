@@ -8,6 +8,11 @@
     <link rel="shortcut icon" href="../img/favicon.ico" type="image/x-icon"> <!-- Favicon actualizado -->
 </head>
 <body>
+            <!-- Pantalla de carga -->
+            <div id="loading-screen">
+                <div class="spinner"></div>
+                <p>Cargando...</p>
+            </div>
     <header>
         <nav class="navbar">
             <a href="../index.html" class="nav-link">Inicio de Sesión</a>
@@ -71,6 +76,15 @@
             </tr>
         </table>
     </section>
+
+    <script>
+        // Ocultar la pantalla de carga después de un mínimo de 1 segundo
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.display = 'none';
+            }, 500); // 1000 ms = 1 segundo
+        });
+    </script>
 
     <footer>
         <p>Síguenos en nuestras redes sociales:</p>

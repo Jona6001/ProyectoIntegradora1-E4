@@ -11,7 +11,11 @@
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-
+        <!-- Pantalla de carga -->
+        <div id="loading-screen">
+            <div class="spinner"></div>
+            <p>Cargando...</p>
+        </div>
 <header>
     <div class="logo-title">
         <a href="main.html" class="logo-link">
@@ -75,6 +79,14 @@
         </form>
     </section>
 </main>
+<script>
+    // Ocultar la pantalla de carga después de un mínimo de 1 segundo
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            document.getElementById('loading-screen').style.display = 'none';
+        }, 500); // 1000 ms = 1 segundo
+    });
+</script>
 
 <script>
     // Función para cargar empleado y roles al inicio
@@ -135,24 +147,42 @@ try {
     }
 
     async function actualizarEmpleado() {
-const empleadoID = new URLSearchParams(window.location.search).get('Empleados_ID');
-const username = document.getElementById('nombre_empleado').value; // Cambiar nombre a username
-const rol = document.getElementById('rolSelect').value;
+    const empleadoID = new URLSearchParams(window.location.search).get('Empleados_ID');
+    const username = document.getElementById('nombre_empleado').value; // Cambiar nombre a username
+    const rol = document.getElementById('rolSelect').value;
 
-const response = await fetch(`/empleados/${empleadoID}`, {
-    method: 'PUT', // Cambia el método si es necesario
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ username, rol }) // Cambiar nombre a username
-});
+    try {
+        const response = await fetch(`/empleados/${empleadoID}`, {
+            method: 'PUT', // Cambia el método si es necesario
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, rol }), // Cambiar nombre a username
+        });
 
-if (response.ok) {
-    alert('Empleado actualizado con éxito');
-    window.location.href = 'Empleados_Registados.html'; // Redirige a la lista de empleados
-} else {
-    alert('Error al actualizar el empleado');
-}
+        if (response.ok) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Empleado actualizado',
+                text: 'El empleado se actualizó con éxito.',
+            }).then(() => {
+                window.location.href = 'Empleados_Registados.html'; // Redirige a la lista de empleados
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al actualizar el empleado',
+                text: 'Hubo un problema al actualizar la información del empleado.',
+            });
+        }
+    } catch (error) {
+        console.error('Error al actualizar empleado:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al actualizar el empleado',
+            text: 'Ocurrió un error inesperado. Intenta nuevamente más tarde.',
+        });
+    }
 }
 
 // Verificar si la sesión está activa

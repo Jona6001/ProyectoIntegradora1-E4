@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestor de Citas</title>
+    <title>Gestor de Clientes</title>
     <script src="../scripts/script.js"></script>
     <script src="../scripts/consultas.js"></script>
     <link rel="stylesheet" href="../css/stylesregistrada.css">
@@ -13,6 +13,12 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script> window.onload = function() {mostrarClientes('clientesBody');};</script>
 </head>
+<body>
+        <!-- Pantalla de carga -->
+        <div id="loading-screen">
+            <div class="spinner"></div>
+            <p>Cargando...</p>
+        </div>
  <!-- Encabezado -->
  <header>
     <div class="logo-title">
@@ -79,6 +85,14 @@
     <a href="main.html"><button type="button" id="Salir">Salir</button></a>
 </div>
 </div>
+<script>
+    // Ocultar la pantalla de carga después de un mínimo de 1 segundo
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            document.getElementById('loading-screen').style.display = 'none';
+        }, 500); // 1000 ms = 1 segundo
+    });
+</script>
 <script>
     // Verificar si la sesión está activa
     fetch('/isAuthenticated', { method: 'GET' })

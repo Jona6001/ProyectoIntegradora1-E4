@@ -11,7 +11,12 @@
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../scripts/script.js" defer></script>
 </head>
-
+<body>
+            <!-- Pantalla de carga -->
+            <div id="loading-screen">
+                <div class="spinner"></div>
+                <p>Cargando...</p>
+            </div>
 <header>
     <div class="logo-title">
         <a href="main.html" class="logo-link">
@@ -39,7 +44,7 @@
                     <li><a href="Servicios_Registrados.html">Ver Servicios</a></li>
                 </ul>
             </li>
-            <li><a href="#">Gestión de Empleados</a>
+            <li><a id="menu-gestion-empleados"  href="#">Gestión de Empleados</a>
                 <ul>
                     <li><a href="Empleado_Nuevo.html">Agregar Empleado</a></li>
                     <li><a href="Empleados_Registrados.html">Ver Empleados Registrados</a></li>
@@ -80,6 +85,14 @@
         </form>
     </section>
 </main>
+<script>
+    // Ocultar la pantalla de carga después de un mínimo de 1 segundo
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            document.getElementById('loading-screen').style.display = 'none';
+        }, 500); // 1000 ms = 1 segundo
+    });
+</script>
 
     <script>
         window.onload = function() {
@@ -109,34 +122,47 @@
         }
 
         async function guardarServicio() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const servicioID = urlParams.get('servicioID');
+    const urlParams = new URLSearchParams(window.location.search);
+    const servicioID = urlParams.get('servicioID');
 
-            const servicioModificado = {
-                Nombre: document.getElementById('nombreServicio').value,
-                Costo: document.getElementById('costo').value,
-                Descripcion: document.getElementById('descripcion').value
-            };
+    const servicioModificado = {
+        Nombre: document.getElementById('nombreServicio').value,
+        Costo: document.getElementById('costo').value,
+        Descripcion: document.getElementById('descripcion').value,
+    };
 
-            try {
-                const response = await fetch(`/servicios/${servicioID}`, { // Asegúrate de que esta URL esté correctamente configurada
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(servicioModificado)
-                });
+    try {
+        const response = await fetch(`/servicios/${servicioID}`, { // Asegúrate de que esta URL esté correctamente configurada
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(servicioModificado),
+        });
 
-                if (response.ok) {
-                    alert('Servicio modificado con éxito');
-                    window.location.href = 'Servicios_Registrados.html';
-                } else {
-                    const errorResponse = await response.json(); // Obtener el mensaje de error del servidor
-                    alert(`Error al modificar el servicio: ${errorResponse.message || 'Error desconocido'}`);
-                }
-            } catch (error) {
-                console.error('Error al guardar el servicio:', error);
-                alert('Error al guardar el servicio.');
-            }
+        if (response.ok) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Servicio modificado',
+                text: 'El servicio se actualizó con éxito.',
+            }).then(() => {
+                window.location.href = 'Servicios_Registrados.html'; // Redirige a la lista de servicios
+            });
+        } else {
+            const errorResponse = await response.json(); // Obtener el mensaje de error del servidor
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al modificar el servicio',
+                text: errorResponse.message || 'Error desconocido.',
+            });
         }
+    } catch (error) {
+        console.error('Error al guardar el servicio:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error inesperado',
+            text: 'Ocurrió un error al intentar guardar el servicio. Intenta de nuevo más tarde.',
+        });
+    }
+}
     // Verificar si la sesión está activa
     fetch('/isAuthenticated', { method: 'GET' })
         .then(response => {
@@ -157,6 +183,23 @@
                     window.location.href = '/'; // Redirige al inicio en caso de error
                 });
         });
+        
+           // Función que verifica el rol del usuario y oculta la opción de "Gestión de Empleados" si es empleado
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('/api/session')
+            .then(response => response.json())
+            .then(data => {
+                // Comprobar si el usuario es "empleado"
+                if (data.loggedIn && data.rol === 'empleado') {
+                    // Ocultar la opción de "Gestión de Empleados" en la barra de navegación
+                    const menuGestionEmpleados = document.getElementById('menu-gestion-empleados');
+                    if (menuGestionEmpleados) {
+                        menuGestionEmpleados.style.display = 'none';
+                    }
+                }
+            })
+            .catch(error => console.error('Error al obtener la sesión:', error));
+    });
 </script>
 </body>
 </html>
