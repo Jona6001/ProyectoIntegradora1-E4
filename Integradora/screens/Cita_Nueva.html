@@ -5,20 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nueva Cita</title>
     <link rel="stylesheet" href="..//css/stylesnueva.css">
-        <!-- SweetAlert2 CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-        <!-- SweetAlert2 JS -->
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../scripts/script.js"></script>
 </head>
 <body>
-        <!-- Pantalla de carga -->
-        <div id="loading-screen">
-            <div class="spinner"></div>
-            <p>Cargando...</p>
-        </div>
+    <!-- Pantalla de carga -->
+    <div id="loading-screen">
+        <div class="spinner"></div>
+        <p>Cargando...</p>
+    </div>
+
     <!-- Encabezado -->
-<header>
+    <header>
         <div class="logo-title">
             <a href="main.html" class="logo-link">
                 <img src="../img/logo.jpg" alt="Logo Agenda Dental" class="logo">
@@ -27,7 +28,7 @@
         </div>
         
         <!-- Menú horizontal con accesos desplegables -->
-         <nav id="menu-gestores"> 
+        <nav id="menu-gestores"> 
             <ul>
                 <li><a href="#">Gestión de Citas</a>
                     <ul>
@@ -47,7 +48,6 @@
                         <li><a href="Servicios_Registrados.html">Ver Servicios</a></li>
                     </ul>
                 </li>
-                
                 <li id="menu-gestion-empleados"><a href="#">Gestión de Empleados</a>
                     <ul>
                         <li><a href="Empleado_Nuevo.html">Agregar Empleado</a></li>
@@ -55,10 +55,10 @@
                     </ul>
                 </li>
             </ul>
-        
         </nav>
+
         <button id="logoutButton" class="btn-animated" onclick="cerrarSesion()">Cerrar Sesión</button>
-</header>
+    </header>
     
     <h2>Registrar Nueva Cita</h2>
     <form id="nuevaCitaForm">
@@ -91,6 +91,7 @@
             </button>
         </div>
     </form>
+
     <script>
         // Ocultar la pantalla de carga después de un mínimo de 1 segundo
         window.addEventListener('load', () => {
@@ -98,15 +99,13 @@
                 document.getElementById('loading-screen').style.display = 'none';
             }, 500); // 1000 ms = 1 segundo
         });
-    </script>
-    
-    <script>
+
         document.addEventListener('DOMContentLoaded', async () => {
             await cargarClientes();
             await cargarEmpleados();
             await cargarServicios();
         });
-    
+
         async function cargarClientes() {
             const response = await fetch('/clientes');
             const clientes = await response.json();
@@ -118,7 +117,7 @@
                 clienteSelect.appendChild(option);
             });
         }
-    
+
         async function cargarEmpleados() {
             const response = await fetch('/empleados');
             const empleados = await response.json();
@@ -130,7 +129,7 @@
                 empleadoSelect.appendChild(option);
             });
         }
-    
+
         async function cargarServicios() {
             const response = await fetch('/obtenerServicios');
             const servicios = await response.json();
@@ -142,23 +141,33 @@
                 servicioSelect.appendChild(option);
             });
         }
-    
+
         document.getElementById('nuevaCitaForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+
+            // Verificación de que los campos estén completos
             const clienteId = document.getElementById('clienteSelect').value;
             const empleadoId = document.getElementById('empleadoSelect').value;
             const servicioId = document.getElementById('servicioSelect').value;
             const fecha = document.getElementById('fecha').value;
             const hora = document.getElementById('hora').value;
-    
+
+            if (!clienteId || !empleadoId || !servicioId || !fecha || !hora) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Campos incompletos',
+                    text: 'Por favor, complete todos los campos antes de guardar.',
+                });
+                return; // Detener la ejecución si algún campo está vacío
+            }
+
             const response = await fetch('/nueva_cita', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ clienteId, empleadoId, servicioId, fecha, hora }),
             });
-    
+
             if (response.ok) {
-                // Alerta de éxito usando SweetAlert
                 Swal.fire({
                     icon: 'success',
                     title: '¡Cita agregada con éxito!',
@@ -178,7 +187,7 @@
             }
         });
     </script>
-    
+
     <script>
         // Verificar si la sesión está activa
         fetch('/isAuthenticated', { method: 'GET' })
@@ -188,7 +197,8 @@
                     window.location.href = '/';
                 }
             });
-               // Función que verifica el rol del usuario y oculta la opción de "Gestión de Empleados" si es empleado
+
+        // Función que verifica el rol del usuario y oculta la opción de "Gestión de Empleados" si es empleado
         document.addEventListener('DOMContentLoaded', function() {
             fetch('/api/session')
                 .then(response => response.json())

@@ -83,7 +83,27 @@
 <div class="botones-footer">
     <a href="Cliente_Nuevo.html"><button type="button" id="NuevoCliente">Agregar cliente</button></a>
     <a href="main.html"><button type="button" id="Salir">Salir</button></a>
+    <!-- Botón inicial -->
+    <button type="button" id="toggleClientesButton" onclick="toggleClientes()">Mostrar a los clientes eliminados</button>
 </div>
+<script>
+    let mostrandoEliminados = false;
+
+    function toggleClientes() {
+        const toggleButton = document.getElementById('toggleClientesButton');
+        const tablaClientes = 'clientesBody'; 
+        if (mostrandoEliminados) {
+            mostrarClientes(tablaClientes);
+            toggleButton.textContent = 'Mostrar a los clientes eliminados';
+        } else {
+            mostrarClientesDesactivados(tablaClientes);
+            toggleButton.textContent = 'Regresar a clientes activos';
+        }
+        mostrandoEliminados = !mostrandoEliminados;
+    }
+</script>
+
+
 </div>
 <script>
     // Ocultar la pantalla de carga después de un mínimo de 1 segundo

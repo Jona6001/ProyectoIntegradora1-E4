@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citas Registradas por Empleado</title>
+    <link rel="stylesheet" href="../css/stylesregistrada.css">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo-title">
+            <a href="main.html" class="logo-link">
+                <img src="../img/logo.jpg" alt="Logo Agenda Dental" class="logo">
+                <span class="inicio-text">Inicio</span>
+            </a>
+        </div>
+        <!-- Menú horizontal con accesos desplegables -->
+        <nav id="menu-gestores">
+            <ul>
+                <li><a href="#">Gestión de Citas</a>
+                    <ul>
+                        <li><a href="../screens/Cita_Nueva.html">Agregar Cita</a></li>
+                        <li><a href="../screens/Citas_Registradas.html">Ver Citas Registradas</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Gestión de Clientes</a>
+                    <ul>
+                        <li><a href="Cliente_Nuevo.html">Agregar Cliente</a></li>
+                        <li><a href="Clientes_Registrados.html">Ver Clientes Registrados</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Gestión de Servicios</a>
+                    <ul>
+                        <li><a href="Servicio_Nuevo.html">Agregar Servicio</a></li>
+                        <li><a href="Servicios_Registrados.html">Ver Servicios</a></li>
+                    </ul>
+                </li>
+                <li id="menu-gestion-empleados"><a href="#">Gestión de Empleados</a>
+                    <ul>
+                        <li><a href="Empleado_Nuevo.html">Agregar Empleado</a></li>
+                        <li><a href="Empleados_Registrados.html">Ver Empleados Registrados</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <button id="logoutButton" class="btn-animated" onclick="cerrarSesion()">Cerrar Sesión</button>
+    </header>
+    <div class="tabla-container">
+        <center><h2>Citas Registradas por el usuario seleccionado </h2></center>
+
+        <table id="citasEmpleadoTable">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Servicio</th>
+                    <th>Estado</th>
+                    <th>Cliente</th>
+                </tr>
+            </thead>
+            <tbody id="citasEmpleadoBody">
+                <!-- Las citas se insertarán aquí dinámicamente -->
+            </tbody>
+        </table>
+    
+        <div id="paginationCitas"></div> <!-- Contenedor para la paginación -->
+    
+        <div class="botones-footer">
+            <a href="Cita_Nueva.html"><button type="button" id="NuevaCita">Nueva Cita</button></a>
+            <a href="main.html"><button type="button" id="Salir">Salir</button></a>
+            <a href="Empleados_Registrados.html"><button type="button" id="Salir">Regresar</button></a>
+        </div>
+    </div>
+
+  <script>
+window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const empleadoId = urlParams.get('empleadoId');
+    if (empleadoId) {
+        mostrarCitasEmpleado(empleadoId);
+    } else {
+        console.error('No se encontró el ID del empleado en la URL');
+    }
+};
+
+        fetch('/isAuthenticated', { method: 'GET' })
+            .then(response => {
+                if (!response.ok) {
+                    // Si no está autenticado, redirigir al inicio de sesión
+                    window.location.href = '/';
+                }
+            });
+               // Función que verifica el rol del usuario y oculta la opción de "Gestión de Empleados" si es empleado
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/api/session')
+                .then(response => response.json())
+                .then(data => {
+                    // Comprobar si el usuario es "empleado"
+                    if (data.loggedIn && data.rol === 'empleado') {
+                        // Ocultar la opción de "Gestión de Empleados" en la barra de navegación
+                        const menuGestionEmpleados = document.getElementById('menu-gestion-empleados');
+                        if (menuGestionEmpleados) {
+                            menuGestionEmpleados.style.display = 'none';
+                        }
+                    }
+                })
+                .catch(error => console.error('Error al obtener la sesión:', error));
+        });
+    </script>
+
+
+    <script src="../scripts/script.js" defer></script>
+    <script src="../scripts/sweetalert2.min.js"></script>
+</body>
+</html>

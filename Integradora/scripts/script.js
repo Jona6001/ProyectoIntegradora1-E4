@@ -368,48 +368,168 @@ function editarCliente(clienteID) {
 function eliminarCliente(clienteId) {
     Swal.fire({
         title: '¿Estás seguro?',
-        text: "¡No podrás revertir esta acción!",
+        text: "¡El cliente se desactivará!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Sí, eliminar',
+        confirmButtonText: 'Sí, desactivar',
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
-            fetch(`/eliminarCliente/${clienteId}`, {
-                method: 'DELETE'
+            fetch(`/desactivarCliente/${clienteId}`, {
+                method: 'PATCH',
             })
             .then(response => {
                 if (response.ok) {
-                    Swal.fire('Eliminado', 'El cliente ha sido eliminado con éxito.', 'success');
-                    mostrarClientes('clientesBody'); // Recargar la lista de clientes
+                    Swal.fire('Desactivado', 'El cliente ha sido desactivado con éxito.', 'success');
+                    mostrarClientes('clientesBody'); 
                 } else {
-                    Swal.fire('Error', 'Error al eliminar el cliente.', 'error');
+                    Swal.fire('Error', 'Error al desactivar el cliente.', 'error');
                 }
             })
             .catch(error => {
-                console.error('Error al eliminar cliente:', error);
-                Swal.fire('Error', 'No se pudo eliminar el cliente.', 'error');
+                console.error('Error al desactivar cliente:', error);
+                Swal.fire('Error', 'No se pudo desactivar el cliente.', 'error');
             });
         }
     });
+}
+
+
+// Función para mostrar clientes desactivados con paginación
+function mostrarClientesDesactivados(tablaclientes) {
+    const clientesBody = document.getElementById(tablaclientes);
+    clientesBody.innerHTML = ''; // Limpia la tabla antes de llenarla
+
+    fetch('/clientes_desactivados')
+        .then(response => response.json())
+        .then(data => {
+            if (data.length === 0) {
+                clientesBody.innerHTML = '<tr><td colspan="5"><center>No hay clientes desactivados.</center></td></tr>';
+                document.getElementById('paginationClientes').innerHTML = ''; // Limpia la paginación si no hay resultados
+                return;
+            }
+
+            mostrarResultadosClientesDesactivados(data, clientesBody); // Mostrar clientes con paginación
+        })
+        .catch(error => {
+            console.error('Error al mostrar los clientes desactivados:', error);
+        });
+}
+
+
+
+// Función para mostrar clientes desactivados en la tabla con paginación
+function mostrarResultadosClientesDesactivados(clientesArray, clientesBody) {
+    clientesBody.innerHTML = '';
+
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = Math.min(startIndex + itemsPerPage, clientesArray.length);
+
+    for (let i = startIndex; i < endIndex; i++) {
+        const cliente = clientesArray[i];
+        const row = `
+        <tr>
+            <td>${cliente.Nombre}</td>
+            <td>${cliente.Apellido_Paterno} ${cliente.Apellido_Materno}</td>
+            <td>${cliente.Tel}</td>
+            <td>${cliente.Direccion}</td>
+            <td>
+                <button onclick="editarCliente(${cliente.Cliente_ID})" 
+                style="background-color: #4CAF50; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                Editar
+                </button>
+                <button onclick="ActivarCliente(${cliente.Cliente_ID})" 
+                    style="background-color: #0331a9; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                    Activar
+                </button>
+            </td>
+        </tr>`;
+        clientesBody.innerHTML += row;
+    }
+
+    const totalPages = Math.ceil(clientesArray.length / itemsPerPage);
+    mostrarPaginacionClientesDesactivados(totalPages, clientesArray);
+}
+
+// Función de paginación específica para clientes desactivados
+function mostrarPaginacionClientesDesactivados(totalPages, clientesArray) {
+    const paginationContainer = document.getElementById('paginationClientes');
+    paginationContainer.innerHTML = '';
+
+    for (let i = 1; i <= totalPages; i++) {
+        const button = document.createElement('button');
+        button.textContent = i;
+        button.onclick = () => {
+            currentPage = i;
+            mostrarResultadosClientesDesactivados(clientesArray, document.getElementById('clientesBody'));
+        };
+        paginationContainer.appendChild(button);
+    }
+}
+
+
+function ActivarCliente(clienteId) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¡El cliente se activará de nuevo!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, activar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/activarCliente/${clienteId}`, {
+                method: 'PATCH',
+            })
+            .then(response => {
+                if (response.ok) {
+                    Swal.fire('Activado', 'El cliente ha sido activado con éxito.', 'success');
+                    mostrarClientesDesactivados('clientesBody'); 
+                } else {
+                    Swal.fire('Error', 'Error al desactivar el cliente.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error al activar cliente:', error);
+                Swal.fire('Error', 'No se pudo activar el cliente.', 'error');
+            });
+        }
+    });
+}
+
+
+// Función para mostrar servicios con paginación
+function mostrarServicios(serviciosBodyId) {
+    const serviciosBody = document.getElementById(serviciosBodyId);
+    serviciosBody.innerHTML = ''; // Limpiar la tabla antes de llenarla
+
+    fetch('/obtenerServicios') // Endpoint para obtener los servicios
+        .then(response => response.json())
+        .then(data => {
+            if (data.length === 0) {
+                serviciosBody.innerHTML = '<tr><td colspan="4"><center>No hay servicios registrados.</center></td></tr>';
+                document.getElementById('paginationServicios').innerHTML = ''; // Limpiar la paginación si no hay resultados
+                return;
+            }
+
+            mostrarResultadosServicios(data, serviciosBody); // Mostrar servicios con paginación
+        })
+        .catch(error => {
+            console.error('Error al mostrar los servicios:', error);
+        });
 }
 
 // Función para mostrar servicios en la tabla con paginación
 function mostrarResultadosServicios(serviciosArray, serviciosBody) {
     serviciosBody.innerHTML = '';
 
-    if (serviciosArray.length === 0) {
-        serviciosBody.innerHTML = '<tr><td colspan="4"><center>No hay servicios registrados.</center></td></tr>';
-        return;
-    }
-
-    // Calcular el índice inicial y final para la paginación
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = Math.min(startIndex + itemsPerPage, serviciosArray.length);
 
-    // Mostrar solo los servicios de la página actual
     for (let i = startIndex; i < endIndex; i++) {
         const servicio = serviciosArray[i];
         const row = `
@@ -417,21 +537,20 @@ function mostrarResultadosServicios(serviciosArray, serviciosBody) {
             <td>${servicio.Nombre}</td>
             <td>${servicio.Descripcion}</td>
             <td>${servicio.Costo} $</td>
-          
-            <td> <button onclick="editarServicio(${servicio.Servicio_ID})" 
+            <td>
+                <button onclick="editarServicio(${servicio.Servicio_ID})" 
                 style="background-color: #4CAF50; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
                 Editar
-            </button>
-            <button onclick="eliminarServicio(${servicio.Servicio_ID})" 
+                </button>
+                <button onclick="desactivarServicio(${servicio.Servicio_ID})" 
                 style="background-color: #f44336; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
                 Eliminar
-            </button>
+                </button>
             </td>
         </tr>`;
         serviciosBody.innerHTML += row;
     }
 
-    // Calcular el total de páginas y mostrar la paginación
     const totalPages = Math.ceil(serviciosArray.length / itemsPerPage);
     mostrarPaginacionServicios(totalPages, serviciosArray);
 }
@@ -452,16 +571,35 @@ function mostrarPaginacionServicios(totalPages, serviciosArray) {
     }
 }
 
-// Función para cargar y mostrar los servicios al cargar la página
-function cargarServicios() {
-    fetch('/obtenerServicios')
-        .then(response => response.json())
-        .then(servicios => {
-            mostrarResultadosServicios(servicios, document.getElementById('ServicioBody'));
-        })
-        .catch(error => {
-            console.error('Error al cargar servicios:', error);
-        });
+
+
+function desactivarServicio(servicioId) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¡El servicio se desactivará!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, desactivar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/desactivarServicio/${servicioId}`, {
+                method: 'PATCH',
+            })
+            .then(response => {
+                if (response.ok) {
+                    Swal.fire('Desactivado', 'El servicio ha sido desactivado con éxito.', 'success')
+                    mostrarServicios('ServiciosBody')
+                        
+                }
+            })
+            .catch(error => {
+                console.error('Error al desactivar servicio:', error);
+            });
+        }
+    });
 }
 
 // Función para editar un servicio
@@ -469,26 +607,114 @@ function editarServicio(servicioID) {
     window.location.href = `Servicio_Modificar.html?servicioID=${servicioID}`;
 }
 
-// Función para eliminar un servicio
-function eliminarServicio(servicioId) {
-    if (confirm('¿Estás seguro de que deseas eliminar el servicio?')) {
-        fetch(`/eliminarServicio/${servicioId}`, {
-            method: 'DELETE'
-        })
-        .then(response => {
-            if (response.ok) {
-                alert('Servicio eliminado con éxito');
-                cargarServicios(); // Recargar la lista de servicios
-            } else {
-                alert('Error al eliminar el servicio');
+
+// Función para mostrar servicios desactivados con paginación
+function mostrarServiciosDesactivados(serviciosBodyId) {
+    const serviciosBody = document.getElementById(serviciosBodyId);
+    serviciosBody.innerHTML = ''; // Limpiar la tabla antes de llenarla
+
+    fetch('/obtenerServicios_desactivados') // Correcto: El endpoint para obtener los servicios desactivados
+        .then(response => response.json())
+        .then(data => {
+            if (data.length === 0) {
+                serviciosBody.innerHTML = '<tr><td colspan="4"><center>No hay servicios desactivados.</center></td></tr>';
+                return;
             }
+
+            mostrarResultadosServiciosDesactivados(data, serviciosBody); // Mostrar servicios desactivados
         })
         .catch(error => {
-            console.error('Error:', error);
-            alert('Error en la solicitud de eliminación');
+            console.error('Error al mostrar los servicios desactivados:', error);
         });
+}
+
+// Función para mostrar los servicios desactivados en la tabla con paginación
+function mostrarResultadosServiciosDesactivados(serviciosArray, serviciosBody) {
+    serviciosBody.innerHTML = '';
+
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = Math.min(startIndex + itemsPerPage, serviciosArray.length);
+
+    for (let i = startIndex; i < endIndex; i++) {
+        const servicio = serviciosArray[i];
+        const row = `
+        <tr>
+            <td>${servicio.Nombre}</td>
+            <td>${servicio.Descripcion}</td>
+            <td>${servicio.Costo} $</td>
+            <td>
+                <button onclick="editarServicio(${servicio.Servicio_ID})" 
+                    style="background-color: #4CAF50; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                    Editar
+                </button>
+                <button onclick="activarServicio(${servicio.Servicio_ID})" 
+                    style="background-color: #0331a9; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                    Activar
+                </button>
+            </td>
+        </tr>`;
+        serviciosBody.innerHTML += row;
+    }
+
+    const totalPages = Math.ceil(serviciosArray.length / itemsPerPage);
+    mostrarPaginacionServicios(totalPages); // Mostrar los botones de paginación
+}
+
+// Función para mostrar la paginación
+function mostrarPaginacionServicios(totalPages) {
+    const paginationDiv = document.getElementById('pagination');
+    paginationDiv.innerHTML = ''; // Limpiar la paginación antes de llenarla
+
+    for (let i = 1; i <= totalPages; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.textContent = i;
+        pageButton.style.padding = '5px 10px';
+        pageButton.style.margin = '0 5px';
+        pageButton.style.cursor = 'pointer';
+        pageButton.onclick = () => cambiarPaginaServicios(i);
+        paginationDiv.appendChild(pageButton);
     }
 }
+
+// Función para cambiar de página
+function cambiarPaginaServicios(pageNumber) {
+    currentPage = pageNumber;
+    mostrarServiciosDesactivados('serviciosBody'); // Llamar la función para mostrar los servicios con la página correcta
+}
+
+
+
+function activarServicio(servicioId) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¡El servicio se activará!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, activar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/activarServicio/${servicioId}`, {
+                method: 'PATCH',
+            })
+            .then(response => {
+                if (response.ok) {
+                    Swal.fire('Activado', 'El servicio ha sido activado con éxito.', 'success')
+                    mostrarServiciosDesactivados('ServiciosBody')
+                } else {
+                    Swal.fire('Error', 'Error al activar el servicio.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error al activar servicio:', error);
+                Swal.fire('Error', 'No se pudo activar el servicio.', 'error');
+            });
+        }
+    });
+}
+
 
 
 // Función para mostrar empleados con paginación
@@ -505,7 +731,7 @@ function mostrarEmpleados(tablaEmpleados) {
         })
         .then(data => {
             console.log('Datos recibidos de /empleados:', data); // Verificar datos
-            empleados = data; 
+            empleados = data;
             mostrarResultadosEmpleados(empleados, empleadosBody);
         })
         .catch(error => {
@@ -535,14 +761,21 @@ function mostrarResultadosEmpleados(empleadosArray, empleadosBody) {
         <tr>
             <td>${empleado.Username}</td>
             <td>${empleado.Rol}</td>
-            <td> <button onclick="editarEmpleado(${empleado.Empleados_ID})" 
+            <td>
+            <button onclick="verCitasEmpleado(${empleado.Empleados_ID})" 
+                style="background-color: #6c0ddf; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                Ver las citas registradas
+            </button> 
+            <button onclick="editarEmpleado(${empleado.Empleados_ID})" 
                 style="background-color: #4CAF50; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
                 Editar
             </button>
+
             <button onclick="eliminarEmpleado(${empleado.Empleados_ID})" 
                 style="background-color: #f44336; color: white; padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
                 Eliminar
             </button>
+
             </td>
         </tr>`;
         empleadosBody.innerHTML += row;
@@ -553,21 +786,7 @@ function mostrarResultadosEmpleados(empleadosArray, empleadosBody) {
     mostrarPaginacionEmpleados(totalPages, empleadosArray); 
 }
 
-// Función para mostrar botones de paginación para empleados
-function mostrarPaginacionEmpleados(totalPages, empleadosArray) {
-    const paginationContainer = document.getElementById('paginationEmpleados');
-    paginationContainer.innerHTML = '';
 
-    for (let i = 1; i <= totalPages; i++) {
-        const button = document.createElement('button');
-        button.textContent = i;
-        button.onclick = () => {
-            currentPage = i;
-            mostrarResultadosEmpleados(empleadosArray, document.getElementById('empleadosBody'));
-        };
-        paginationContainer.appendChild(button);
-    }
-}
 
 // Función para editar un empleado
 function editarEmpleado(Empleados_ID) {
@@ -602,4 +821,76 @@ function eliminarEmpleado(Empleados_ID) {
                 });
         }
     });
+}
+
+
+
+// Función para mostrar los detalles de las citas de un empleado
+function verCitasEmpleado(empleadoId) {
+    window.location.href = `Empleados_Citas.html?empleadoId=${empleadoId}`;
+}
+
+function mostrarCitasEmpleado(empleadoId) {
+    const citasEmpleadoBody = document.getElementById('citasEmpleadoBody');
+    citasEmpleadoBody.innerHTML = '';
+
+    fetch(`/citas/empleado/${empleadoId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al obtener las citas');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Citas recibidas:', data);
+            mostrarCitasRegistradas(data, citasEmpleadoBody);
+        })
+        .catch(error => {
+            console.error('Error al mostrar las citas:', error);
+        });
+}
+
+function mostrarCitasRegistradas(citasArray, citasEmpleadoBody) {
+    citasEmpleadoBody.innerHTML = '';
+
+    if (citasArray.length === 0) {
+        citasEmpleadoBody.innerHTML = '<tr><td colspan="6"><center>No hay citas registradas.</center></td></tr>';
+        return;
+    }
+
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = Math.min(startIndex + itemsPerPage, citasArray.length);
+
+    for (let i = startIndex; i < endIndex; i++) {
+        const cita = citasArray[i];
+        const row = `
+        <tr>
+            <td>${new Date(cita.Fecha).toLocaleDateString('es-MX')}</td>
+            <td>${cita.Hora}</td>
+            <td>${cita.Servicio}</td>
+            <td>${cita.Estado}</td>
+            <td>${cita.Cliente}</td>
+        </tr>`;
+        citasEmpleadoBody.innerHTML += row;
+    }
+
+    const totalPages = Math.ceil(citasArray.length / itemsPerPage);
+    mostrarPaginacionCitas(totalPages, citasArray);
+}
+
+
+// Función para mostrar los botones de paginación de citas
+function mostrarPaginacionCitas(totalPages, citasArray) {
+    const paginationContainer = document.getElementById('paginationCitas');
+    paginationContainer.innerHTML = '';
+
+    for (let i = 1; i <= totalPages; i++) {
+        const button = document.createElement('button');
+        button.textContent = i;
+        button.onclick = () => {
+            currentPage = i;
+            mostrarCitasRegistradas(citasArray, document.getElementById('citasEmpleadoBody'));
+        };
+        paginationContainer.appendChild(button);
+    }
 }

@@ -10,10 +10,7 @@
         <!-- SweetAlert2 JS -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../scripts/script.js" defer></script>
-
-    <script>
-        window.onload = function() { cargarServicios(); }; // Llama a cargarServicios al cargar la página
-    </script>
+    <script>  window.onload = function() { mostrarServicios('ServiciosBody'); };</script>
 </head>
 <body>
             <!-- Pantalla de carga -->
@@ -73,16 +70,36 @@
                 <th>Acciones</th>
             </tr>
         </thead>
-        <tbody id="ServicioBody"></tbody>
+        <tbody id="ServiciosBody"></tbody>
     </table>
+    
 
-    <div id="pagination" style="text-align: center; margin-top: 10px;"></div>
+    <div id="paginationServicios" style="text-align: center; margin-top: 10px;"></div>
     
     <div class="botones-footer">
         <a href="Servicio_Nuevo.html"><button type="button" id="NuevoServicio">Agregar Servicio nuevo</button></a>
         <a href="main.html"><button type="button" id="Salir">Salir</button></a>
+        <button type="button" id="toggleServiciosButton" onclick="toggleServicios()">Mostrar los servicios desactivados</button>
     </div>
-</div>
+
+<script>
+    let mostrandoDesactivados = false;
+
+    function toggleServicios() {
+        const toggleButton = document.getElementById('toggleServiciosButton');
+        const tablaServicios = 'ServiciosBody';  // El ID del body de la tabla donde se muestran los servicios
+
+        if (mostrandoDesactivados) {
+            mostrarServicios(tablaServicios);  // Mostrar todos los servicios (activos)
+            toggleButton.textContent = 'Mostrar los servicios desactivados';  // Cambiar el texto del botón
+        } else {
+            mostrarServiciosDesactivados(tablaServicios);  // Mostrar solo los servicios desactivados
+            toggleButton.textContent = 'Regresar a los servicios activos';  // Cambiar el texto del botón
+        }
+
+        mostrandoDesactivados = !mostrandoDesactivados;  // Alternar el estado entre mostrar/desactivar
+    }
+</script>
 
 <script>
     // Ocultar la pantalla de carga después de un mínimo de 1 segundo

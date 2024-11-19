@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agregar Empleado</title>
     <link rel="stylesheet" href="../css/stylesnueva.css">
-            <!-- SweetAlert2 CSS -->
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-            <!-- SweetAlert2 JS -->
-            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../scripts/script.js"></script>
 </head>
 <body>
@@ -25,43 +25,39 @@
                 <img src="../img/logo.jpg" alt="Logo Agenda Dental" class="logo">
                 <span class="inicio-text">Inicio</span>
             </a>
-            </div>
-                <!-- Menú horizontal con accesos desplegables -->
-                <nav id="menu-gestores">
-                    <ul>
-                        <li><a href="#">Gestión de Citas</a>
-                            <ul>
-                                <li><a href="../screens/Cita_Nueva.html">Agregar Cita</a></li>
-                                <li><a href="../screens/Citas_Registradas.html">Ver Citas Registradas</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Gestión de Clientes</a>
-                            <ul>
-                                <li><a href="Cliente_Nuevo.html">Agregar Cliente</a></li>
-                                <li><a href="Clientes_Registrados.html">Ver Clientes Registrados</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Gestión de Servicios</a>
-                            <ul>
-                                <li><a href="Servicio_Nuevo.html">Agregar Servicio</a></li>
-                                <li><a href="Servicios_Registrados.html">Ver Servicios</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#">Gestión de Empleados</a>
-                            <ul>
-                                <li><a href="Empleado_Nuevo.html">Agregar Empleado</a></li>
-                                <li><a href="Empleados_Registrados.html">Ver Empleados Registrados</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </nav>
         </div>
+        <nav id="menu-gestores">
+            <ul>
+                <li><a href="#">Gestión de Citas</a>
+                    <ul>
+                        <li><a href="../screens/Cita_Nueva.html">Agregar Cita</a></li>
+                        <li><a href="../screens/Citas_Registradas.html">Ver Citas Registradas</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Gestión de Clientes</a>
+                    <ul>
+                        <li><a href="Cliente_Nuevo.html">Agregar Cliente</a></li>
+                        <li><a href="Clientes_Registrados.html">Ver Clientes Registrados</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Gestión de Servicios</a>
+                    <ul>
+                        <li><a href="Servicio_Nuevo.html">Agregar Servicio</a></li>
+                        <li><a href="Servicios_Registrados.html">Ver Servicios</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Gestión de Empleados</a>
+                    <ul>
+                        <li><a href="Empleado_Nuevo.html">Agregar Empleado</a></li>
+                        <li><a href="Empleados_Registrados.html">Ver Empleados Registrados</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
         <button type="button" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
     </header>
     <h2>Agregar Empleado</h2>
     <form id="agregarEmpleadoForm">
-        
-        
         <div class="campo">
             <label for="usuario">Escribe el usuario del empleado:</label>
             <input type="text" id="usuario" required placeholder="Ingrese el usuario">
@@ -79,8 +75,9 @@
             <label for="password">Ingresa la contraseña que tendrá el usuario:</label>
             <input type="password" id="password" required placeholder="Ingrese la contraseña">
         </div>
+
         <div class="botones">
-            <button type="submit" class="guardar-empleado" onclick="guardarEmpleado()">
+            <button type="submit" class="guardar-empleado">
                 Guardar Empleado
                 <img src="../img/guardar.png" alt="guardar" width="40" height="40">
             </button>
@@ -97,72 +94,67 @@
                 document.getElementById('loading-screen').style.display = 'none';
             }, 1000); // 1000 ms = 1 segundo
         });
-    </script>
-    <script>
-        // Ocultar la pantalla de carga después de un mínimo de 1 segundo
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('loading-screen').style.display = 'none';
-            }, 500); // 1000 ms = 1 segundo
-        });
-    </script>
-        
 
-    
-    <script> 
-function guardarEmpleado() {
-    const empleado = {
-        username: document.getElementById('usuario').value,
-        rol: document.getElementById('rolSelect').value,
-        password: document.getElementById('password').value,
-    };
+        // Función para guardar el empleado
+        function guardarEmpleado(event) {
+            // Evitar el envío del formulario si los campos están vacíos
+            event.preventDefault();
 
-    fetch('/nuevo_empleado', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(empleado),
-    })
-    .then(response => {
-        if (response.ok) {
-            alert('Empleado agregado con éxito');
-            window.location.href = 'Empleados_Registados.html';
-        } else {
-            return response.json().then(err => {
-                alert(`Error: ${err.message}`); // Muestra el mensaje de error del servidor
-            });
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Error al conectar con el servidor');
-    });
-}
+            const usuario = document.getElementById('usuario').value;
+            const rol = document.getElementById('rolSelect').value;
+            const password = document.getElementById('password').value;
 
-
-    
-    // Verificar si la sesión está activa
-    fetch('/isAuthenticated', { method: 'GET' })
-        .then(response => {
-            if (!response.ok) {
-                // Si no está autenticado, redirigir al inicio de sesión
-                window.location.href = '/';
+            if (!usuario || !rol || !password) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Campos vacíos',
+                    text: 'Por favor, completa todos los campos.',
+                });
+                return;
             }
-        });
 
-    document.addEventListener('DOMContentLoaded', () => {
-        fetch('/verificar_sesion', { method: 'GET', credentials: 'same-origin' })
+            const empleado = {
+                username: usuario,
+                rol: rol,
+                password: password,
+            };
+
+            fetch('/nuevo_empleado', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(empleado),
+            })
             .then(response => {
-                if (!response.ok) {
-                    window.location.href = '/'; // Redirige al inicio si no hay sesión
+                if (response.ok) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Empleado agregado con éxito',
+                        text: 'El nuevo empleado ha sido registrado.',
+                    }).then(() => {
+                        window.location.href = 'Empleados_Registrados.html';
+                    });
+                } else {
+                    return response.json().then(err => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: `Error: ${err.message}`,
+                        });
+                    });
                 }
             })
             .catch(error => {
-                console.error('Error verificando la sesión:', error);
-                window.location.href = '/'; // Redirige al inicio en caso de error
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al conectar con el servidor',
+                    text: 'Hubo un error al intentar guardar el empleado.',
+                });
             });
-    });
+        }
+
+        // Asignar el evento de enviar el formulario al hacer click en el botón "guardar"
+        document.getElementById('agregarEmpleadoForm').addEventListener('submit', guardarEmpleado);
     </script>
-
-
 </body>
 </html>

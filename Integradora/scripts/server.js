@@ -195,7 +195,7 @@ app.post('/nueva_cita', (req, res) => {
 
 
 
-// Ruta para obtener clientes
+// Ruta para obtener clientes activos
 app.get('/clientes', (req, res) => {
     consultas.obtenerClientes((err, resultados) => {
         if (err) return res.status(500).json({ error: 'Error al obtener clientes' });
@@ -203,10 +203,10 @@ app.get('/clientes', (req, res) => {
     });
 });
 
-// Ruta para obtener empleados
-app.get('/empleados', (req, res) => {
-    consultas.obtenerEmpleados((err, resultados) => {
-        if (err) return res.status(500).json({ error: 'Error al obtener empleados' });
+// Ruta para obtener clientes desactivados
+app.get('/clientes_desactivados', (req, res) => {
+    consultas.obtenerClientesDesactivados((err, resultados) => {
+        if (err) return res.status(500).json({ error: 'Error al obtener clientes' });
         res.json(resultados);
     });
 });
@@ -225,6 +225,23 @@ app.get('/obtenerServicios', (req, res) => {
 });
 
 
+// Ruta para obtener servicios desactivados
+app.get('/obtenerServicios_desactivados', (req, res) => {
+    consultas.obtenerServiciosDesactivados((err, servicios) => {
+        if (err) {
+            return res.status(500).send('Error al obtener servicios');
+        }
+        res.json(servicios);
+    });
+});
+
+// Ruta para obtener empleados
+app.get('/empleados', (req, res) => {
+    consultas.obtenerEmpleados((err, resultados) => {
+        if (err) return res.status(500).json({ error: 'Error al obtener empleados' });
+        res.json(resultados);
+    });
+});
 
 // Ruta para obtener estados
 app.get('/estados', (req, res) => {
@@ -264,27 +281,37 @@ app.put('/citas/:id', (req, res) => {
 });
 
 
-// Ruta para eliminar un cliente
-app.delete('/eliminarCliente/:id', (req, res) => {
+// Ruta para desactivar un cliente
+app.patch('/desactivarCliente/:id', (req, res) => {
     const clienteId = req.params.id;
-    
-    // Elimina las citas relacionadas primero
-    consultas.eliminarCitasPorCliente(clienteId, (err) => {
+
+    consultas.desactivarCliente(clienteId, (err) => {
         if (err) {
-            console.error('Error al eliminar citas del cliente:', err);
-            return res.status(500).json({ message: 'Error al eliminar citas del cliente' });
+            console.error('Error al desactivar cliente:', err);
+            return res.status(500).json({ message: 'Error al desactivar el cliente' });
         }
-        
-        // Ahora elimina el cliente
-        consultas.eliminarCliente(clienteId, (err) => {
-            if (err) {
-                console.error('Error al eliminar cliente:', err);
-                return res.status(500).json({ message: 'Error al eliminar el cliente' });
-            }
-            res.status(200).json({ message: 'Cliente eliminado con éxito' });
-        });
+        res.status(200).json({ message: 'Cliente desactivado con éxito' });
     });
 });
+
+// Ruta para activar un cliente
+app.patch('/activarCliente/:id', (req, res) => {
+    const clienteId = req.params.id;
+
+    consultas.activarCliente(clienteId, (err, result) => {
+        if (err) {
+            console.error('Error al activar cliente:', err);
+            return res.status(500).json({ message: 'Error al activar el cliente' });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Cliente no encontrado' });
+        }
+
+        res.status(200).json({ message: 'Cliente activado con éxito' });
+    });
+});
+
 
 
 // Ruta para obtener los clientes por ID
@@ -376,35 +403,41 @@ app.put('/servicios/:servicioID', (req, res) => {
 });
 
 
-// Ruta para eliminar un servicio
-app.delete('/eliminarServicio/:id', (req, res) => {
+// Ruta para desactivar un servicio
+app.patch('/desactivarServicio/:id', (req, res) => {
     const servicioId = req.params.id;
-    
-    // Elimina las citas relacionadas primero
-    consultas.eliminarCitasPorServicio(servicioId, (err) => {
-        if (err) {
-            console.error('Error al eliminar citas del servicio:', err);
-            return res.status(500).json({ message: 'Error al eliminar citas del servicio' });
-        }
+    console.log("Desactivando servicio con ID:", servicioId);  // Para depuración
 
-        // Elimina las referencias en empleados_citas por servicio
-        consultas.eliminarReferenciasEnEmpleadosCitasPorServicio(servicioId, (err) => {
-            if (err) {
-                console.error('Error al eliminar referencias de empleados_citas:', err);
-                return res.status(500).json({ message: 'Error al eliminar referencias de empleados_citas' });
-            }
-            
-            // Ahora elimina el servicio
-            consultas.eliminarServicio(servicioId, (err) => {
-                if (err) {
-                    console.error('Error al eliminar servicio:', err);
-                    return res.status(500).json({ message: 'Error al eliminar el servicio' });
-                }
-                res.status(200).json({ message: 'Servicio eliminado con éxito' });
-            });
-        });
+    consultas.desactivarServicio(servicioId, (err) => {
+        if (err) {
+            console.error('Error al desactivar servicio:', err);
+            return res.status(500).json({ message: 'Error al desactivar el servicio' });
+        }
+        console.log('Servicio desactivado con éxito');
+        res.status(200).json({ message: 'Servicio desactivado con éxito' });
     });
 });
+
+
+// Ruta para activar un servicio
+app.patch('/activarServicio/:id', (req, res) => {
+    const servicioId = req.params.id;
+
+    consultas.activarServicio(servicioId, (err, result) => {
+        if (err) {
+            console.error('Error al activar servicio:', err);
+            return res.status(500).json({ message: 'Error al activar el servicio' });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Servicio no encontrado' });
+        }
+
+        res.status(200).json({ message: 'Servicio activado con éxito' });
+    });
+});
+
+
 
 
 // Ruta para eliminar un empleado
@@ -480,6 +513,42 @@ app.post('/nuevo_empleado', (req, res) => {
         return res.status(201).json({ message: 'Empleado agregado exitosamente' });
     });
 });
+
+// Ruta para obtener las citas de un empleado específico
+app.get('/citas/empleado/:id', (req, res) => {
+    const empleadoId = req.params.id;
+
+    // Llama a mostrarCitasEmpleados desde el objeto consultas
+    consultas.mostrarCitasEmpleados(empleadoId, (err, citas) => {
+        if (err) {
+            console.error('Error al obtener citas:', err);
+            return res.status(500).send('Error al obtener las citas');
+        }
+        res.json(citas); // Devuelve las citas al frontend
+    });
+});
+
+app.get('/citas/empleado/:id', (req, res) => {
+    const empleadoId = req.params.id;
+
+    consultas.obtenerNombreEmpleado(empleadoId, (err, empleado) => {
+        if (err) {
+            console.error('Error al obtener nombre del empleado:', err);
+            return res.status(500).send('Error al obtener el nombre del empleado');
+        }
+
+        consultas.mostrarCitasEmpleados(empleadoId, (err, citas) => {
+            if (err) {
+                console.error('Error al obtener citas:', err);
+                return res.status(500).send('Error al obtener las citas');
+            }
+
+            res.json({ empleado, citas }); // Envía el nombre del empleado y las citas
+        });
+    });
+});
+
+
 
 
 

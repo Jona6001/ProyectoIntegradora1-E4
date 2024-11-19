@@ -64,10 +64,6 @@
         <h1>Gestionar Empleados</h1>
         <h2>Empleados Registrados</h2>
 
-        <!-- Filtros de citas -->
-        <div class="busqueda-container">
-
-        </div>
 
         <!-- Tabla de empleados -->
         <div class="tabla-container">
@@ -99,9 +95,6 @@
             document.getElementById('loading-screen').style.display = 'none';
         }, 500); // 1000 ms = 1 segundo
     });
-</script>
-
-    <script>// Suponiendo que el ID del empleado se pasa en la URL como parámetro
         const urlParams = new URLSearchParams(window.location.search);
         const empleadoId = urlParams.get('id');
         

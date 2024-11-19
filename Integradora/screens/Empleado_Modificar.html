@@ -5,17 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modificar Empleado</title>
     <link rel="stylesheet" href="../css/stylesmodificar.css">
-            <!-- SweetAlert2 CSS -->
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-            <!-- SweetAlert2 JS -->
-            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
-        <!-- Pantalla de carga -->
-        <div id="loading-screen">
-            <div class="spinner"></div>
-            <p>Cargando...</p>
-        </div>
+    <!-- Pantalla de carga -->
+    <div id="loading-screen">
+        <div class="spinner"></div>
+        <p>Cargando...</p>
+    </div>
+
 <header>
     <div class="logo-title">
         <a href="main.html" class="logo-link">
@@ -65,11 +66,14 @@
 
             <div class="campo">
                 <label for="rolSelect">Seleccionar Rol del empleado:</label>
-                <select id="rolSelect" required></select>
+                <select id="rolSelect" required> 
+                    <option value="empleado">Empleado</option>
+                    <option value="admin">Admin</option>
+                </select>
             </div>
 
             <div class="botones-footer">
-                <button type="button" class="guardar-empleado"  onclick="actualizarEmpleado()">Guardar Cambios 
+                <button type="button" class="guardar-empleado" onclick="actualizarEmpleado()">Guardar Cambios 
                     <img src="../img/guardar.png" alt="guardar" width="40" height="40">
                 </button>
                 <button type="button" class="regresar" onclick="window.location.href='Empleados_Registrados.html'">Regresar
@@ -79,6 +83,7 @@
         </form>
     </section>
 </main>
+
 <script>
     // Ocultar la pantalla de carga después de un mínimo de 1 segundo
     window.addEventListener('load', () => {
@@ -86,116 +91,89 @@
             document.getElementById('loading-screen').style.display = 'none';
         }, 500); // 1000 ms = 1 segundo
     });
-</script>
 
-<script>
     // Función para cargar empleado y roles al inicio
     document.addEventListener('DOMContentLoaded', async () => {
         const params = new URLSearchParams(window.location.search);
         const empleadoID = params.get('Empleados_ID'); // Obtén el ID del empleado desde la URL
 
         if (empleadoID) {
-            await cargarRoles(); // Carga los roles primero
-            await cargarEmpleado(empleadoID); // Luego carga el empleado
+            await cargarEmpleado(empleadoID); // Carga el empleado
         } else {
             alert('ID de empleado no proporcionado.');
         }
     });
 
     async function cargarEmpleado(empleadoID) {
-try {
-    console.log(`Cargando empleado con ID: ${empleadoID}`);
-    const response = await fetch(`/empleados/${empleadoID}`);
-    const empleado = await response.json();
-    console.log('Empleado obtenido:', empleado); // Verifica la estructura del objeto
-
-    // Asegúrate de que las propiedades que usas existen
-    if (empleado) {
-        // Cambia "Nombre" a "nombre" si así se llama la propiedad
-        document.getElementById('nombre_empleado').value = empleado.Username;
-        document.getElementById('rolSelect').value = empleado.rol || empleado.Rol; // Ajusta según el nombre real de la propiedad
-    } else {
-        alert('Empleado no encontrado');
-    }
-} catch (error) {
-    console.error('Error al cargar empleado:', error);
-    alert('No se pudo cargar el empleado.');
-}
-}
-
-    async function cargarRoles() {
         try {
-            console.log('Cargando roles...');
-            const response = await fetch('/roles');
-            if (!response.ok) throw new Error('Error en la respuesta al obtener los roles');
+            console.log(`Cargando empleado con ID: ${empleadoID}`);
+            const response = await fetch(`/empleados/${empleadoID}`);
+            const empleado = await response.json();
+            console.log('Empleado obtenido:', empleado);
 
-            const roles = await response.json();
-            console.log('Roles obtenidos:', roles);
-            const rolSelect = document.getElementById('rolSelect');
-            rolSelect.innerHTML = ''; // Limpiar las opciones previas
-
-            roles.forEach(rol => {
-                const option = document.createElement('option');
-                option.value = rol.rol; // Asegúrate de usar el campo correcto para el rol
-                option.textContent = rol.rol; // Asegúrate de usar el campo correcto para mostrar
-                rolSelect.appendChild(option);
-            });
+            // Asegúrate de que las propiedades que usas existen
+            if (empleado) {
+                document.getElementById('nombre_empleado').value = empleado.Username; // Usa "Username" si esa es la propiedad
+                document.getElementById('rolSelect').value = empleado.rol || empleado.Rol; // Ajusta el nombre de la propiedad según la base de datos
+            } else {
+                alert('Empleado no encontrado');
+            }
         } catch (error) {
-            console.error('Error al cargar roles:', error);
-            alert('No se pudieron cargar los roles.');
+            console.error('Error al cargar empleado:', error);
+            alert('No se pudo cargar el empleado.');
         }
     }
 
     async function actualizarEmpleado() {
-    const empleadoID = new URLSearchParams(window.location.search).get('Empleados_ID');
-    const username = document.getElementById('nombre_empleado').value; // Cambiar nombre a username
-    const rol = document.getElementById('rolSelect').value;
+        const empleadoID = new URLSearchParams(window.location.search).get('Empleados_ID');
+        const username = document.getElementById('nombre_empleado').value; // Cambiar nombre a username
+        const rol = document.getElementById('rolSelect').value;
 
-    try {
-        const response = await fetch(`/empleados/${empleadoID}`, {
-            method: 'PUT', // Cambia el método si es necesario
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ username, rol }), // Cambiar nombre a username
-        });
-
-        if (response.ok) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Empleado actualizado',
-                text: 'El empleado se actualizó con éxito.',
-            }).then(() => {
-                window.location.href = 'Empleados_Registados.html'; // Redirige a la lista de empleados
+        try {
+            const response = await fetch(`/empleados/${empleadoID}`, {
+                method: 'PUT', 
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, rol }), // Cambiar nombre a username
             });
-        } else {
+
+            if (response.ok) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Empleado actualizado',
+                    text: 'El empleado se actualizó con éxito.',
+                }).then(() => {
+                    window.location.href = 'Empleados_Registrados.html'; 
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al actualizar el empleado',
+                    text: 'Hubo un problema al actualizar la información del empleado.',
+                });
+            }
+        } catch (error) {
+            console.error('Error al actualizar empleado:', error);
             Swal.fire({
                 icon: 'error',
                 title: 'Error al actualizar el empleado',
-                text: 'Hubo un problema al actualizar la información del empleado.',
+                text: 'Ocurrió un error inesperado. Intenta nuevamente más tarde.',
             });
         }
-    } catch (error) {
-        console.error('Error al actualizar empleado:', error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Error al actualizar el empleado',
-            text: 'Ocurrió un error inesperado. Intenta nuevamente más tarde.',
-        });
     }
-}
 
-// Verificar si la sesión está activa
-fetch('/isAuthenticated', { method: 'GET' })
-    .then(response => {
-        if (!response.ok) {
+    // Verificar si la sesión está activa
+    fetch('/isAuthenticated', { method: 'GET' })
+        .then(response => {
+            if (!response.ok) {
+                window.location.href = '/';
+            }
+        })
+        .catch(error => {
+            console.error('Error verificando la sesión:', error);
             window.location.href = '/';
-        }
-    })
-    .catch(error => {
-        console.error('Error verificando la sesión:', error);
-        window.location.href = '/';
-    });
+        });
 
 </script>
 
