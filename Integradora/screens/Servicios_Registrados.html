@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Servicios Registrados</title>
+    <link rel="shortcut icon" href="../img/logo.jpg" type="image/x-icon">
     <link rel="stylesheet" href="../css/stylesregistrada.css">
         <!-- SweetAlert2 CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -30,14 +31,14 @@
         <ul>
             <li><a href="#">Gestión de Citas</a>
                 <ul>
-                    <li><a href="../screens/Cita_Nueva.html">Agregar Cita</a></li>
-                    <li><a href="../screens/Citas_Registradas.html">Ver Citas Registradas</a></li>
+                    <li><a href="Cita_Nueva.html">Agregar Cita</a></li>
+                    <li><a href="Citas_Registradas.html">Ver Citas </a></li>
                 </ul>
             </li>
             <li><a href="#">Gestión de Clientes</a>
                 <ul>
                     <li><a href="Cliente_Nuevo.html">Agregar Cliente</a></li>
-                    <li><a href="Clientes_Registrados.html">Ver Clientes Registrados</a></li>
+                    <li><a href="Clientes_Registrados.html">Ver Clientes </a></li>
                 </ul>
             </li>
             <li><a href="#">Gestión de Servicios</a>
@@ -46,20 +47,26 @@
                     <li><a href="Servicios_Registrados.html">Ver Servicios</a></li>
                 </ul>
             </li>
-            <li><a id="menu-gestion-empleados" href="#">Gestión de Empleados</a>
+            <li id="menu-gestion-empleados"><a href="#">Gestión de Empleados</a>
                 <ul>
                     <li><a href="Empleado_Nuevo.html">Agregar Empleado</a></li>
-                    <li><a href="Empleados_Registrados.html">Ver Empleados Registrados</a></li>
+                    <li><a href="Empleados_Registrados.html">Ver Empleados </a></li>
                 </ul>
             </li>
         </ul>
     </nav>
+    <!-- Imagen de usuario entre los menús y el botón de cerrar sesión -->
+    <div class="user-image-container">
+        <a href="Cambiar_Contraseña.html" class="logo-link">
+        <img src="../img/user.png" alt="Usuario" class="user-image">
+        <span class="inicio-text">Perfil</span>
+        </a>
+    </div>
     <button id="logoutButton" class="btn-animated" onclick="cerrarSesion()">Cerrar Sesión</button>
 </header>
 
 <div class="tabla-container">
-    <center><h1>Gestor de Servicios</h1></center>
-    <center><h2>Servicios Registrados</h2></center>
+    <center><h1>Servicios Registrados</h1></center>
     
     <table id="tablaServicios">
         <thead>
@@ -77,8 +84,7 @@
     <div id="paginationServicios" style="text-align: center; margin-top: 10px;"></div>
     
     <div class="botones-footer">
-        <a href="Servicio_Nuevo.html"><button type="button" id="NuevoServicio">Agregar Servicio nuevo</button></a>
-        <a href="main.html"><button type="button" id="Salir">Salir</button></a>
+        <a href="Servicio_Nuevo.html"><button type="button" id="NuevoServicio">Agregar Servicio</button></a>
         <button type="button" id="toggleServiciosButton" onclick="toggleServicios()">Mostrar los servicios desactivados</button>
     </div>
 

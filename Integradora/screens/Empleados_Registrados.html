@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestor de citas</title>
+    <link rel="shortcut icon" href="../img/logo.jpg" type="image/x-icon">
     <link rel="stylesheet" href="../css/stylesregistrada.css">
         <!-- SweetAlert2 CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -32,14 +33,14 @@
             <ul>
                 <li><a href="#">Gestión de Citas</a>
                     <ul>
-                        <li><a href="../screens/Cita_Nueva.html">Agregar Cita</a></li>
-                        <li><a href="../screens/Citas_Registradas.html">Ver Citas Registradas</a></li>
+                        <li><a href="Cita_Nueva.html">Agregar Cita</a></li>
+                        <li><a href="Citas_Registradas.html">Ver Citas </a></li>
                     </ul>
                 </li>
                 <li><a href="#">Gestión de Clientes</a>
                     <ul>
                         <li><a href="Cliente_Nuevo.html">Agregar Cliente</a></li>
-                        <li><a href="Clientes_Registrados.html">Ver Clientes Registrados</a></li>
+                        <li><a href="Clientes_Registrados.html">Ver Clientes </a></li>
                     </ul>
                 </li>
                 <li><a href="#">Gestión de Servicios</a>
@@ -48,46 +49,51 @@
                         <li><a href="Servicios_Registrados.html">Ver Servicios</a></li>
                     </ul>
                 </li>
-                <li><a href="#">Gestión de Empleados</a>
+                <li id="menu-gestion-empleados"><a href="#">Gestión de Empleados</a>
                     <ul>
                         <li><a href="Empleado_Nuevo.html">Agregar Empleado</a></li>
-                        <li><a href="Empleados_Registrados.html">Ver Empleados Registrados</a></li>
+                        <li><a href="Empleados_Registrados.html">Ver Empleados </a></li>
                     </ul>
                 </li>
             </ul>
-        </nav>   
+        </nav>
+        <!-- Imagen de usuario entre los menús y el botón de cerrar sesión -->
+        <div class="user-image-container">
+            <a href="Cambiar_Contraseña.html" class="logo-link">
+            <img src="../img/user.png" alt="Usuario" class="user-image">
+            <span class="inicio-text">Perfil</span>
+            </a>
+        </div>   
         <button id="logoutButton" class="btn-animated" onclick="cerrarSesion()">Cerrar Sesión</button>
     </header>
 
-    <!-- Contenedor principal -->
-    <div class="tabla-container">
-        <h1>Gestionar Empleados</h1>
-        <h2>Empleados Registrados</h2>
-
+    <main class="tabla-container">
+        <h1>Empleados Registrados</h1>
 
         <!-- Tabla de empleados -->
-        <div class="tabla-container">
-            <table id="tablaEmpleados" border="1">
+        <section>
+            <table id="tablaEmpleados">
                 <thead>
                     <tr>
-                    <th>Nombre</th>
-                    <th>Rol</th>
-                    <th>Acciones</th>
+                        <th>Nombre</th>
+                        <th>Rol</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody id="empleadosBody"></tbody>
             </table>
-        
+        </section>
 
-    <!-- Contenedor de paginación -->
-    <div id="pagination" style="text-align: center; margin-top: 10px;"></div>
+        <!-- Contenedor de paginación -->
+        <div id="pagination"></div>
 
-    <!-- Botones de navegación -->
-    <div class="botones-footer">
-        <a href="Empleado_Nuevo.html"><button type="button" id="Nuevo">Nuevo Empleado</button></a>
-        <a href="main.html"><button type="button" id="Salir">Salir</button></a>
-    </div>
-</div>
+        <!-- Botones de navegación -->
+        <div class="botones-footer">
+            <a href="Empleado_Nuevo.html">
+                <button type="button" id="Nuevo">Agregar Empleado</button>
+            </a>
+        </div>
+    </main>
 <script>
     // Ocultar la pantalla de carga después de un mínimo de 1 segundo
     window.addEventListener('load', () => {

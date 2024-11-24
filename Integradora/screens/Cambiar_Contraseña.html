@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambiar contraseña</title>
+    <link rel="shortcut icon" href="../img/logo.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="../css/stylesmodificar.css">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <!-- Pantalla de carga -->
+    <div id="loading-screen">
+        <div class="spinner"></div>
+        <p>Cargando...</p>
+    </div>
+
+<header>
+    <div class="logo-title">
+        <a href="main.html" class="logo-link">
+            <img src="../img/logo.jpg" alt="Logo Agenda Dental" class="logo">
+            <span class="inicio-text">Inicio</span>
+        </a>
+    </div>
+    <nav id="menu-gestores">
+        <ul>
+            <li><a href="#">Gestión de Citas</a>
+                <ul>
+                    <li><a href="Cita_Nueva.html">Agregar Cita</a></li>
+                    <li><a href="Citas_Registradas.html">Ver Citas </a></li>
+                </ul>
+            </li>
+            <li><a href="#">Gestión de Clientes</a>
+                <ul>
+                    <li><a href="Cliente_Nuevo.html">Agregar Cliente</a></li>
+                    <li><a href="Clientes_Registrados.html">Ver Clientes </a></li>
+                </ul>
+            </li>
+            <li><a href="#">Gestión de Servicios</a>
+                <ul>
+                    <li><a href="Servicio_Nuevo.html">Agregar Servicio</a></li>
+                    <li><a href="Servicios_Registrados.html">Ver Servicios</a></li>
+                </ul>
+            </li>
+            <li id="menu-gestion-empleados"><a href="#">Gestión de Empleados</a>
+                <ul>
+                    <li><a href="Empleado_Nuevo.html">Agregar Empleado</a></li>
+                    <li><a href="Empleados_Registrados.html">Ver Empleados </a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    
+    <button type="button" class="btn btn-secondary" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
+</header>
+
+<main>
+    <section class="form-container">
+        <h2 class="form-title">Cambiar Contraseña</h2>
+        <form id="cambiarContrasenaForm">
+            <!-- Campo de contraseña actual -->
+            <div class="campo">
+                <label for="contrasena_actual">Contraseña Actual:</label>
+                <input type="password" id="contrasena_actual" required placeholder="Ingrese su contraseña actual">
+            </div>
+
+            <!-- Campo de nueva contraseña -->
+            <div class="campo">
+                <label for="nueva_contrasena">Nueva Contraseña:</label>
+                <input type="password" id="nueva_contrasena" required placeholder="Ingrese su nueva contraseña">
+            </div>
+
+            <!-- confirmación de nueva contraseña -->
+            <div class="campo">
+                <label for="confirmar_contrasena">Confirmar Nueva Contraseña:</label>
+                <input type="password" id="confirmar_contrasena" required placeholder="Confirme su nueva contraseña">
+            </div>
+
+            <!-- Botones -->
+            <div class="botones-footer">
+                <button type="button" class="guardar-empleado" onclick="cambiarContrasena()">Guardar Cambios
+                    <img src="../img/guardar.png" alt="guardar" width="40" height="40">
+                </button>
+                <button type="button" class="regresar" onclick="window.location.href='main.html'">Cancelar
+                    <img src="../img/regresar.png" alt="cancelar" width="40" height="40">
+                </button>
+            </div>
+        </form>
+    </section>
+</main>
+
+<script>
+    // Ocultar la pantalla de carga después de un mínimo de 1 segundo
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            document.getElementById('loading-screen').style.display = 'none';
+        }, 500); // 1000 ms = 1 segundo
+    });
+
+    // Verificar si la sesión está activa
+    fetch('/isAuthenticated', { method: 'GET' })
+        .then(response => {
+            if (!response.ok) {
+                window.location.href = '/';
+            }
+        })
+        .catch(error => {
+            console.error('Error verificando la sesión:', error);
+            window.location.href = '/';
+        });
+
+</script>
+
+</body>
+</html>
