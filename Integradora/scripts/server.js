@@ -28,9 +28,13 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../index.html'));
 });
 const consultas = require('./consultas')(db); // Pasa la conexión a consultas
-
-
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Ruta de inicio
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../index.html'));
+});
+
 
 // Configuración de la sesión
 app.use(session({
@@ -41,11 +45,6 @@ app.use(session({
 }));
 
 
-
-// Ruta de inicio
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../index.html'));
-});
 
 // Ruta para manejar el inicio de sesión
 app.post('/login', (req, res) => {
@@ -547,6 +546,37 @@ app.get('/citas/empleado/:id', (req, res) => {
         });
     });
 });
+
+
+
+// Ruta para cambiar contraseña
+app.post('/cambiar_contrasena', (req, res) => {
+    const { contrasena_actual, nueva_contrasena } = req.body;
+
+    // Verificamos la contraseña actual
+    consultas.verificarContra(contrasena_actual, (err, esValida) => {
+        if (err) {
+            console.error('Error al verificar la contraseña:', err);
+            return res.status(500).json({ message: 'Error en el servidor' });
+        }
+        if (!esValida) {
+            return res.status(401).json({ message: 'Contraseña actual incorrecta' });
+        }
+
+        // Si la contraseña actual es válida, cambiamos la contraseña
+        consultas.cambiarContra(nueva_contrasena, (err, success) => {
+            if (err) {
+                console.error('Error al cambiar la contraseña:', err);
+                return res.status(500).json({ message: 'Error al cambiar la contraseña' });
+            }
+
+            return res.status(200).json({ message: 'Contraseña cambiada con éxito' });
+        });
+    });
+});
+
+
+
 
 
 

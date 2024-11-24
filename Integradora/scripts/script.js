@@ -9,7 +9,7 @@ let empleados = [];
 // Función para mostrar el nombre del usuario en el encabezado
 function mostrarUsuNomb() {
     const usuario = localStorage.getItem('usuario');
-    document.getElementById("bienvenido").textContent = usuario ? `Bienvenido ${usuario}` : "Bienvenido, Usuario Desconocido";
+    document.getElementById("bienvenido").textContent = usuario ? `${usuario}` : "Usuario Desconocido";
 }
 mostrarUsuNomb();
 
@@ -916,5 +916,54 @@ function actualizarEstadoBotonesCitas() {
         } else {
             button.classList.remove('active'); // Remover clase activa
         }
+    });
+}
+
+
+function cambiarContrasena() {
+    const contrasenaActual = document.getElementById('contrasena_actual').value;
+    const nuevaContrasena = document.getElementById('nueva_contrasena').value;
+    const confirmarContrasena = document.getElementById('confirmar_contrasena').value;
+
+    if (nuevaContrasena !== confirmarContrasena) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Las contraseñas nuevas no coinciden.',
+        });
+        return;
+    }
+
+    fetch('/cambiar_contrasena', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ contrasena_actual: contrasenaActual, nueva_contrasena: nuevaContrasena }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message === 'Contraseña cambiada con éxito') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: data.message,
+            }).then(() => {
+                // Redirigir al menú después de un cambio exitoso
+                window.location.href = '../screens/main.html';
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: data.message,
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error al cambiar la contraseña:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo cambiar la contraseña.',
+        });
     });
 }

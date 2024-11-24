@@ -61,7 +61,7 @@ function obtenerClientes(callback) {
     db.query(query, (err, results) => {
         if (err) return callback(err);
         callback(null, results);
-         });
+        });
     }
  
    // Función para obtener la lista de clientes
@@ -311,7 +311,6 @@ function actualizarEmpleado(id, empleadoModificado) {
 }
 
 
-  
 function agregarEmpleado(empleado, callback) {
     const { username, rol, password } = empleado;
     const query = 'INSERT INTO empleados (Username, Rol, Password) VALUES (?, ?, ?)';
@@ -358,7 +357,7 @@ function eliminarEmpleado(id, callback) {
 function mostrarCitasEmpleados(id, callback) {
     const sql = `
         SELECT c.Cita_ID, CONCAT(cl.Nombre, ' ', cl.Apellido_Paterno) AS Cliente, 
-               s.Nombre AS Servicio, c.Fecha, c.Hora, c.Estado
+        s.Nombre AS Servicio, c.Fecha, c.Hora, c.Estado
         FROM citas c
         JOIN clientes cl ON c.Cliente_ID = cl.Cliente_ID
         JOIN servicios s ON c.Servicio_ID = s.Servicio_ID
@@ -374,6 +373,34 @@ function mostrarCitasEmpleados(id, callback) {
         }
     });
 }
+
+
+function verificarContra(contrasenaActual, callback) {
+    const query = 'SELECT Password FROM empleados LIMIT 1'; // Asumimos que hay un solo usuario o que solo se puede cambiar la contraseña de un usuario
+    db.query(query, (err, results) => {
+        if (err) return callback(err);
+        if (results.length === 0) return callback(null, false); // Si no hay resultados, no se pudo verificar
+
+        const hashedPassword = results[0].Password;
+        bcrypt.compare(contrasenaActual, hashedPassword, (err, esValida) => {
+            if (err) return callback(err);
+            callback(null, esValida); // Devuelve si la contraseña actual es válida
+        });
+    });
+}
+
+function cambiarContra(nuevaContrasena, callback) {
+    bcrypt.hash(nuevaContrasena, 10, (err, hash) => {
+        if (err) return callback(err);
+
+        const query = 'UPDATE empleados SET Password = ? LIMIT 1'; // Cambiar la contraseña de un solo usuario
+        db.query(query, [hash], (err, results) => {
+            if (err) return callback(err);
+            callback(null, true); // Devuelve éxito
+        });
+    });
+}
+
 
 
 
@@ -409,5 +436,7 @@ function mostrarCitasEmpleados(id, callback) {
         obtenerRoles,
         eliminarEmpleado,
         mostrarCitasEmpleados,
+        verificarContra,
+        cambiarContra
     };
 };
