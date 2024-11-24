@@ -38,8 +38,13 @@ body {
     min-height: 100vh;
 }
 
+
 /* Encabezado */
 header {
+    position: fixed; /* Mantiene el encabezado en una posición fija */
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Asegura que el encabezado esté encima de otros elementos */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -75,6 +80,28 @@ header button {
     margin-left: 20px;
 }
 
+header .user-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 20px;
+    margin-right: 40px;
+}
+
+header .user-image {
+    height: 40px; /* Tamaño inicial */
+    width: auto;
+    border-radius: 50%; /* Imagen redonda */
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease; /* Transición suave */
+}
+
+header .user-image-container:hover .user-image,
+header .user-link:hover .user-image { /* Aplica el hover */
+    transform: scale(1.3); /* Efecto de agrandamiento */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); /* Sombra elegante */
+    cursor: pointer; /* Cambia el cursor a una mano */
+}
+
 header button:hover {
     background-color: #ff4d4d;
     transform: scale(1.05);
@@ -95,9 +122,17 @@ header button:hover {
 }
 
 .logo {
-    width: 60px;
+    display: block;
+    width: 60px; /* Tamaño inicial */
     margin: 0 auto;
-    border-radius: 50%;
+    border-radius: 50%; /* Forma redonda */
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease; /* Suavidad y efecto */
+}
+
+.logo-link:hover .logo { /* Efecto al pasar el cursor */
+    transform: scale(1.2); /* Crecimiento del logo */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); /* Sombra para resaltar */
+    cursor: pointer; /* Cambia el cursor a una mano */
 }
 
 .inicio-text {
@@ -223,11 +258,11 @@ h2 {
     background-color: #218838;
 }
 
-/* Estilo de la tabla de citas */
+/* Contenedor de tablas */
 .tabla-container {
+    margin-top: 100px; /* Espacio igual a la altura del encabezado */
     width: 100%;
     max-width: 800px;
-    margin: 0 auto;
     background-color: #ffffff;
     padding: 20px;
     border-radius: 10px;
@@ -274,13 +309,66 @@ tbody tr:nth-child(even) {
     background-color: #0056b3;
 }
 
-/* Estilo del contenedor de paginación */
+/* Estilos para los botones de paginación */
+#paginationCitas button {
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente si es necesario */
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    margin: 0 5px;
+    cursor: pointer;
+    font-size: 14px;
+    
+}
+
+/* Estilo para el botón activo */
+#paginationCitas button.active {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: default;
+}
+/* Estilos para el contenedor de paginación */
 #pagination {
-    font-size: 1em;
-    color: #333;
     text-align: center;
     margin-top: 10px;
+    padding: 10px;
 }
+
+/* Estilos para los botones de paginación */
+#pagination button {
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    margin: 0 5px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Estilo cuando el botón está en hover */
+#pagination button:hover {
+    background-color: #ddd;
+    transform: scale(1.05);
+}
+
+/* Estilo para el botón activo */
+#pagination button.active {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: default;
+}
+
+/* Estilo cuando el botón está deshabilitado (por ejemplo, en los límites de las páginas) */
+#pagination button:disabled {
+    background-color: #e0e0e0;
+    cursor: not-allowed;
+    border: 1px solid #d3d3d3;
+}
+
 
 /* Estilo para los botones en el pie de página */
 .botones-footer {
