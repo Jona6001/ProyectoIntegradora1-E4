@@ -112,6 +112,7 @@ async function mostrarCitasRecientes(idTablaCitas, conBotones = false) {
     }
 }
 
+
 // Mostrar citas próximas
 async function mostrarCitasProximas() {
     try {
@@ -882,15 +883,38 @@ function mostrarCitasRegistradas(citasArray, citasEmpleadoBody) {
 // Función para mostrar los botones de paginación de citas
 function mostrarPaginacionCitas(totalPages, citasArray) {
     const paginationContainer = document.getElementById('paginationCitas');
-    paginationContainer.innerHTML = '';
+    paginationContainer.innerHTML = ''; // Limpiar el contenedor de paginación
 
     for (let i = 1; i <= totalPages; i++) {
         const button = document.createElement('button');
         button.textContent = i;
+
+        // Agregar clase 'active' si es la página actual
+        if (i === currentPage) {
+            button.classList.add('active');
+        }
+
+        // Evento para actualizar la página y resaltar el botón seleccionado
         button.onclick = () => {
-            currentPage = i;
-            mostrarCitasRegistradas(citasArray, document.getElementById('citasEmpleadoBody'));
+            currentPage = i; // Actualizar la página actual
+            mostrarCitasRegistradas(citasArray, document.getElementById('citasEmpleadoBody')); // Mostrar las citas correspondientes
+
+            // Actualizar el estado visual de los botones
+            actualizarEstadoBotonesCitas();
         };
-        paginationContainer.appendChild(button);
+
+        paginationContainer.appendChild(button); // Agregar el botón al contenedor
     }
+}
+
+// Función para actualizar el estado visual de los botones
+function actualizarEstadoBotonesCitas() {
+    const buttons = document.querySelectorAll('#paginationCitas button'); // Seleccionar todos los botones
+    buttons.forEach((button, index) => {
+        if ((index + 1) === currentPage) {
+            button.classList.add('active'); // Añadir clase activa
+        } else {
+            button.classList.remove('active'); // Remover clase activa
+        }
+    });
 }
