@@ -921,10 +921,21 @@ function actualizarEstadoBotonesCitas() {
 
 
 function cambiarContrasena() {
-    const contrasenaActual = document.getElementById('contrasena_actual').value;
-    const nuevaContrasena = document.getElementById('nueva_contrasena').value;
-    const confirmarContrasena = document.getElementById('confirmar_contrasena').value;
+    const contrasenaActual = document.getElementById('contrasena_actual').value.trim();
+    const nuevaContrasena = document.getElementById('nueva_contrasena').value.trim();
+    const confirmarContrasena = document.getElementById('confirmar_contrasena').value.trim();
 
+    // Validar si algún campo está vacío
+    if (!contrasenaActual || !nuevaContrasena || !confirmarContrasena) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campos incompletos',
+            text: 'Por favor, llene todos los campos antes de continuar.',
+        });
+        return;
+    }
+
+    // Validar si las contraseñas nuevas coinciden
     if (nuevaContrasena !== confirmarContrasena) {
         Swal.fire({
             icon: 'error',
@@ -934,6 +945,7 @@ function cambiarContrasena() {
         return;
     }
 
+    // Enviar solicitud al servidor
     fetch('/cambiar_contrasena', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
