@@ -10,7 +10,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 <body>
-
+        <!-- Pantalla de carga -->
+        <div id="loading-screen">
+            <div class="spinner"></div>
+            <p>Cargando...</p>
+        </div>
     <header>
         <div class="logo-title">
             <a href="main.html" class="logo-link">
@@ -47,17 +51,18 @@
                 </li>
             </ul>
         </nav>
-        <!-- Imagen de usuario entre los menús y el botón de cerrar sesión -->
-        <div class="user-image-container">
-            <a href="Cambiar_Contraseña.html" class="logo-link">
-            <img src="../img/user.png" alt="Usuario" class="user-image">
-            <span class="inicio-text">Perfil</span>
-            </a>
-        </div>
-        <button id="logoutButton" class="btn-animated" onclick="cerrarSesion()">Cerrar Sesión</button>
+       <!-- Imagen de usuario entre los menús y el botón de cerrar sesión -->
+       <div class="user-image-container">
+        <img src="../img/user.png" alt="Usuario" class="user-image">
+        <span class="inicio-text" id="bienvenido"></span>
+        <ul class="user-menu">
+            <li><a href="Cambiar_Contraseña.html" class="btn-change-password">Cambiar Contraseña</a></li>
+            <li id="logoutButton" class="btn-animated" onclick="cerrarSesion()">Cerrar Sesion</li>
+        </ul>
+    </div>
     </header>
     <div class="tabla-container">
-        <center><h2>Citas Registradas por el usuario seleccionado </h2></center>
+        <center><h2>Citas registradas por ese usuario: </h2></center>
 
         <table id="citasEmpleadoTable">
             <thead>
@@ -84,7 +89,13 @@
     </div>
 
   <script>
-window.onload = function() {
+            // Ocultar la pantalla de carga después de un mínimo de 1 segundo
+            window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.display = 'none';
+            }, 500); // 1000 ms = 1 segundo
+        });
+document.addEventListener('DOMContentLoaded', function () {
     const urlParams = new URLSearchParams(window.location.search);
     const empleadoId = urlParams.get('empleadoId');
     if (empleadoId) {
@@ -92,7 +103,7 @@ window.onload = function() {
     } else {
         console.error('No se encontró el ID del empleado en la URL');
     }
-};
+});
 
         fetch('/isAuthenticated', { method: 'GET' })
             .then(response => {

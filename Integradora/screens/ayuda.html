@@ -15,33 +15,21 @@
                 <p>Cargando...</p>
             </div>
     <header>
-        <nav class="navbar">
-            <a href="../index.html" class="nav-link">Inicio de Sesión</a>
-            
+        <div class="logo-title">
+            <a href="../index.html" class="logo-link">
+                <img src="../img/logo.jpg" alt="Logo Agenda Dental" class="logo">
+                <span class="inicio-text">Inicio</span>
+            </a>
+        </div>
         </nav>
         <h1>¿Necesitas ayuda con el inicio de sesión o con la aplicación?</h1>
     </header>
 
-    <section class="contact">
-        <h2>Contacta con nosotros:</h2>
-        <div class="contact-options">
-            <a href="https://wa.me/123456789" target="_blank">
-                <img src="../img/whatsapp.png" alt="WhatsApp" class="contact-icon">
-                WhatsApp
-            </a>
-            <a href="mailto:soporte@consultorio.com" target="_blank">
-                <img src="../img/email.png" alt="Correo electrónico" class="contact-icon">
-                Correo electrónico
-            </a>
-        </div>
-        <button class="support-button">Soporte en Vivo</button>
-    </section>
-
     <section class="faq">
         <h2>Preguntas Frecuentes</h2>
         <div class="faq-item">
-            <h3>¿Cómo puedo recuperar mi contraseña?</h3>
-            <p>Si olvidaste tu contraseña, haz clic en "¿Olvidaste tu contraseña?" en la pantalla de inicio de sesión y sigue las instrucciones para restablecerla.</p>
+            <h3>¿Cómo puedo cambiar mi contraseña?</h3>
+            <p>Si quieres cambiar tu contraseña, pasar el cursor sobre la imagen de perfil en el menu horizontal y selecciona la opcion de cambiar contraseña.</p>
         </div>
         <div class="faq-item">
             <h3>¿Qué hacer si no puedo acceder a mi cuenta?</h3>
@@ -53,10 +41,13 @@
         </div>
     </section>
 
-    <section class="navigation">
-        <a href="../index.html" class="back-button">Regresar al inicio de sesión</a>
+    <section class="manual">
+        <h2>Descargar Manual</h2>
+        <p>Puedes descargar nuestro manual de usuario en formato PDF para más información sobre el uso de la aplicación:</p>
+        <a href="../Manual de usuario Integradora.docx" download class="download-button">
+            Descargar Manual
+        </a>
     </section>
-
     <hr>
 
     <section class="credits">
@@ -79,25 +70,31 @@
     </section>
 
     <script>
-        // Ocultar la pantalla de carga después de un mínimo de 1 segundo
         window.addEventListener('load', () => {
             setTimeout(() => {
                 document.getElementById('loading-screen').style.display = 'none';
-            }, 500); // 1000 ms = 1 segundo
+            }, 500);
         });
     </script>
 
     <footer>
-        <p>Síguenos en nuestras redes sociales:</p>
-        <div class="social-icons">
-            <a href="https://www.facebook.com" target="_blank"><img src="../img/facebook.png" alt="Facebook"></a>
-            <a href="https://www.twitter.com" target="_blank"><img src="../img/twitter.png" alt="Twitter"></a>
-            <a href="https://www.instagram.com" target="_blank"><img src="../img/instagram.png" alt="Instagram"></a>
-        </div>
-        <img src="../img/utd.png" alt="Logo UTD" class="logo">
+
+        <section class="contact">
+            <h2>Contacta con nosotros:</h2>
+            <div class="contact-options">
+                <a href="https://wa.me/6181883147" target="_blank">
+                    <img src="../img/whatsapp.png" alt="WhatsApp" class="contact-icon">
+                    WhatsApp
+                </a>
+                <a href="mailto:ajaviersandoval4@gmail.com" target="_blank">
+                    <img src="../img/gmail.png" alt="Correo electrónico" class="contact-icon">
+                    Correo electrónico
+                </a>
+            </div>
+
+        <img src="../img/utd.png" alt="Logo UTD" class="logoutd">
     </footer>
 
-    <!-- Cargar script al final para asegurar que HTML ya se haya cargado -->
     <script src="../scripts/help.js"></script>
 </body>
 </html>

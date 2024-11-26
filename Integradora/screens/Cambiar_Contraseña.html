@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cambiar contraseña</title>
     <link rel="shortcut icon" href="../img/logo.jpg" type="image/x-icon">
-    <script src="../scripts/script.js"> </script>
+    <script src="../scripts/script.js" defer> </script>
     <link rel="stylesheet" href="../css/stylesmodificar.css">
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -54,8 +54,14 @@
             </li>
         </ul>
     </nav>
-    
-    <button type="button" class="btn btn-secondary" id="cerrar" onclick="cerrarSesion()">Cerrar Sesión</button>
+    <div class="user-image-container">
+        <img src="../img/user.png" alt="Usuario" class="user-image">
+        <span class="inicio-text" id="bienvenido"></span>
+        <ul class="user-menu">
+            <li><a href="Cambiar_Contraseña.html" class="btn-change-password">Cambiar Contraseña</a></li>
+            <li id="logoutButton" class="btn-animated" onclick="cerrarSesion()">Cerrar Sesion</li>
+        </ul>
+    </div>
 </header>
 
 <main>

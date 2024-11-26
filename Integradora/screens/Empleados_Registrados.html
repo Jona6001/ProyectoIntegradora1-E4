@@ -57,14 +57,14 @@
                 </li>
             </ul>
         </nav>
-        <!-- Imagen de usuario entre los menús y el botón de cerrar sesión -->
         <div class="user-image-container">
-            <a href="Cambiar_Contraseña.html" class="logo-link">
             <img src="../img/user.png" alt="Usuario" class="user-image">
-            <span class="inicio-text">Perfil</span>
-            </a>
-        </div>   
-        <button id="logoutButton" class="btn-animated" onclick="cerrarSesion()">Cerrar Sesión</button>
+            <span class="inicio-text" id="bienvenido"></span>
+            <ul class="user-menu">
+                <li><a href="Cambiar_Contraseña.html" class="btn-change-password">Cambiar Contraseña</a></li>
+                <li id="logoutButton" class="btn-animated" onclick="cerrarSesion()">Cerrar Sesion</li>
+            </ul>
+        </div>
     </header>
 
     <main class="tabla-container">
@@ -162,6 +162,7 @@
                     console.error('Error verificando la sesión:', error);
                     window.location.href = '/'; // Redirige al inicio en caso de error
                 });
+                mostrarEmpleados('empleadosBody', true)
         });
     </script>
 </body>

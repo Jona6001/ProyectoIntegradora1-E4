@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
 </head>
 <body>
     <!-- Pantalla de carga -->
@@ -55,14 +56,14 @@
                 </li>
             </ul>
         </nav>
-        <!-- Imagen de usuario entre los menús y el botón de cerrar sesión -->
         <div class="user-image-container">
-            <a href="Cambiar_Contraseña.html" class="logo-link">
             <img src="../img/user.png" alt="Usuario" class="user-image">
-            <span class="inicio-text">Perfil</span>
-            </a>
+            <span class="inicio-text" id="bienvenido"></span>
+            <ul class="user-menu">
+                <li><a href="Cambiar_Contraseña.html" class="btn-change-password">Cambiar Contraseña</a></li>
+                <li id="logoutButton" class="btn-animated" onclick="cerrarSesion()">Cerrar Sesion</li>
+            </ul>
         </div>
-        <button id="logoutButton" class="btn-animated" onclick="cerrarSesion()">Cerrar Sesión</button>
     </header>
 
     <main>
@@ -108,6 +109,14 @@
                 document.getElementById('loading-screen').style.display = 'none';
             }, 500); // 1000 ms = 1 segundo
         });
+            // Función para mostrar el nombre del usuario en el encabezado
+    function mostrarUsuNomb() {
+        const usuario = localStorage.getItem('usuario');
+        document.getElementById("bienvenido").textContent = usuario ? `${usuario}` : "Usuario Desconocido";
+    }
+
+    // Ejecutar la función al cargar la página
+    document.addEventListener('DOMContentLoaded', mostrarUsuNomb);
 
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);

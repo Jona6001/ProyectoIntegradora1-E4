@@ -49,14 +49,15 @@
             </li>
         </ul>
     </nav>
-        <!-- Imagen de usuario entre los menús y el botón de cerrar sesión -->
-        <div class="user-image-container">
-            <a href="Cambiar_Contraseña.html" class="logo-link">
-            <img src="../img/user.png" alt="Usuario" class="user-image">
-            <span class="inicio-text" id="bienvenido"></span>
-            </a>
-        </div>
-    <button id="logoutButton" class="btn-animated" onclick="cerrarSesion()">Cerrar Sesión</button>
+       <!-- Imagen de usuario entre los menús y el botón de cerrar sesión -->
+    <div class="user-image-container">
+        <img src="../img/user.png" alt="Usuario" class="user-image">
+        <span class="inicio-text" id="bienvenido"></span>
+        <ul class="user-menu">
+            <li><a href="Cambiar_Contraseña.html" class="btn-change-password">Cambiar Contraseña</a></li>
+            <li id="logoutButton" class="btn-animated" onclick="cerrarSesion()">Cerrar Sesion</li>
+        </ul>
+    </div>
     
 </header>
 
@@ -79,47 +80,7 @@
                     <tbody id="citasBodyMain"></tbody>
                 </table>
                 <div id="paginationMain"></div>
-                <div class="container">
-                    <section id="gestor-citas">
-                        <h2>Gestionar las Citas</h2>
-                        <p>Administra tus citas existentes de manera sencilla.</p>
-                        <a href="Citas_Registradas.html" class="button-image">
-                            <img src="../img/modificarcitas.png" alt="Administrar Citas">
-                            <p>Ir al gestor de Citas</p>
-                        </a>
-                    </section>
-            
-                    <section id="gestor-clientes">
-                        <h2>Gestionar los clientes</h2>
-                        <p>Administra a tus clientes existentes eficientes.</p>
-                        <a href="Clientes_Registrados.html" class="button-image">
-                            <img src="../img/persona.jpg" alt="Administrar Clientes">
-                            <p>Ir al gestor de clientes</p>
-                        </a>
-                    </section>
-            
-                    <section id="gestor-servicios">
-                        <h2>Gestionar los servicios</h2>
-                        <p>Administra los servicios que se realizan.</p>
-                        <a href="Servicios_Registrados.html" class="button-image">
-                            <img src="../img/servicios.jpg" alt="Administrar Servicios">
-                            <p>Ir al gestor de Servicios</p>
-                        </a>
-                    </section>
-            
-                    <!-- Nueva sección para gestionar usuarios -->
-                    <section id="gestor-empleado">
-                        <h2>Gestionar los empleados</h2>
-                        <p>Edita y administra la información de los empleados.</p>
-                        <a href="Empleados_Registrados.html" class="button-image">
-                            <img src="../img/agregarcliente.jpg" alt="Administrar Empleados">
-                            <p>Ir al gestor de Empleados</p>
-                        </a>
-                    </section>
-                </div>
-            </div>
-        </div>
-    </section>
+
     </main>
     <script>
         // Ocultar la pantalla de carga después de un mínimo de 1 segundo
