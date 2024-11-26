@@ -83,29 +83,97 @@ header button {
     margin-left: 20px;
 }
 
-header .user-image-container {
+/* Estilos para el contenedor de usuario y el menú de usuario */
+.user-image-container {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-left: 20px;
-    margin-right: 40px;
+    margin-right: 110px;
+    position: relative;
 }
 
-header .user-image {
+.user-image {
+    margin-left: 20px;
+    margin-right: 20px;
     height: 40px; /* Tamaño inicial */
     width: auto;
     border-radius: 50%; /* Imagen redonda */
     transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease; /* Transición suave */
 }
 
-header .user-image-container:hover .user-image,
-header .user-link:hover .user-image { /* Aplica el hover */
-    transform: scale(1.3); /* Efecto de agrandamiento */
+.user-image-container:hover .user-image,
+.user-image-container .user-link:hover .user-image { /* Aplica el hover */
+    transform: scale(1.6); /* Efecto de agrandamiento */
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3); /* Sombra elegante */
     cursor: pointer; /* Cambia el cursor a una mano */
 }
+/* Menú de usuario - oculto por defecto */
+.user-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: none; /* Se oculta por defecto */
+    position: absolute;
+    top: 50px; /* Ajusta la posición debajo de la imagen */
+    left: 0;
+    background-color: #2ba5e7; /* Fondo azul similar al menú de navegación */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10; /* Asegura que el menú esté encima de otros elementos */
+}
 
-header button:hover {
+/* Menú que aparece solo cuando el contenedor tiene hover */
+.user-image-container:hover .user-menu {
+    display: block; /* Muestra el menú cuando el contenedor está en hover */
+}
+
+/* Estilos para los elementos del menú */
+.user-menu li {
+    position: relative;
+    margin: 0;
+}
+
+.user-menu li a {
+    color: #ffffff; /* Color de texto */
+    padding: 10px 15px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.user-menu li a:hover {
+    color: #fffefe; /* Color al pasar el ratón */
+    background-color: #0770da; /* Fondo de los enlaces al pasar el ratón */
+}
+/* Estilo para el botón de cambiar contraseña */
+.btn-change-password {
+    background-color: #007bff; /* Color azul para el botón inicial */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none; /* Elimina el subrayado del enlace */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: inline-block;
+}
+
+/* Efecto de hover para el botón de cambiar contraseña */
+.btn-change-password:hover {
+    background-color: #0056b3; /* Color más oscuro cuando se pasa el ratón */
+    transform: scale(1.05);
+}
+
+/* Estilo para el botón de cerrar sesión */
+.btn-animated {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-animated:hover {
     background-color: #ff4d4d;
     transform: scale(1.05);
 }
