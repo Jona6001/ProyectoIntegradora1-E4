@@ -181,13 +181,21 @@ app.delete('/eliminarCita/:id', (req, res) => {
 app.post('/nueva_cita', (req, res) => {
     const { clienteId, empleadoId, servicioId, fecha, hora } = req.body;
 
-    console.log('Datos recibidos para nueva cita:', { clienteId, empleadoId, servicioId, fecha, hora }); // Agregar este log
+    console.log('Datos recibidos para nueva cita:', { clienteId, empleadoId, servicioId, fecha, hora });
 
     consultas.agregarCita(clienteId, empleadoId, servicioId, fecha, hora, (err) => {
         if (err) {
-            console.error('Error al agregar la cita:', err); // Log del error
+            console.error('Error al agregar la cita:', err);
+
+            // Si el error es por el rango de 15 minutos, personalizamos el mensaje
+            if (err.code === 'ER_SIGNAL_EXCEPTION' && err.sqlMessage.includes('Ya existe una cita programada dentro del rango de 15 minutos')) {
+                return res.status(400).json({ message: 'Ya existe una cita programada dentro del rango de 15 minutos.' });
+            }
+
+            // Para otros errores genéricos
             return res.status(500).json({ message: 'Error al agregar la cita' });
         }
+
         res.status(200).json({ message: 'Cita agregada con éxito' });
     });
 });
@@ -497,21 +505,26 @@ app.get('/roles', (req, res) => {
 });
 
 
-// Ruta para agregar un nuevo empleado
 app.post('/nuevo_empleado', (req, res) => {
     const { username, rol, password } = req.body;
 
-    // Asegúrate de que la contraseña esté encriptada antes de guardarla
     const hashedPassword = bcrypt.hashSync(password, 10);
 
     consultas.agregarEmpleado({ username, rol, password: hashedPassword }, (error, results) => {
         if (error) {
             console.error('Error al agregar empleado:', error);
+
+            // Verificamos si el error es por nombre duplicado
+            if (error.code === 'ER_SIGNAL_EXCEPTION' && error.sqlMessage.includes('El nombre de usuario ya existe.')) {
+                return res.status(400).json({ message: 'El nombre de usuario ya existe.' });
+            }
+
             return res.status(500).json({ message: 'Error en el servidor' });
         }
         return res.status(201).json({ message: 'Empleado agregado exitosamente' });
     });
 });
+
 
 // Ruta para obtener las citas de un empleado específico
 app.get('/citas/empleado/:id', (req, res) => {
@@ -574,10 +587,6 @@ app.post('/cambiar_contrasena', (req, res) => {
         });
     });
 });
-
-
-
-
 
 
 

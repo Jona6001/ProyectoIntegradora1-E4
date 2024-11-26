@@ -91,11 +91,12 @@
             <input type="time" id="hora" required>
         </div>
         <div class="botones">
-            <button type="submit" class="guardar-cita">Guardar Cita
-                <img src="../img/guardar.png" alt="guardar" width="40" height="40">
-            </button>
             <button type="button" class="regresar" onclick="window.location.href='Citas_Registradas.html'">Regresar
                 <img src="../img/regresar.png" alt="guardar" width="40" height="40">
+            </button>
+
+            <button type="submit" class="guardar-cita">Guardar Cita
+                <img src="../img/guardar.png" alt="guardar" width="40" height="40">
             </button>
         </div>
     </form>
@@ -151,52 +152,58 @@
         }
 
         document.getElementById('nuevaCitaForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
+    e.preventDefault();
 
-            // Verificación de que los campos estén completos
-            const clienteId = document.getElementById('clienteSelect').value;
-            const empleadoId = document.getElementById('empleadoSelect').value;
-            const servicioId = document.getElementById('servicioSelect').value;
-            const fecha = document.getElementById('fecha').value;
-            const hora = document.getElementById('hora').value;
+    // Verificación de que los campos estén completos
+    const clienteId = document.getElementById('clienteSelect').value;
+    const empleadoId = document.getElementById('empleadoSelect').value;
+    const servicioId = document.getElementById('servicioSelect').value;
+    const fecha = document.getElementById('fecha').value;
+    const hora = document.getElementById('hora').value;
 
-            if (!clienteId || !empleadoId || !servicioId || !fecha || !hora) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Campos incompletos',
-                    text: 'Por favor, complete todos los campos antes de guardar.',
-                });
-                return; // Detener la ejecución si algún campo está vacío
-            }
-
-            const response = await fetch('/nueva_cita', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ clienteId, empleadoId, servicioId, fecha, hora }),
-            });
-
-            if (response.ok) {
-                Swal.fire({
-                    icon: 'success',
-                    title: '¡Cita agregada con éxito!',
-                    text: 'La cita se ha registrado correctamente.',
-                    confirmButtonText: 'Aceptar',
-                }).then(() => {
-                    window.location.href = 'Citas_Registradas.html'; // Redirige a la página de citas registradas
-                });
-            } else {
-                // Alerta de error usando SweetAlert
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error al agregar la cita',
-                    text: 'Hubo un problema al intentar agregar la cita. Por favor, inténtalo nuevamente.',
-                    confirmButtonText: 'Aceptar',
-                });
-            }
+    if (!clienteId || !empleadoId || !servicioId || !fecha || !hora) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Campos incompletos',
+            text: 'Por favor, complete todos los campos antes de guardar.',
         });
-    </script>
+        return;
+    }
 
-    <script>
+    try {
+        const response = await fetch('/nueva_cita', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ clienteId, empleadoId, servicioId, fecha, hora }),
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            Swal.fire({
+                icon: 'success',
+                title: '¡Cita agregada con éxito!',
+                text: 'La cita se ha registrado correctamente.',
+            }).then(() => {
+                window.location.href = 'Citas_Registradas.html';
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al agregar la cita',
+                text: result.message || 'No se pueden agregar las citas en un rango de 15 minutos.',
+            });
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error de conexión',
+            text: 'No se pudo conectar con el servidor. Por favor, inténtelo nuevamente más tarde.',
+        });
+    }
+});
+
+
         // Verificar si la sesión está activa
         fetch('/isAuthenticated', { method: 'GET' })
             .then(response => {
@@ -222,6 +229,9 @@
                 })
                 .catch(error => console.error('Error al obtener la sesión:', error));
         });
+
+
+
     </script>
 </body>
 </html>

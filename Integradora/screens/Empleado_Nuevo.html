@@ -86,12 +86,12 @@
         </div>
 
         <div class="botones">
+            <button type="button" class="regresar" onclick="window.location.href='Empleados_Registrados.html'">Regresar
+                <img src="../img/regresar.png" alt="guardar" width="40" height="40">
+            </button>
             <button type="submit" class="guardar-empleado">
                 Guardar Empleado
                 <img src="../img/guardar.png" alt="guardar" width="40" height="40">
-            </button>
-            <button type="button" class="regresar" onclick="window.location.href='Empleados_Registrados.html'">Regresar
-                <img src="../img/regresar.png" alt="guardar" width="40" height="40">
             </button>
         </div>
     </form>
@@ -110,60 +110,80 @@
             event.preventDefault();
 
             const usuario = document.getElementById('usuario').value;
-            const rol = document.getElementById('rolSelect').value;
-            const password = document.getElementById('password').value;
+const rol = document.getElementById('rolSelect').value;
+const password = document.getElementById('password').value;
 
-            if (!usuario || !rol || !password) {
+if (!usuario || !rol || !password) {
+    Swal.fire({
+        icon: 'error',
+        title: 'Campos vacíos',
+        text: 'Por favor, completa todos los campos.',
+    });
+    return;
+}
+
+const empleado = {
+    username: usuario,
+    rol: rol,
+    password: password,
+};
+
+fetch('/nuevo_empleado', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(empleado),
+})
+.then(response => {
+    if (response.ok) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Empleado agregado con éxito',
+            text: 'El nuevo empleado ha sido registrado.',
+        }).then(() => {
+            window.location.href = 'Empleados_Registrados.html';
+        });
+    } else {
+        return response.json().then(err => {
+            // Verificar si el error es por nombre de usuario duplicado
+            if (err.message === 'El nombre de usuario ya existe.') {
                 Swal.fire({
                     icon: 'error',
-                    title: 'Campos vacíos',
-                    text: 'Por favor, completa todos los campos.',
+                    title: 'Nombre de usuario duplicado',
+                    text: 'Ya existe un empleado con este nombre de usuario. Por favor, elige otro.',
                 });
-                return;
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al agregar empleado',
+                    text: err.message || 'Ocurrió un error desconocido.',
+                });
             }
-
-            const empleado = {
-                username: usuario,
-                rol: rol,
-                password: password,
-            };
-
-            fetch('/nuevo_empleado', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(empleado),
-            })
-            .then(response => {
-                if (response.ok) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Empleado agregado con éxito',
-                        text: 'El nuevo empleado ha sido registrado.',
-                    }).then(() => {
-                        window.location.href = 'Empleados_Registrados.html';
-                    });
-                } else {
-                    return response.json().then(err => {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: `Error: ${err.message}`,
-                        });
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error al conectar con el servidor',
-                    text: 'Hubo un error al intentar guardar el empleado.',
-                });
-            });
+        });
+    }
+})
+.catch(error => {
+    console.error('Error:', error);
+    Swal.fire({
+        icon: 'error',
+        title: 'Error al conectar con el servidor',
+        text: 'Hubo un error al intentar guardar el empleado.',
+    });
+});
         }
-
-        // Asignar el evento de enviar el formulario al hacer click en el botón "guardar"
         document.getElementById('agregarEmpleadoForm').addEventListener('submit', guardarEmpleado);
+
+           // Verificar si la sesión está activa
+    fetch('/isAuthenticated', { method: 'GET' })
+        .then(response => {
+            if (!response.ok) {
+                window.location.href = '/';
+            }
+        })
+        .catch(error => {
+            console.error('Error verificando la sesión:', error);
+            window.location.href = '/';
+        });
+
     </script>
 </body>
 </html>

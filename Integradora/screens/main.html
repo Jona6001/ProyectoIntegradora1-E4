@@ -114,23 +114,23 @@
          });
     
   
-   // Verificar el rol del usuario para mostrar la sección de gestión de empleados
-    fetch('/api/session')
-        .then(response => response.json())
-        .then(data => {
-            console.log('Datos de sesión en el cliente:', data); // Debugging: verifica los datos en el cliente
-            if (data.loggedIn) {
-                // Mostrar "gestor-empleado" solo si el rol es "admin"
-                if (data.rol === 'admin') {
-                    document.getElementById('gestor-empleado').style.display = 'block';
-                    document.getElementById('menu-gestion-empleados').style.display = 'list-item';
-                } else {
-                    document.getElementById('gestor-empleado').style.display = 'none';
-                    document.getElementById('menu-gestion-empleados').style.display = 'none';
+ // Función que verifica el rol del usuario y oculta la opción de "Gestión de Empleados" si es empleado
+ document.addEventListener('DOMContentLoaded', function() {
+        fetch('/api/session')
+            .then(response => response.json())
+            .then(data => {
+                // Comprobar si el usuario es "empleado"
+                if (data.loggedIn && data.rol === 'empleado') {
+                    // Ocultar la opción de "Gestión de Empleados" en la barra de navegación
+                    const menuGestionEmpleados = document.getElementById('menu-gestion-empleados');
+                    if (menuGestionEmpleados) {
+                        menuGestionEmpleados.style.display = 'none';
+                    }
                 }
-            }
-        })
-        .catch(error => console.error('Error al obtener la sesión:', error));
+            })
+            .catch(error => console.error('Error al obtener la sesión:', error));
+            mostrarServicios('ServiciosBody', true)
+    });
 
     </script>
     
