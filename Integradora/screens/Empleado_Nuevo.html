@@ -29,25 +29,25 @@
         </div>
         <nav id="menu-gestores">
             <ul>
-                <li><a href="#">Gestión de Citas</a>
+                <li><a href="#">Citas</a>
                     <ul>
                         <li><a href="Cita_Nueva.html">Agregar Cita</a></li>
                         <li><a href="Citas_Registradas.html">Ver Citas </a></li>
                     </ul>
                 </li>
-                <li><a href="#">Gestión de Clientes</a>
+                <li><a href="#">Clientes</a>
                     <ul>
                         <li><a href="Cliente_Nuevo.html">Agregar Cliente</a></li>
                         <li><a href="Clientes_Registrados.html">Ver Clientes </a></li>
                     </ul>
                 </li>
-                <li><a href="#">Gestión de Servicios</a>
+                <li><a href="#">Servicios</a>
                     <ul>
                         <li><a href="Servicio_Nuevo.html">Agregar Servicio</a></li>
                         <li><a href="Servicios_Registrados.html">Ver Servicios</a></li>
                     </ul>
                 </li>
-                <li id="menu-gestion-empleados"><a href="#">Gestión de Empleados</a>
+                <li id="menu-gestion-empleados"><a href="#">Empleados</a>
                     <ul>
                         <li><a href="Empleado_Nuevo.html">Agregar Empleado</a></li>
                         <li><a href="Empleados_Registrados.html">Ver Empleados </a></li>
@@ -65,8 +65,10 @@
         </ul>
     </div>
     </header>
-    <h2>Agregar Empleado</h2>
+
+    <section class="form-container">
     <form id="agregarEmpleadoForm">
+        <h2 class="form-title">Agregar Empleado</h2>
         <div class="campo">
             <label for="usuario">Escribe el usuario del empleado:</label>
             <input type="text" id="usuario" required placeholder="Ingrese el usuario">
@@ -95,6 +97,7 @@
             </button>
         </div>
     </form>
+</section>
 
     <script>
         // Ocultar la pantalla de carga después de un mínimo de 1 segundo
