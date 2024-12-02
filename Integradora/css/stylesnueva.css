@@ -291,6 +291,14 @@ nav ul li ul li a:hover {
     text-align: left;
     animation: fadeIn 0.5s ease;
 }
+/* Títulos dentro del formulario */
+.form-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
 
 /* Estilos para selectores comunes en formularios */
 select, input[type="date"], input[type="time"], input[type="text"], input[type="email"], input[type="number"], input[type="password"] {
@@ -319,15 +327,6 @@ input:focus, select:focus {
         opacity: 1;
         transform: translateY(0);
     }
-}
-/* Formulario */
-form {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 20px;
-    border: 1px solid #000000;
-    border-radius: 8px;
-    background-color: #f9f9f9;
 }
 
 .campo {
@@ -415,22 +414,126 @@ button.secondary:hover {
     width: 48%;
 }
 
-/* Estilos Responsivos */
+
+/* Responsividad para pantallas medianas (tabletas, ancho máximo de 768px) */
 @media (max-width: 768px) {
-    header h1 {
-        font-size: 20px;
+    /* Ajustes del encabezado */
+    header {
+        padding: 10px;
+        height: 60px;
     }
 
-    header p {
-        font-size: 16px;
+    .logo {
+        width: 50px;
+    }
+
+    nav ul {
+        flex-direction: column;
+        align-items: flex-start;
+        display: none; /* Oculto por defecto */
+        background-color: #007BFF;
+        padding: 10px;
+        width: 100%;
+    }
+
+    nav ul li {
+        width: 100%;
+        text-align: left;
+    }
+
+    #menu-toggle:checked ~ nav ul {
+        display: flex; /* Mostrar menú al activar el toggle */
+    }
+
+    .welcome-section {
+        width: 90%;
+    }
+
+    #tablaCitas {
+        font-size: 14px;
+        width: 95%;
+    }
+
+    .user-image {
+        height: 35px;
     }
 
     .form-container {
         max-width: 90%;
         padding: 20px;
     }
+}
 
-    button.action {
+/* Responsividad para pantallas pequeñas (teléfonos, ancho máximo de 480px) */
+@media (max-width: 480px) {
+    /* Ajustes del encabezado */
+    header {
+        height: 50px;
+        padding: 5px;
+    }
+
+    .logo {
+        width: 40px;
+    }
+
+    .menu-icon {
+        display: flex;
+        flex-direction: column;
+        margin-left: 10px;
+    }
+
+    .menu-icon span {
+        height: 3px;
+        width: 25px;
+        margin: 4px 0;
+    }
+
+    nav ul {
+        flex-direction: column;
+        align-items: flex-start;
+        display: none; /* Oculto por defecto */
+        background-color: #007BFF;
+        padding: 10px;
+        width: 100%;
+        position: absolute;
+        top: 50px; /* Debajo del encabezado */
+    }
+
+    #menu-toggle:checked ~ nav ul {
+        display: flex;
+    }
+
+    nav ul li {
+        width: 100%;
+        text-align: left;
+    }
+
+    nav ul li ul {
+        position: static;
+    }
+
+    .welcome-section {
+        width: 95%;
+    }
+
+    #tablaCitas {
+        font-size: 12px;
         width: 100%;
     }
+
+    .user-image {
+        height: 30px;
+    }
+
+    .form-container {
+        max-width: 100%;
+        padding: 15px;
+    }
+
+    #logoutButton {
+        font-size: 0.9em;
+        padding: 8px 15px;
+    }
 }
+
+

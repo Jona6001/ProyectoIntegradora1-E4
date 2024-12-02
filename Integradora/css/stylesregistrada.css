@@ -155,7 +155,7 @@ header button {
 
 /* Efecto de hover para el botón de cambiar contraseña */
 .btn-change-password:hover {
-    background-color: #0056b3; /* Color más oscuro cuando se pasa el ratón */
+    background-color: #0056b3; 
     transform: scale(1.05);
 }
 
@@ -297,19 +297,16 @@ h2 {
     gap: 10px;
     margin: 20px 0;
 }
-
 .busqueda-container label {
     font-size: 1.1em;
     color: #333;
 }
-
 #fechaFiltro {
     padding: 8px;
     border-radius: 5px;
     border: 1px solid #ccc;
     font-size: 1em;
 }
-
 .busqueda-container button {
     background-color: #28a745;
     color: white;
@@ -324,7 +321,6 @@ h2 {
 .busqueda-container button:hover {
     background-color: #218838;
 }
-
 /* Contenedor de tablas */
 .tabla-container {
     margin-top: 100px; /* Espacio igual a la altura del encabezado */
@@ -335,30 +331,25 @@ h2 {
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-
 /* Tabla general */
 table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
 }
-
 th, td {
     padding: 12px;
     text-align: center;
     border: 1px solid #ddd;
 }
-
 th {
     background-color: #007BFF;
     color: white;
     font-weight: bold;
 }
-
 tbody tr:nth-child(even) {
     background-color: #f2f2f2;
 }
-
 /* Estilos para los botones de acciones */
 .accion-btn {
     background-color: #007BFF;
@@ -371,7 +362,6 @@ tbody tr:nth-child(even) {
     margin: 0 5px;
     transition: background-color 0.3s ease;
 }
-
 .accion-btn:hover {
     background-color: #0056b3;
 }
@@ -388,7 +378,6 @@ tbody tr:nth-child(even) {
     font-size: 14px;
     
 }
-
 /* Estilo para el botón activo */
 #paginationCitas button.active {
     background-color: #007bff;
@@ -414,13 +403,11 @@ tbody tr:nth-child(even) {
     border-radius: 4px;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
-
 /* Estilo cuando el botón está en hover */
 #pagination button:hover {
     background-color: #ddd;
     transform: scale(1.05);
 }
-
 /* Estilo para el botón activo */
 #pagination button.active {
     background-color: #007bff;
@@ -435,8 +422,6 @@ tbody tr:nth-child(even) {
     cursor: not-allowed;
     border: 1px solid #d3d3d3;
 }
-
-
 /* Estilo para los botones en el pie de página */
 .botones-footer {
     display: flex;
@@ -444,7 +429,6 @@ tbody tr:nth-child(even) {
     gap: 15px;
     margin: 20px 0;
 }
-
 .botones-footer button {
     background-color: #007BFF;
     color: white;
@@ -455,15 +439,12 @@ tbody tr:nth-child(even) {
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-
 .botones-footer button#Salir {
     background-color: #007BFF;
 }
-
 .botones-footer button:hover {
     background-color: #0056b3;
 }
-
 .botones-footer button#Salir:hover {
     background-color: #0056b3;
 }
@@ -481,27 +462,126 @@ tbody tr:nth-child(even) {
 }
 
 
-/* Estilo responsivo para pantallas más pequeñas */
+
+/* Responsividad para pantallas medianas (tabletas, ancho máximo de 768px) */
 @media (max-width: 768px) {
-    h1 {
-        font-size: 2em;
+    /* Ajustes del encabezado */
+    header {
+        padding: 10px;
+        height: 60px;
     }
 
-    h2 {
-        font-size: 1.5em;
+    .logo {
+        width: 50px;
     }
 
-    .busqueda-container {
+    nav ul {
         flex-direction: column;
-        gap: 5px;
+        align-items: flex-start;
+        display: none; /* Oculto por defecto */
+        background-color: #007BFF;
+        padding: 10px;
+        width: 100%;
     }
 
-    .tabla-container {
+    nav ul li {
+        width: 100%;
+        text-align: left;
+    }
+
+    #menu-toggle:checked ~ nav ul {
+        display: flex; /* Mostrar menú al activar el toggle */
+    }
+
+    .welcome-section {
+        width: 90%;
+    }
+
+    #tablaCitas {
+        font-size: 14px;
+        width: 95%;
+    }
+
+    .user-image {
+        height: 35px;
+    }
+
+    .form-container {
+        max-width: 90%;
+        padding: 20px;
+    }
+}
+
+/* Responsividad para pantallas pequeñas (teléfonos, ancho máximo de 480px) */
+@media (max-width: 480px) {
+    /* Ajustes del encabezado */
+    header {
+        height: 50px;
+        padding: 5px;
+    }
+
+    .logo {
+        width: 40px;
+    }
+
+    .menu-icon {
+        display: flex;
+        flex-direction: column;
+        margin-left: 10px;
+    }
+
+    .menu-icon span {
+        height: 3px;
+        width: 25px;
+        margin: 4px 0;
+    }
+
+    nav ul {
+        flex-direction: column;
+        align-items: flex-start;
+        display: none; /* Oculto por defecto */
+        background-color: #007BFF;
+        padding: 10px;
+        width: 100%;
+        position: absolute;
+        top: 50px; /* Debajo del encabezado */
+    }
+
+    #menu-toggle:checked ~ nav ul {
+        display: flex;
+    }
+
+    nav ul li {
+        width: 100%;
+        text-align: left;
+    }
+
+    nav ul li ul {
+        position: static;
+    }
+
+    .welcome-section {
+        width: 95%;
+    }
+
+    #tablaCitas {
+        font-size: 12px;
+        width: 100%;
+    }
+
+    .user-image {
+        height: 30px;
+    }
+
+    .form-container {
+        max-width: 100%;
         padding: 15px;
     }
 
-    .botones-footer {
-        flex-direction: column;
-        gap: 10px;
+    #logoutButton {
+        font-size: 0.9em;
+        padding: 8px 15px;
     }
 }
+
+
