@@ -1,5 +1,9 @@
 ///Para poder activar el servidor con node js usar:  ////   
          node scripts/server.js            
+
+Iniciar sesion 
+jona
+jona
             
         (Tiene que usarse dentro de la carpeta raiz del proyecto: (ProyectoIntegradora1-E4\integradora)  )
 
